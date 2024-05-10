@@ -1,0 +1,78 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<!-- titre de la fenêtre -->
+		<title>Rugby Data</title>
+
+		<!-- précise l'encodage au navigateur (gestion des accents, ...) -->
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+		<!-- Feuilles de style -->
+		<link rel="stylesheet" type="text/css" href="{% static 'CSS/headerFooter.css' %}">
+		
+		<!-- Inhibe la grande largeur sur mobile : évite que le mobile présente un écran large et qu'il faille zoomer -->
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=2.0" />
+
+		<!-- icône de la page -->
+		<link rel="icon" href="http://127.0.0.1:8000//static/rugbyBut.ico" type="image/x-icon">
+	
+	</head>
+
+    <body>
+        <header>
+			<a href="http://127.0.0.1:8000/" class="logoRugby">
+				<img src="{% static 'IMG/logoHeader.png' %}" alt="">
+				<h1> Rugby Data </h1>
+			</a>
+
+			<ul class="menu">
+				<li> <a href="http://127.0.0.1:8000/leagues/"> Leagues </a> </li>
+				<li> <a href="http://127.0.0.1:8000/teams/"> Teams </a> </li>
+				<li> <a href="http://127.0.0.1:8000/matches/"> Matches </a> </li>
+				<li> <a href="http://127.0.0.1:8000/players/"> Players </a> </li>
+			</ul>
+			
+			{% if user.is_authenticated %}
+				<button class="button-link-connexion">
+					{{ user.username}} 
+					| 
+					<a href="http://127.0.0.1:8000/accounts/logout/">Log out</a>
+				</button>
+			{% else %}
+				<button class="button-link-connexion">
+					<a href="http://127.0.0.1:8000/accounts/login/"> Log in </a> 
+					| 
+					<a href="http://127.0.0.1:8000/accounts/signup/"> Sign up </a>
+				</button>
+			{% endif %}
+			
+			<!-- Menu déroulant quand la fenêtre devient petite -->
+			<div class="petit-menu">
+				<span>
+					<div></div>
+					<div></div>
+				</span>
+				<span>
+					<div></div>
+					<div></div>
+				</span>
+			</div>
+		</header>
+
+		<div class="container-leagues">
+
+		</div>
+
+		<footer>
+			<div class="plan">
+				<li> <a href="http://127.0.0.1:8000/contact-us/"> Contact us </a>  </li>
+				<li> <a href="http://127.0.0.1:8000/image-sources/"> Image sources </a> </li>
+				<li> <a href="http://127.0.0.1:8000/url-sources/"> Scraping sources </a> </li>
+			</div>
+		</footer>
+
+    </body>
+</html>

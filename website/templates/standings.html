@@ -1,0 +1,429 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<!-- titre de la fenêtre -->
+		<title>Rugby Data</title>
+
+		<!-- précise l'encodage au navigateur (gestion des accents, ...) -->
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+		<!-- Feuilles de style -->
+		<link rel="stylesheet" type="text/css" href="{% static 'CSS/headerFooter.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'CSS/standings.css' %}">
+
+		<!-- Inhibe la grande largeur sur mobile : évite que le mobile présente un écran large et qu'il faille zoomer -->
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=2.0" />
+
+		<!-- icône de la page -->
+		<link rel="icon" href="http://127.0.0.1:8000//static/rugbyBut.ico" type="image/x-icon">
+	
+	</head>
+
+    <body>
+        <header>
+			<a href="http://127.0.0.1:8000/" class="logoRugby">
+				<img src="{% static 'IMG/logoHeader.png' %}" alt="">
+				<h1> Rugby Data </h1>
+			</a>
+
+			<ul class="menu">
+				<li> <a href="http://127.0.0.1:8000/leagues/"> Leagues </a> </li>
+				<li> <a href="http://127.0.0.1:8000/teams/"> Teams </a> </li>
+				<li> <a href="http://127.0.0.1:8000/matches/"> Matches </a> </li>
+				<li> <a href="http://127.0.0.1:8000/players/"> Players </a> </li>
+			</ul>
+			
+			{% if user.is_authenticated %}
+				<button class="button-link-connexion">
+					{{ user.username}} 
+					| 
+					<a href="http://127.0.0.1:8000/accounts/logout/">Log out</a>
+				</button>
+			{% else %}
+				<button class="button-link-connexion">
+					<a href="http://127.0.0.1:8000/accounts/login/"> Log in </a> 
+					| 
+					<a href="http://127.0.0.1:8000/accounts/signup/"> Sign up </a>
+				</button>
+			{% endif %}
+			
+			<!-- Menu déroulant quand la fenêtre devient petite -->
+			<div class="petit-menu">
+				<span>
+					<div></div>
+					<div></div>
+				</span>
+				<span>
+					<div></div>
+					<div></div>
+				</span>
+			</div>
+		</header>
+
+		<div class="container-grid-name-league">
+			<div class="grid-name-league">
+				League
+			</div>
+		</div>
+		
+
+		<div class="container-s-t">
+			<span class="title_">Table standings:</span>
+			<div class="container-select">
+				<div class="select">
+					<span class="selected">2024</span>
+					<div class="caret"></div>
+				</div>
+				<div class="years">
+					<div class="years-scrollbar">
+						<li class="active"> 2024 </li>
+						<li> 2023 </li>
+						<li> 2022 </li>
+						<li> 2021 </li>
+						<li> 2020 </li>
+						<li> 2019 </li>
+						<li> 2018 </li>
+						<li> 2017 </li>
+						<li> 2016 </li>
+						<li> 2015 </li>
+					</div>
+					
+				</div>
+				
+			</div>
+		</div>
+			
+		<div class="container-standings">
+			<div class="grid-standings">
+				<div> </div>
+				<div> </div>
+				<div class="container-r">
+					MP
+				</div>
+				<div class="container-r">
+					W
+				</div>
+				<div class="container-r">
+					D
+				</div>
+				<div class="container-r">
+					L
+				</div>
+				<div class="container-r">
+					<div class="pt">P</div>
+				</div>
+				<div class="container-r">
+					F
+				</div>
+				<div class="container-r">
+					AF
+				</div>
+				<div class="container-r">
+					A
+				</div>
+				<div class="container-r">
+					AA
+				</div>
+				<div class="container-r">
+					PD
+				</div>
+				<div class="container-r">
+					B
+				</div>
+				<div class="container-r">
+					AB
+				</div>
+				<div class="container-r">
+					DB
+				</div>
+				<div class="container-r">
+					TF
+				</div>
+				<div class="container-r">
+					TA
+				</div>
+				<div class="container-r">
+					Form
+				</div>
+			</div>
+
+			<div class="grid-standings">
+				<div class="r"> 1 </div>
+				<div class="team-standing">
+					<img src="https://www.allrugby.com/img/logo/clubs/90/toulouse2021.png" alt="">
+					Team 1
+				</div>
+				<div class="container-r">
+					3
+				</div>
+				<div class="container-r">
+					21
+				</div>
+				<div class="container-r">
+					1
+				</div>
+				<div class="container-r">
+					2
+				</div>
+				<div class="container-r">
+					<div class="pt">64</div>
+				</div>
+				<div class="container-r">
+					200
+				</div>
+				<div class="container-r">
+					252
+				</div>
+				<div class="container-r">
+					752
+				</div>
+				<div class="container-r">
+					75
+				</div>
+				<div class="container-r">
+					572
+				</div>
+				<div class="container-r">
+					752
+				</div>
+				<div class="container-r">
+					78
+				</div>
+				<div class="container-r">
+					24
+				</div>
+				<div class="container-r">
+					75
+				</div>
+				<div class="container-r">
+					32
+				</div>
+				<div class="passed-match">
+					<div class="carre-won"> V </div>
+					<div class="carre-won"> V </div>
+					<div class="carre-won"> V </div>
+				</div>
+			</div>
+
+			<div class="grid-standings">
+				<div class="r"> 1 </div>
+				<div class="team-standing">
+					<img src="https://www.allrugby.com/img/logo/clubs/90/toulouse2021.png" alt="">
+					Team 1
+				</div>
+				<div class="container-r">
+					3
+				</div>
+				<div class="container-r">
+					21
+				</div>
+				<div class="container-r">
+					1
+				</div>
+				<div class="container-r">
+					2
+				</div>
+				<div class="container-r">
+					<div class="pt">64</div>
+				</div>
+				<div class="container-r">
+					200
+				</div>
+				<div class="container-r">
+					252
+				</div>
+				<div class="container-r">
+					752
+				</div>
+				<div class="container-r">
+					75
+				</div>
+				<div class="container-r">
+					572
+				</div>
+				<div class="container-r">
+					752
+				</div>
+				<div class="container-r">
+					78
+				</div>
+				<div class="container-r">
+					24
+				</div>
+				<div class="container-r">
+					75
+				</div>
+				<div class="container-r">
+					32
+				</div>
+				<div class="passed-match">
+					<div class="carre-won"> V </div>
+					<div class="carre-won"> V </div>
+					<div class="carre-won"> V </div>
+				</div>
+			</div>
+
+			<div class="grid-standings">
+				<div class="r"> 1 </div>
+				<div class="team-standing">
+					<img src="https://www.allrugby.com/img/logo/clubs/90/toulouse2021.png" alt="">
+					Team 1
+				</div>
+				<div class="container-r">
+					3
+				</div>
+				<div class="container-r">
+					21
+				</div>
+				<div class="container-r">
+					1
+				</div>
+				<div class="container-r">
+					2
+				</div>
+				<div class="container-r">
+					<div class="pt">64</div>
+				</div>
+				<div class="container-r">
+					200
+				</div>
+				<div class="container-r">
+					252
+				</div>
+				<div class="container-r">
+					752
+				</div>
+				<div class="container-r">
+					75
+				</div>
+				<div class="container-r">
+					572
+				</div>
+				<div class="container-r">
+					752
+				</div>
+				<div class="container-r">
+					78
+				</div>
+				<div class="container-r">
+					24
+				</div>
+				<div class="container-r">
+					75
+				</div>
+				<div class="container-r">
+					32
+				</div>
+				<div class="passed-match">
+					<div class="carre-won"> V </div>
+					<div class="carre-won"> V </div>
+					<div class="carre-won"> V </div>
+				</div>
+			</div>
+
+			<div class="grid-standings">
+				<div class="r"> 1 </div>
+				<div class="team-standing">
+					<img src="https://www.allrugby.com/img/logo/clubs/90/toulouse2021.png" alt="">
+					Team 1
+				</div>
+				<div class="container-r">
+					3
+				</div>
+				<div class="container-r">
+					21
+				</div>
+				<div class="container-r">
+					1
+				</div>
+				<div class="container-r">
+					2
+				</div>
+				<div class="container-r">
+					<div class="pt">64</div>
+				</div>
+				<div class="container-r">
+					200
+				</div>
+				<div class="container-r">
+					252
+				</div>
+				<div class="container-r">
+					752
+				</div>
+				<div class="container-r">
+					75
+				</div>
+				<div class="container-r">
+					572
+				</div>
+				<div class="container-r">
+					752
+				</div>
+				<div class="container-r">
+					78
+				</div>
+				<div class="container-r">
+					24
+				</div>
+				<div class="container-r">
+					75
+				</div>
+				<div class="container-r">
+					32
+				</div>
+				<div class="passed-match">
+					<div class="carre-won"> V </div>
+					<div class="carre-won"> V </div>
+					<div class="carre-won"> V </div>
+				</div>
+			</div>
+		</div>
+
+		<div class="container-standing-legend">
+			<div class="l"><b>Legend:</b></div>
+			<div class="grid-standing-legend">
+				<div></div>
+				<div> <b>MP:</b> matches played</div>
+				<div> <b>W:</b> matches won</div>
+				<div> <b>D:</b> matches drawn</div>
+				<div> <b>L:</b> matches lost</div>
+				<div> <b>P:</b> points</div>
+			</div>
+
+			<div class="grid-standing-legend">
+				<div></div>
+				<div> <b>PD:</b> points difference </div>
+				<div> <b>B:</b> bonus</div>
+				<div> <b>F:</b> points for</div>
+				<div> <b>AF:</b> average F</div>
+				<div> <b>A:</b> points against</div>
+			</div>
+
+			<div class="grid-standing-legend">	
+				<div></div>	
+				<div> <b>AA:</b> average A</div>
+				<div> <b>TF:</b> tries for</div>
+				<div> <b>TA:</b> tries against</div>
+				<div> <b>AB:</b> attack bonus</div>
+				<div> <b>DB:</b> defense bonus</div>
+			</div>
+
+
+		</div>
+
+		<footer>
+			<div class="plan">
+				<li> <a href="http://127.0.0.1:8000/contact-us/"> Contact us </a>  </li>
+				<li> <a href="http://127.0.0.1:8000/image-sources/"> Image sources </a> </li>
+				<li> <a href="http://127.0.0.1:8000/url-sources/"> Scraping sources </a> </li>
+			</div>
+		</footer>
+
+		<!-- Sript pour la select box -->
+	<script src="{% static 'JS/selectBox.js' %}"></script>
+    </body>
+</html>

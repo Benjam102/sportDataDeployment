@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<!-- titre de la fenêtre -->
+		<title>Rugby Data</title>
+
+		<!-- précise l'encodage au navigateur (gestion des accents, ...) -->
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+		<!-- Feuilles de style -->
+		
+		<!-- Inhibe la grande largeur sur mobile : évite que le mobile présente un écran large et qu'il faille zoomer -->
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=2.0" />
+
+		<!-- icône de la page -->
+		<link rel="icon" href="http://127.0.0.1:8000//static/rugbyBut.ico" type="image/x-icon">
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	</head>
+
+    <body>
+        <h2>Comments</h2>
+        
+        <div id="comment-list">
+            {% if comments %}
+                {% for comment in comments %}
+                    <p>{{ comment.user.username }} - {{ comment.date }}: {{ comment.content }}</p>
+                {% endfor %}
+            {% else %}
+                <p id="no-comments-msg"> No comments available for this match.</p>
+            {% endif %}
+        </div>
+       
+
+        <hr>
+
+        <h2>Add a Comment</h2>
+        <form id="comment-form">
+            {% csrf_token %}
+            <textarea id="comment-content" name="content" required></textarea><br>
+            <input type="submit" value="Post Comment">
+        </form>
+
+        <script>
+            // JavaScript/jQuery for handling form submission via AJAX
+            $(document).ready(function() {
+            $('#comment-form').submit(function(e) {
+                e.preventDefault(); // Prevent default form submission
+
+                // Collect form data
+                var formData = $(this).serialize();
+
+                // Submit form data via AJAX
+                $.ajax({
+                    type: 'POST',
+                    url: "{% url 'add_comment' match_id=match_.id %}",
+                    data: formData,
+                    success: function(response) {
+                        // Clear the textarea
+                        $('#comment-content').val('');
+                        
+                        // Remove the "No comments" message if it exists
+                        $('#no-comments-msg').remove();
+
+                        // Append the new comment to the comment list
+                        $('#comment-list').append('<p>' + response.username + ' - ' + response.date + ': ' + response.content + '</p>');
+                    },
+                    error: function(error) {
+                        console.log(error); // Log any errors to the console
+                    }
+                });
+            });
+        });
+        </script>
+    </body>
+</html>

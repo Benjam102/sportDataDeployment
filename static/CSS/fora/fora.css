@@ -1,0 +1,214 @@
+.page
+{
+    display: flex;
+}
+
+.left-column
+{
+    display: flex;
+    justify-content: left;
+    flex-direction: column;
+    width: 25%;
+    padding: 3% 1% 3% 1%;
+}
+
+.right-column
+{
+    display: flex;
+    justify-content: right;
+    flex-direction: column;
+    width: 75%;
+    padding: 3% 1% 3% 1%;
+}
+
+/*--------------------------------------------------------Country--------------------------------------------------------*/
+.container-grid-cate
+{
+    padding: 10px;
+}
+
+.grid-country
+{
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr 1fr;
+    padding: 10px;
+}
+
+.second-col
+{
+    display: flex;
+    justify-content: end;
+}
+
+.caret
+{
+    width: 0;
+    height: 0;
+    justify-content: end;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid #344D59;
+    transition: 0.3s;
+}
+
+.caret-rotate
+{
+    transform: rotate(180deg);
+}
+
+.odd
+{
+    background-color: #e6e8e9;
+}
+
+.even
+{
+    background-color: #F7F7F7;
+}
+
+.last-border
+{
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.grid-country:not(:first-child):hover 
+{
+    background-color: #cbd5e7; /* Couleur de fond différente au survol (sauf la première ligne) */
+    cursor: pointer;
+}
+
+/*--------------------------------------------------Leagues--------------------------------------------------------------*/
+.grid-categories-none
+{
+    display: none;
+}
+
+.grid-categories-display
+{
+    display: block;
+}
+
+/*-------------------------------------------------------Leagues----------------------------------------------------*/
+.grid-title
+{
+    display: grid;
+    grid-template-columns: 1fr;
+    padding: 10px;
+    background-color: #344D59;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.grid-cate
+{
+    display: grid;
+    grid-template-columns: 1fr;
+    padding: 10px;
+}
+
+.grid-cate:hover
+{
+    background-color: #cbd5e7; /* Couleur de fond différente au survol (sauf la première ligne) */
+}
+
+.text-league
+{
+    margin-left: 25px;
+}
+
+.text-check-box
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+input[type="checkbox"] 
+{
+    accent-color: #344D59;
+}
+
+input[type="checkbox"]:hover
+{
+    cursor: pointer;
+}
+
+/*--------------------------------------------------------recent threads------------------------------------------------*/
+.container-grid-recents
+{
+    padding: 10px;
+}
+
+.grid-legend-tab
+{
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 0.5fr 0.5fr;
+    background-color:  #A9B3B8;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    font-size: 14px;
+    padding: 10px;
+}
+
+.grid-threads-recents
+{
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 0.5fr 0.5fr;
+    font-size: 14px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+
+/* Style des grid-tabs impairs (1er, 3ème, 5ème, etc.) en fct du parent qui container-grid-tab */
+.container-futur-threads .grid-threads-recents:nth-child(odd) 
+{
+    background-color: #F7F7F7;
+}
+
+.container-futur-threads .grid-threads-recents:nth-child(even) 
+{
+    background-color: #e6e8e9;
+}
+
+
+.container-futur-threads .grid-threads-recents:hover 
+{
+    background-color:   #cbd5e7; /* Couleur de fond différente au survol (sauf la première ligne) */
+}
+
+.container-futur-threads .grid-threads-recents:last-child
+{
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.no-thread
+{
+    display: grid;
+    justify-content: center;
+    background-color: #F7F7F7;
+    font-size: 14px;
+    padding: 10px;
+}
+
+.element-grid
+{
+    display: flex;
+    align-items: center;
+}
+
+.container-futur-threads
+{
+    overflow-y: auto;
+    max-height: 580px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.container-futur-threads::-webkit-scrollbar
+{
+    display: none; /* Masquer le pouce de la barre de défilement */
+}

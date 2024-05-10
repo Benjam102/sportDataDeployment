@@ -1,0 +1,291 @@
+.container-s-t
+{
+    padding: 60px 40px 20px 40px;
+    display: flex;
+    align-items: center;
+}
+
+.title_
+{
+    color: #F7F7F7;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.container-select
+{
+    margin-left: 10px;
+    color: black;
+}
+
+.select
+{
+    display: flex;
+    position: relative;
+    justify-content: space-between;
+    align-items: center;
+    width: 180px;
+    border-radius: 10px;
+    padding: 6px;
+    background-color: #F7F7F7;
+    cursor: pointer;
+}
+
+.select:hover
+{
+    background-color: #A9B3B8;
+}
+
+.caret
+{
+    position: absolute;
+    width: 0;
+    height: 0;
+    left: 160px;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid #242424;
+    transition: 0.3s;
+}
+
+/* Js */
+.caret-rotate
+{
+    transform: rotate(180deg);
+}
+
+.years-scrollbar
+{
+    padding: 6px;
+    margin: 3px;  /* Permet de decaler la barre*/
+    overflow: auto;
+    z-index: 10;
+    scrollbar-color: black;
+    max-height: 150px; /* Optionnel: spécifie la hauteur maximale de la liste avant que la barre de défilement n'apparaisse */
+}
+
+.years
+{
+    list-style: none;
+    padding: 3px;
+    background-color: #F7F7F7;
+    width: 180px;
+    border-radius: 10px;
+    margin-top: 5px;
+    display: none;
+    transition: 0.2s;
+    position: absolute;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+    
+}
+
+.years-scrollbar::-webkit-scrollbar                /* Scroll-bar plus jolie */
+{
+    margin-right: 3px;
+    width:5px;
+}
+
+.years-scrollbar::-webkit-scrollbar-thumb
+{
+    background-color: #242424;
+    border-radius: 40px;
+}
+
+.years li
+{
+    padding: 5px;
+    cursor: pointer;
+}
+
+.years li:hover
+{
+    background-color: #cbd5e7;
+    border-radius: 10px;
+}
+
+.years-open
+{
+    display: block;  
+}
+
+.active
+{
+    background-color: #A9B3B8;
+    border-radius: 10px;
+}
+
+/* --------------------------------------------------------Tab---------------------------------------------------------- */
+.container-grid-name-league
+{
+    padding: 40px 40px 0 40px;
+    display: flex;
+    justify-content: center;
+}
+
+.grid-name-league
+{
+    display: grid;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    width: 80%;
+    background-color: #A9B3B8;
+    color: #242424;
+    border-radius: 10px;
+    align-items: center;
+}
+
+/* --------------------------------------------------------Tab---------------------------------------------------------- */
+.container-standings
+{
+    padding: 40px 60px 60px 60px;
+}
+
+.grid-standings
+{
+    display: grid;
+    grid-template-columns: 0.5fr 1fr 0.6fr 0.6fr 0.6fr 0.6fr 0.6fr 0.6fr 0.6fr 0.6fr 0.6fr 0.6fr 0.6fr 0.6fr 0.6fr 0.6fr 0.6fr 1fr;
+    background-color: #F7F7F7;
+    font-size: 14px;
+    padding: 10px;
+}
+
+/* Style des grid-tabs impairs (1er, 3ème, 5ème, etc.) en fct du parent qui container-grid-tab */
+.container-standings .grid-standings:nth-child(odd) 
+{
+    background-color: #e6e8e9;
+}
+
+.container-standings .grid-standings:first-child 
+{
+    background-color:  #A9B3B8;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+}
+
+.container-standings .grid-standings:last-child 
+{
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.container-standings .grid-standings:not(:first-child):hover 
+{
+    background-color:   #cbd5e7; /* Couleur de fond différente au survol (sauf la première ligne) */
+}
+
+.r
+{
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+}
+
+.passed-match
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.carre-won
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    margin: 2px;
+    padding: 3px;
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    background-color: #34B272;
+}
+
+.carre-drawn
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    margin: 2px;
+    padding: 3px;
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    background-color: #999999;
+}
+
+.carre-defeat
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    margin: 2px;
+    padding: 3px;
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    background-color: #FE993F;
+}
+
+.container-r
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.team-standing
+{
+    display: flex;
+    align-items: center;
+}
+
+.team-standing img
+{
+    width: 20%;
+    margin-right: 6px;
+}
+
+.pt
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    padding: 3px;
+    width: 25px;
+    height: 25px;
+    border-radius: 5px;
+    background-color: #FEEAA1;
+}
+
+/* Legend */
+.container-standing-legend
+{
+    padding: 40px 60px 60px 60px;
+}
+
+.l
+{
+    background-color: #F7F7F7;
+    padding: 6px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+.grid-standing-legend
+{
+    display: grid;
+    background-color: #F7F7F7;
+    grid-template-columns: 1fr 1.5fr 1.5fr 1.5fr 1.5fr 1.5fr;  /* 1 en plus pour que ce soit centré */
+    font-size: 13px;
+    padding: 10px;
+}
+
+.container-standing-legend .grid-standing-legend:last-child 
+{
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+}

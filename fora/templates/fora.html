@@ -1,0 +1,140 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<!-- titre de la fenêtre -->
+		<title>Rugby Data</title>
+
+		<!-- précise l'encodage au navigateur (gestion des accents, ...) -->
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+		<!-- Feuilles de style -->
+		<!-- Feuilles de style -->
+		<link rel="stylesheet" type="text/css" href="{% static 'CSS/headerFooter.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'CSS/fora/fora.css' %}">
+
+		<!-- Inhibe la grande largeur sur mobile : évite que le mobile présente un écran large et qu'il faille zoomer -->
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=2.0" />
+
+		<!-- icône de la page -->
+		<link rel="icon" href="http://127.0.0.1:8000//static/rugbyBut.ico" type="image/x-icon">
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	</head>
+
+    <body>
+        <!-- Entête -->
+	   <header>
+        <a href="http://127.0.0.1:8000/" class="logoRugby">
+            <img src="{% static 'IMG/logoHeader.png' %}" alt="">
+            <h1> Rugby Data </h1>
+        </a>
+
+        <ul class="menu">
+            <li> <a href="http://127.0.0.1:8000/leagues/"> Leagues </a> </li>
+            <li> <a href="http://127.0.0.1:8000/teams/"> Teams </a> </li>
+            <li> <a href="http://127.0.0.1:8000/matches/"> Matches </a> </li>
+            <li> <a href="http://127.0.0.1:8000/players/"> Players </a> </li>
+        </ul>
+        
+        {% if user.is_authenticated %}
+            <button class="button-link-connexion">
+                {{ user.username}} 
+                | 
+                <a href="http://127.0.0.1:8000/accounts/logout/">Log out</a>
+            </button>
+        {% else %}
+            <button class="button-link-connexion">
+                <a href="http://127.0.0.1:8000/accounts/login/"> Log in </a> 
+                | 
+                <a href="http://127.0.0.1:8000/accounts/signup/"> Sign up </a>
+            </button>
+        {% endif %}
+        
+        <!-- Menu déroulant quand la fenêtre devient petite -->
+        <div class="petit-menu">
+            <span>
+                <div></div>
+                <div></div>
+            </span>
+            <span>
+                <div></div>
+                <div></div>
+            </span>
+        </div>
+    </header>
+
+    <div class="page">
+        <div class="left-column">
+            <div class="container-grid-cate">   
+                <div class="grid-title">
+                    Categories
+                </div>
+                
+                {% for country, categories in categories_by_country.items %}
+                    <div class="grid-country">
+                        {{ country }}
+                        <div class="second-col">
+                            <div class="caret"></div>
+                        </div>
+                    </div>
+                    <div class="grid-categories-none" id="{{ country }}">
+                        {% for category in categories %}
+                            <div class="grid-cate text-check-box">
+                                <span class="text-league">{{ category.title }}</span>
+                                <input type="checkbox" class="category-checkbox" data-url="{% url 'display_category' slug_category=category.slug_title %}">
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}     
+            </div>
+        </div>
+
+        <div class="right-column">
+           <div class="container-grid-recents">
+                <div class="grid-legend-tab">
+                    <div class="element-grid">
+                        <b>Thread</b>
+                    </div>
+                    <div class="element-grid">
+                        <b>Latest comment</b>
+                    </div>
+                    <div class="element-grid">
+                        <b>Comments</b>
+                    </div>
+                    <div class="element-grid">
+                        <b>Status</b>
+                    </div>
+                </div>
+                
+                    <div class="container-futur-threads">
+                        <!-- Ajoutés grâce à une requête ajax -->
+                        <div class="no-thread"> 
+                            No threads
+                        </div>
+                    </div>
+                
+                
+           </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="plan">
+            <li> <a href="http://127.0.0.1:8000/contact-us/"> Contact us </a>  </li>
+            <li> <a href="http://127.0.0.1:8000/image-sources/"> Image sources </a> </li>
+            <li> <a href="http://127.0.0.1:8000/url-sources/"> Scraping sources </a> </li>
+        </div>
+    </footer>
+
+    <!-- Sript pour les checkboxes -->
+	<script src="{% static 'JS/dropDownMenu.js' %}"></script>
+
+    <!-- Sript pour les checkboxes -->
+	<script src="{% static 'JS/threadsCategory.js' %}"></script>
+    </body>
+</html>
+
+    

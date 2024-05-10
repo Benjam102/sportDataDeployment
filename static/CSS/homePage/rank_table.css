@@ -1,0 +1,82 @@
+.content-table-rank                                   /* Couleur du fond = celle du body */
+{
+    border-collapse: collapse;                        /* Fusionner les bordures des cellules */
+    font-size: 0.9em;
+    min-width: 300px;                    
+}
+
+.content-table-rank thead tr:not(:first-child)
+{
+    background-color: #344D59;                      /* #3B5892 */
+    color: #f7f7f7;
+    text-align: left;                                 /* Naturellement au centre */
+    font-weight: bold;
+    overflow: initial;
+}
+
+.content-table-rank thead tr:first-child th:first-child 
+{
+    background-color: #242424;                      /* Pour faire disparaître le fond blanc */
+    text-align: center;                               /* Pour centrer le texte */
+    color: #f7f7f7;
+}
+
+/* Arrondi de la 1ère cellule de la deuxième ligne */ 
+.content-table-rank thead tr:nth-child(2) th:nth-child(1)  
+{
+    border-top-left-radius: 20px;
+}
+
+/* Arrondi de la dernière cellule de la deuxième ligne */ 
+.content-table-rank thead tr:nth-child(2) th:nth-child(7) 
+{
+    border-top-right-radius: 20px;
+}
+
+/* Arrondi de la 1ère cellule de la dernière ligne */ 
+.content-table-rank tbody tr:last-child td:nth-child(1) 
+{
+    border-bottom-left-radius: 20px;
+}
+
+/* Arrondi de la dernière cellule de la dernière ligne */ 
+.content-table-rank tbody tr:last-child td:nth-child(7) 
+{
+    border-bottom-right-radius: 20px;
+}
+
+.content-table-rank th,
+.content-table-rank td
+{
+    padding: 12px 15px;
+}
+
+/* Pour que le nom de la compétition soit alignée avec les autres composantes des deux autres parties de la page */
+.content-table-rank tr:first-child th
+{
+    padding: 0 12px 15px 15px;
+}
+
+.content-table-rank tbody tr:not(:last-child)
+{
+    border-bottom: 1px solid #dddddd;
+}
+
+.content-table-rank tbody tr:nth-of-type(even)              /* Cible les lignes paires à l'intérieur du corps */
+{
+    background-color: #EDEDED;
+}
+
+.content-table-rank tbody tr:nth-of-type(odd)              /* Cible les lignes impaires à l'intérieur du corps */
+{
+    background-color: #f7f7f7;
+}
+
+.content-table-rank tbody tr:hover 
+{
+    background-color: #A9B3B8;                           /* J'ai définie la couleur directement car le fond est noir
+                                                              et non blanc comme le tableau des ligues. Cela permet d'avoir
+                                                              la même couleur au survole de la cellule */
+}
+                                                           
+

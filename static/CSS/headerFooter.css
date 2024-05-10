@@ -1,0 +1,272 @@
+*
+{
+	margin:0;                     /* Pour enlever les marges du navigateur */
+	padding:0;
+    box-sizing: border-box;       /* Inclut les bordures et les rembourrages dans la largeur et la hauteur spécifiées */
+}
+
+a
+{                                 /* Balise pour les liens */
+    text-decoration: none;        /* Permet d'enlever le soulignement des liens */
+}
+
+body
+{
+    background-color: #242424;
+    font-family: sans-serif;
+}
+
+::-webkit-scrollbar                /* Scroll-bar plus jolie */
+{
+    width: 8px;
+}
+
+::-webkit-scrollbar-thumb
+{
+    background-color: #f7f7f7a8;
+    border-radius: 30px;
+}
+
+@font-face 
+{
+    font-family: Roboto;
+    src: url("../FONT/Roboto-Bold.ttf") format('truetype');
+}
+
+header
+{
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Même espace entre les éléments de la barre du menu*/
+    padding: 8px 5%;               /* Haut et bas = 10px / Gauche et droite 5% entre les éléments de la longueur */
+    background-color: #F7F7F7; 
+}
+
+header .logoRugby
+{
+    display: flex;
+    align-items: center;
+}
+
+header .logoRugby img
+{
+    width: 50px;
+    height: 60px;
+}
+
+a img
+{
+    display: flex;
+}
+
+header .logoRugby h1
+{
+    font-size: 20px;
+    color: #242424;
+}
+
+/*----------------------------------------------------------MENU---------------------------------------------------------*/
+.menu
+{
+    display: flex;                 /* Aligner les éléments sur l'axe principal */
+}
+
+.menu li
+{
+    margin-left: 100px;            /* Espace entre les éléments de la liste */
+    list-style: none;
+    display: flex;                 /* Sert pour le petit rond lorsque l'on passe sur une rubrique */
+    align-items: center;           /* Aligne la rubrique au centre même quand elle grossit */
+}
+
+.menu li:first-child 
+{
+    margin-left: 0;                 /* Supprime la marge à gauche du premier élément */
+}
+
+.menu li a
+{
+    color: #242424;
+    transition: 0.5s;              /* Durée de transition entre les deux couleurs */
+}
+
+.menu li a:hover                  
+{
+    color: #3B5892;              /* Changement de couleur et de taille de la police lors du survole d'une rubrique */
+    font-size: 22px;
+}
+
+.petit-menu
+{
+    display: none;
+}
+
+.button-link-connexion             /* Bouton pour se connecter à l'espace client */
+{
+    border: 0;                    
+    background: transparent;
+}
+
+.button-link-connexion 
+{
+    font-size: 16px;
+    color: #F7F7F7;
+    padding: 10px 25px;
+    background: linear-gradient(#242424, #333333);
+    border-radius: 60px;
+    text-transform: uppercase;
+}
+
+.button-link-connexion a
+{
+    color: #F7F7F7;
+}
+/*----------------------------------------------------------Footer------------------------------------------------------*/
+footer                                /* Dernière partie de la page web */
+{
+    height: 50px;
+    background-color: #F7F7F7;
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+}
+
+.plan
+{
+    display: flex;
+    padding: 10px 5%;               /* Haut et bas = 10px / Gauche et droite 5% entre les éléments de la longueur */
+}
+
+.plan li
+{
+    margin-left: 250px;             /* Espace entre les éléments de la liste */
+    list-style: none;
+    display: flex;                 /* Sert pour le petit rond lorsque l'on passe sur une rubrique */
+    align-items: center;           /* Aligne la rubrique au centre même quand elle grossit */
+}
+
+.plan li:first-child 
+{
+    margin-left: 0;                 /* Supprime la marge à gauche du premier élément */
+}
+
+.plan li a
+{
+    color: #242424;
+    transition: 0.5s;              /* Durée de transition entre les deux couleurs */
+}
+
+.plan li a:hover                  
+{
+    color: #3B5892;              /* Changement de couleur et de taille de la police lors du survole d'une rubrique */
+    font-size: 22px;
+}
+
+/* Responsive pour le menu */
+@media (max-width: 1000px)
+{
+    header .menu
+    {
+        display: none;
+    }
+
+    /* On gère l'appartition du rond */
+    .petit-menu
+    {
+        display: flex;
+        width: 25px;
+        height: 25px;
+        align-items: center;
+        justify-content: space-between;
+        overflow: hidden;
+        border-radius: 50%;
+        transition: 0.5s;
+    }
+
+    .petit-menu span
+    {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        transition: 0.5s;
+    }
+
+    .petit-menu span div
+    {
+        height: 11px;
+        width: 11px;
+        background-color: #242424;
+        border-radius: 6px;
+    }
+
+    /* On gère l'apparation de la croix */
+    .petit-menu.croix
+    {
+        justify-content: center;
+        align-items: unset;       /* Réinitialisez la valeur par défaut de l'alignement des éléments enfants du conteneur flex */
+    }
+
+    .petit-menu.croix span:nth-child(1)
+    {
+        display: none;
+    }
+
+    .petit-menu.croix span
+    {
+        display: flex;
+        flex-direction: unset;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+        transition: 0.5s;
+    }
+
+    .petit-menu.croix span div
+    {
+        height: 100%;
+        width: 3px;
+        border-radius: 6px;
+        transition: 0.5s;
+    }
+
+    .petit-menu.croix span div:nth-child(1)
+    {
+        transform: rotate(45deg);
+    }
+
+    .petit-menu.croix span div:nth-child(2)
+    {
+        transform: rotate(-45deg);
+    }
+
+    /* On gère le menu déroulant */
+    header .menu.appui-rond
+    {
+        display: flex;
+        position: absolute;
+        top: 95px;                   /* Hauteur du menu déroulant -> évite de couper l'icône ou le lien espace client */
+        left: 0;
+        background-color:#F7F7F7;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    header .menu.appui-rond li
+    {
+        margin: 15px 0;
+    }
+
+    .liste-engagement .bloc-engagement
+    {
+        margin-bottom: 15px;
+    }
+}
+
+@media (max-width: 900px)
+{
+    .plan li
+    {
+        margin-left: 140px;
+    }
+}

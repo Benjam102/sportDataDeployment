@@ -1,0 +1,114 @@
+*
+{
+	margin:0;                     /* Pour enlever les marges du navigateur */
+	padding:0;
+    box-sizing: border-box;       /* Inclut les bordures et les rembourrages dans la largeur et la hauteur spécifiées */
+}
+
+a
+{                                 /* Balise pour les liens */
+    text-decoration: none;        /* Permet d'enlever le soulignement des liens */
+}
+
+body
+{
+    background-color: #242424;
+    font-family: sans-serif;
+}
+
+.bloc-connection
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;       /* Aligne verticalement */
+    align-items: center;           /* Aligne horizontalement (flex-direction: column)*/
+    min-height: 100vh;             /* 100% de la hauteur de la fenêtre visible */
+}
+
+.bloc-connection img                /* Logo BBF Bank */
+{
+    width: 100px;
+    height: auto;
+}
+
+.espace-connection
+{
+    width: 420px;
+    box-shadow: 0 0 10px;
+    background-color: #F7F7F7;
+    border-radius: 10px;
+    padding: 30px 40px;            /* Haut et bas = 30px / gauche et droite = 40px */
+}
+
+.espace-connection h1
+{
+    font-size: 30px;
+    text-align: center;
+}
+
+.title
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.title img
+{
+    width: 20%;
+}
+
+.champs
+{
+    display: flex;                  /* Pour les icônes */
+    align-items: center;            /* Pour les icônes */
+    justify-content: right;         /* Pour les icônes */
+    position: relative;
+    width: 100%;
+    height: 50px;
+    margin: 30px 0;
+}
+
+.champs img
+{
+    position: absolute;             /* Position par rapport au parent soit ici champs */
+    right: 4%;
+    width: 20px;
+    height: 20px;
+}
+
+.champs input
+{
+    width: 100%;
+    height: 100%;
+    background: transparent;        /* Enlève la couleur blanche par défaut */
+    border: none;
+    outline-color:#344D59;        /* Bordure quand on clique sur le champs */
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 40px;
+    font-size: 16px;
+    padding: 20px 45px 20px 20px;   /* Bordure interne pour décaler le texte et éviter qu'il ne dépasse à droite */
+}
+
+
+.connection
+{
+    width: 100%;
+    height: 45px;
+    border:none;
+    border-radius: 40px;
+    text-transform: uppercase;
+    background-color: #344D59;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;                /* Change le pointer de souris au survole du bouton */
+    color: #F7F7F7;
+    
+    font-weight: 400;
+    margin-bottom: 6px;
+}
+
+.message-error
+{
+    text-align: center;
+    color: #BB2332;
+}

@@ -1,0 +1,17 @@
+a
+{
+    color: black;
+}
+
+.container
+{
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+td img
+{
+    width: 50px;
+    height: auto;
+}

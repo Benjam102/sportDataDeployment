@@ -1,0 +1,12 @@
+.container-leagues
+{
+    padding: 10px;
+}
+
+.grid-leagues
+{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    border-radius: 5px;
+    padding: 10px;
+}

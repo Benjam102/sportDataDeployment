@@ -1,0 +1,65 @@
+/*--------------------------------------------------------recent threads------------------------------------------------*/
+.category-selected
+{
+    display: flex;
+    align-items: center;
+    padding: 20px 20px 10px 20px;
+    margin-left: 10px;
+    color: #F7F7F7;
+}
+
+.container-grid-threads
+{
+    padding: 10px;
+}
+
+.no-thread
+{
+    display: grid;
+    justify-content: center;
+    background-color: #F7F7F7;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    font-size: 14px;
+    padding: 10px;
+}
+
+a
+{
+    text-decoration: none;
+    color: black;
+}
+
+.container-grid-threads .grid-threads
+{
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 0.5fr 0.5fr;
+    font-size: 14px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+/* Style des grid-tabs impairs (1er, 3ème, 5ème, etc.) en fct du parent qui container-grid-tab */
+.container-grid-threads .grid-threads:nth-child(odd) 
+{
+    background-color: #e6e8e9;
+}
+
+.container-grid-threads .grid-threads:nth-child(even) 
+{
+    background-color: #F7F7F7;
+}
+
+.container-grid-threads .grid-threads:first-child 
+{
+    background-color:  #A9B3B8;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    cursor:auto;
+}
+
+.container-grid-threads .grid-threads:not(:first-child):hover 
+{
+    background-color:   #cbd5e7; /* Couleur de fond différente au survol (sauf la première ligne) */
+}
+

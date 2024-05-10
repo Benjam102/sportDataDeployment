@@ -1,0 +1,338 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<!-- titre de la fenêtre -->
+		<title>Rugby Data</title>
+
+		<!-- précise l'encodage au navigateur (gestion des accents, ...) -->
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+		<!-- Feuilles de style -->
+		<link rel="stylesheet" type="text/css" href="{% static 'CSS/headerFooter.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'CSS/homePage/homePage.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'CSS/homePage/rank_table.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'CSS/homePage/league_table.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'CSS/slider.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'CSS/homePage/responsiveHomePage.css' %}">
+
+		<!-- Inhibe la grande largeur sur mobile : évite que le mobile présente un écran large et qu'il faille zoomer -->
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=2.0" />
+
+		<!-- icône de la page -->
+		<link rel="icon" href="http://127.0.0.1:8000//static/rugbyBut.ico" type="image/x-icon">
+	
+	</head>
+
+    <body>
+       <!-- Entête -->
+	   <header>
+			<a href="http://127.0.0.1:8000/" class="logoRugby">
+				<img src="{% static 'IMG/logoHeader.png' %}" alt="">
+				<h1> Rugby Data </h1>
+			</a>
+
+			<ul class="menu">
+				<li> <a href="http://127.0.0.1:8000/leagues/"> Leagues </a> </li>
+				<li> <a href="http://127.0.0.1:8000/teams/"> Teams </a> </li>
+				<li> <a href="http://127.0.0.1:8000/matches/"> Matches </a> </li>
+				<li> <a href="http://127.0.0.1:8000/players/"> Players </a> </li>
+			</ul>
+			
+			{% if user.is_authenticated %}
+				<button class="button-link-connexion">
+					{{ user.username}} 
+					| 
+					<a href="http://127.0.0.1:8000/accounts/logout/">Log out</a>
+				</button>
+			{% else %}
+				<button class="button-link-connexion">
+					<a href="http://127.0.0.1:8000/accounts/login/"> Log in </a> 
+					| 
+					<a href="http://127.0.0.1:8000/accounts/signup/"> Sign up </a>
+				</button>
+			{% endif %}
+			
+			<!-- Menu déroulant quand la fenêtre devient petite -->
+			<div class="petit-menu">
+				<span>
+					<div></div>
+					<div></div>
+				</span>
+				<span>
+					<div></div>
+					<div></div>
+				</span>
+			</div>
+		</header>
+
+		<div class="page">
+			<div class="left-column">
+				<div class="container-grid-cate">   
+					<div class="grid-title">
+						Categories
+					</div>
+					
+					{% for country, categories in categories_by_country.items %}
+						<div class="grid-country">
+							{{ country }}
+							<div class="second-col">
+								<div class="caret"></div>
+							</div>
+						</div>
+						<div class="grid-categories-none" id="{{ country }}">
+							{% for category in categories %}
+								<div class="grid-cate text-check-box">
+									<span class="text-league">{{ category.title }}</span>
+									<input type="checkbox" class="category-checkbox" data-url="{% url 'display_category' slug_category=category.slug_title %}">
+								</div>
+							{% endfor %}
+						</div>
+					{% endfor %}     
+				</div>
+			</div>
+
+			<div class="middle-column">
+			{% for match in upcoming_matches %}
+				<div class="grid-match">
+					<div class="toto">
+						<a href="{% url 'presentationMatch' slug_match=match.slug %}">
+							<img src="{% static 'IMG/rugbyBut.png' %}" alt="">
+							{% if today_date == match.date %}
+								Today
+							{% elif tomorrow_date == match.date %}
+								Tomorrow
+							{% else %}
+								{{ match.date }}
+							{% endif %}
+							{{ match.hour|time:"H:i" }} <!--Today 21:00-->
+						</a>
+					</div>
+
+					<div> Team1 - Team2 </div>
+					<div> Challenge Cup </div>
+				</div>
+			{% endfor %}
+
+
+
+
+
+				{% if num_matches > 0 %}
+					{% for match in upcoming_matches %}
+						<div class="match">
+							<div class="match-header">
+									<img src="{% static 'IMG/joueurRugby.png' %}" alt="">
+									<div class="time">
+										<a href="{% url 'presentationMatch' slug_match=match.slug %}">
+											<img src="{% static 'IMG/rugbyBut.png' %}" alt="">
+											{% if today_date == match.date %}
+												Today at
+											{% elif tomorrow_date == match.date %}
+												Tomorrow at
+											{% else %}
+												{{ match.date }} at
+											{% endif %}
+											{{ match.hour|time:"H:i" }} <!--Today 21:00-->
+										</a>
+									</div>
+								{% if match.code %}
+									<img src="{{ match.code_url }}" alt="">
+								{% else %}
+									<!-- Cas = None -->
+									<img src="{% static 'IMG/meteo/defaultImg.png' %}" alt="Default Image">
+								{% endif %}
+							</div>
+							<div class="match-content">
+								<a href="{% url 'presentationMatch' slug_match=match.slug %}">
+									<div class="team1">
+										{{ match.team_home }} <!--Gloucester-->
+										<img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+									</div>
+									<div class="separator-teams">
+										{% if match.score_home == None and match.score_away == None %}
+											-
+										{% endif %}
+									</div>
+									<div class="team2">
+										<img src="https://www.allrugby.com/img/logo/clubs/90/toulouse2021.png" alt="">
+										{{ match.team_away }} <!--Castres-->
+									</div>
+								</a>
+							</div>
+							<div class="match-competition">
+								<img src="{% static 'IMG/trophee.png' %}" alt="">
+								{{ match.league }} <!--Challenge Cup-->
+							</div>
+							<div class="referee-round">
+								{{ match.phase }}
+								<div class="referee">
+									<img src="{% static 'IMG/sifflet.png' %}" alt="">
+									{{ match.referee }} <!--Thomas Charabas-->
+								</div>
+							</div>
+						</div>
+					{% endfor %}
+				{% else %}
+					<p> Aucun match à afficher pour le moment. </p>
+				{% endif %}
+			</div>
+			<div class="right-column">
+				<div class="slider">
+					<table class="content-table-rank active">
+						<thead>
+							<tr>
+								<!-- colspan="7" : permet d'avoir 1 ligne sur 7 colonnes du tableau -->
+								<th colspan="7">
+									Top 14
+								</th>
+							</tr>
+							<tr>
+								<th>Rank</th>
+								<th>Team</th>
+								<th>P</th>
+								<th>W</th>
+								<th>D</th>
+								<th>L</th>
+								<th>Total</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>1</td>
+								<td>Stade Français</td>
+								<td>20</td>
+								<td>14</td>
+								<td>1</td>
+								<td>5</td>
+								<td>63</td>
+							</tr>
+							<tr class="active-row">
+								<td>2</td>
+								<td>Toulouse</td>
+								<td>20</td>
+								<td>13</td>
+								<td>13</td>
+								<td>0</td>
+								<td>7</td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td>Racing 92</td>
+								<td>20</td>
+								<td>11</td>
+								<td>11</td>
+								<td>0</td>
+								<td>9</td>
+							</tr>
+							<tr>
+								<td>4</td>
+								<td>Racing 92</td>
+								<td>20</td>
+								<td>11</td>
+								<td>11</td>
+								<td>0</td>
+								<td>9</td>
+							</tr>
+							<tr>
+								<td>5</td>
+								<td>Racing 92</td>
+								<td>20</td>
+								<td>11</td>
+								<td>11</td>
+								<td>0</td>
+								<td>9</td>
+							</tr>
+							<tr>
+								<td>6</td>
+								<td>Racing 92</td>
+								<td>20</td>
+								<td>11</td>
+								<td>11</td>
+								<td>0</td>
+								<td>9</td>
+							</tr>
+						</tbody>
+					</table>
+
+					<table class="content-table-rank">
+						<thead>
+							<th colspan="7">
+								ProD2
+							</th>
+
+							<tr>
+								<th>Rank</th>
+								<th>Team</th>
+								<th>P</th>
+								<th>W</th>
+								<th>D</th>
+								<th>L</th>
+								<th>Total</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>1</td>
+								<td>Stade </td>
+								<td>20</td>
+								<td>14</td>
+								<td>1</td>
+								<td>5</td>
+								<td>63</td>
+							</tr>
+							<tr class="active-row">
+								<td>2</td>
+								<td>Tose</td>
+								<td>20</td>
+								<td>13</td>
+								<td>13</td>
+								<td>0</td>
+								<td>7</td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td>G</td>
+								<td>20</td>
+								<td>11</td>
+								<td>11</td>
+								<td>0</td>
+								<td>9</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				
+				<div class="container-button">
+					<div class="button-nav left">
+						<img src="{% static 'IMG/homePageRight/flecheGauche.png' %}" alt=""> 
+					</div>
+					<div class="button-nav right"> 
+						<img src="{% static 'IMG/homePageRight/flecheDroite.png' %}" alt=""> 
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<footer>
+			<div class="plan">
+				<li> <a href="http://127.0.0.1:8000/contact-us/"> Contact us </a>  </li>
+				<li> <a href="http://127.0.0.1:8000/image-sources/"> Image sources </a> </li>
+				<li> <a href="http://127.0.0.1:8000/url-sources/"> Scraping sources </a> </li>
+			</div>
+		</footer>
+	</body>
+
+	<!-- Sript pour le petit menu déroulant -->
+	<script src="{% static 'JS/script_menu.js' %}"></script>
+
+	<!-- Script pour le défilement des tableaux -->
+	<script src="{% static 'JS/slider.js' %}"></script>
+
+	<!-- Script pour le défilement des tableaux -->
+	<script src="{% static 'JS/dropDownMenu.js' %}"></script>
+
+</html>
+

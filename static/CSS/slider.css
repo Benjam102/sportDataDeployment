@@ -1,0 +1,45 @@
+.slider
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.slider table
+{
+    display: none;
+}
+
+.slider table.active 
+{
+    display: inline-block;
+    animation: fade 0.8s;
+}
+
+@keyframes fade
+{
+    from
+    {
+        opacity: 0;
+    }
+    to 
+    {
+        opacity: 1;
+    }
+}
+
+.container-button
+{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.button-nav img
+{
+    display: flex;
+    
+    width: 20px;
+    height: auto;
+    cursor: pointer;
+}

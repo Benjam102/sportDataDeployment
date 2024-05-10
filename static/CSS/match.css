@@ -1,0 +1,1230 @@
+*
+{
+	margin:0;                     /* Pour enlever les marges du navigateur */
+	padding:0;
+    box-sizing: border-box;       /* Inclut les bordures et les rembourrages dans la largeur et la hauteur spécifiées */
+}
+
+a
+{                                 /* Balise pour les liens */
+    text-decoration: none;        /* Permet d'enlever le soulignement des liens */
+}
+
+body
+{
+    background-color: #242424;
+    font-family: sans-serif;
+}
+
+.container-page
+{
+    display: flex;
+    justify-content: center;
+}
+
+.page
+{
+    width: 700px;
+    background-color: #F7F7F7;
+}
+
+/*----------------------------------------------------------Header-------------------------------------------------------*/
+header
+{
+    padding: 10px 8px;               /* Haut et bas = 10px / Gauche et droite 5% entre les éléments de la longueur */
+    background-color: #F7F7F7; 
+}
+
+header .logoRugby
+{
+    display: flex;
+    align-items: center;
+}
+
+header .logoRugby img
+{
+    width: 50px;
+    height: auto;
+}
+
+a img
+{
+    display: flex;
+}
+
+header .logoRugby h1
+{
+    font-size: 20px;
+    color: #242424;
+}
+
+/*----------------------------------------------------------Match-------------------------------------------------------*/
+.duel-participant
+{
+    display: grid;
+    grid-template-columns: 1fr 0.5fr 1fr; /* Trois colonnes avec la colonne du milieu auto-sized */
+
+    /* Espace entre les colonnes */
+    column-gap: 10px; /* Vous pouvez ajuster cette valeur selon vos besoins */
+
+    /* Ajouter une bordure pour visualiser la grille (optionnel) */
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+.container-team
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.team
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+
+    width: 100px;
+    height: 100px;
+    border-radius: 15px;
+    background-color: #242424;
+    color: #F7F7F7;
+}
+
+.team img
+{
+    width: 50%;
+}
+
+.name-equipe
+{
+    padding: 10px;
+}
+
+.name-equipe:hover
+{
+    text-decoration: underline;       /* Ajoute une ligne sous le texte au survol */
+    text-decoration-thickness: 3px;   /* Épaisseur de la ligne */
+    text-underline-position: under;   /* Position de la ligne sous le texte */
+    text-decoration-skip-ink: none;   /* Option pour éviter la troncation des lettres */
+    cursor: pointer;
+}
+
+.date-score
+{
+    display: inline-block;
+    text-align: center;
+}
+
+.date
+{
+    font-size: 14px;
+}
+
+.score
+{
+    font-size: 19px;
+    padding: 23px;
+}
+
+/*------------------------------------------------------------Tab-------------------------------------------------------*/
+.details
+{
+    display: flex;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.details li
+{
+    list-style: none;                  /* On retire les puces */
+    margin-right: 20px;
+    color: #242424;
+    font-weight: bold;
+    padding: 5px;
+}
+
+.details li:hover,
+.details li.active
+{
+    background-color: #A9B3B8;
+    border-radius: 5px;
+    text-decoration-thickness: 3px;   /* Épaisseur de la ligne */
+    cursor: pointer;
+}
+
+/*------------------------------------------------------------Banner-----------------------------------------------------*/
+.container-banner
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+}
+
+.banner
+{
+    margin: 5px;
+    padding: 5px;
+    width: 100%;
+    background-color: #242424;
+    color: #F7F7F7;
+    border-radius: 6px;
+}
+
+/*-------------------------------------------------------------Tchat-----------------------------------------------------*/
+.grid-last-com
+{
+    display: grid;
+    grid-template-columns: 0.5fr 0.3fr 1fr 0.3fr;
+    column-gap: 10px; 
+    background-color: #A9B3B8;  
+    padding: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.border-latest-com
+{
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    border-right: 1px solid #344D59;
+}
+
+.date-latest-com
+{
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+}
+
+.container-link-com
+{
+    padding: 15px 10px 10px 10px;
+    margin: 6px;
+}
+
+.container-link-com a
+{
+    text-decoration: none;
+    color: black;
+}
+
+.link-com
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    background-color: #A9B3B8;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding: 10px;
+}
+
+.link-com img
+{
+    width: 5%;
+    margin-right: 12px;
+}
+/*-------------------------------------------------------------Form------------------------------------------------------*/
+.container-form
+{
+    display: grid;
+    grid-template-columns: 1fr auto 1fr; /* Trois colonnes avec la colonne du milieu auto-sized */
+    padding: 10px;
+    margin: 6px;
+}
+
+/* Left team */
+.block-home-team
+{
+    display: grid;
+    grid-template-columns: auto 0.03fr 1fr; /* Trois colonnes avec la colonne du milieu auto-sized */
+    column-gap: 5px; 
+    row-gap: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    position: relative;
+}
+
+.home-team
+{
+    /* Pour l'image */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100px;
+    height: 100px;
+    border-radius: 15px;
+    background-color: #242424;
+    color: #F7F7F7;
+
+    grid-column: 1;
+    grid-row: 1 / span 2;
+}
+
+.home-team img
+{
+    width: 50%;
+}
+
+.rank-home-team
+{
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #344D59;
+    border-radius: 5px;
+    width: 23px;
+    height: 23px;
+    padding: 5px;
+    grid-column: 1;
+    grid-row: 2;
+    top:29.8px;
+}
+
+.block-team-name
+{
+    grid-column: 3;
+    margin-left: 2px;
+    display: flex;
+    align-items: last baseline;
+}
+
+.block-team-vd
+{
+    display: flex;
+    grid-column: 3;
+    grid-row: 2;
+}
+
+.container-vs
+{   
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.vs
+{
+    width: 40px;
+	height: 30px;
+    border-radius: 5px;
+	transform: skew(160deg);
+	background: #344D59;
+    z-index: 1;                     /* Placer au dessus des lignes de la grilles */
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.vs-content 
+{
+    transform: skew(-160deg); /* Transformation inverse pour le contenu */
+}
+
+/* Right team */
+.block-away-team
+{
+    display: grid;
+    grid-template-columns: 1fr 0.03fr auto; /* Trois colonnes avec la colonne du milieu auto-sized */
+    column-gap: 5px; 
+    row-gap: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    position: relative;
+}
+
+.away-team
+{
+    /* Pour l'image */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100px;
+    height: 100px;
+    border-radius: 15px;
+    background-color: #242424;
+    color: #F7F7F7;
+
+    grid-column: 3;
+    grid-row: 1 / span 2;
+    justify-self: end;
+}
+
+.away-team img
+{
+    width: 50%;
+}
+
+.rank-away-team
+{
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #344D59;
+    border-radius: 5px;
+    width: 23px;
+    height: 23px;
+    padding: 5px;
+    grid-column: 1;
+    grid-row: 2;
+    top: 29.8px;
+    margin-right: 5px;
+    justify-self: end;
+}
+
+.block-away-team-name
+{
+    grid-column: 1;
+    margin-right: 2px;
+    display: flex;
+    align-items: last baseline;
+    justify-self: end;
+}
+
+.block-away-team-vd
+{
+    grid-column: 1;
+    grid-row: 2;
+    display: flex;
+    justify-self: end;
+}
+
+/* V - D */
+
+.victory
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    margin: 2px;
+    padding: 3px;
+    width: 25px;
+    height: 25px;
+    border-radius: 5px;
+    background-color: #34B272;
+}
+
+.draw
+{
+    margin: 2px;
+    padding: 3px;
+    display: flex;
+    flex-direction: inline;
+    justify-content: center;
+    align-items: center;
+    width: 25px;
+    height: 25px;
+    border-radius: 5px;
+    background-color: #999999;
+}
+
+.defeat
+{
+    margin: 2px;
+    padding: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 25px;
+    height: 25px;
+    border-radius: 5px;
+    background-color: #FE993F;
+}
+
+/*--------------------------------------------------------Will not play--------------------------------------------------*/
+.container-table
+{
+    padding: 10px;
+}
+
+.content-table
+{
+    border-collapse: collapse;                        /* Fusionner les bordures des cellules */
+    font-size: 0.9em;
+    width: 98.5%;
+    background-color: #A9B3B8;
+    border-radius: 10px;
+    margin-left: 5px;
+    overflow: hidden;                                 /* Faire apparaître les coins arrondis */
+}
+
+.content-table td
+{
+    padding: 12px 30px;
+    white-space: nowrap;                              /* Weather */
+}               
+
+/* Alignement à droite pour les cellules de la deuxième colonne */
+.content-table td:nth-child(2) 
+{
+    text-align: right;
+}
+
+.container-player
+{
+    display: flex;
+    flex-direction: column;
+}
+
+.injury
+{
+    font-size: 13px;
+}
+
+.content-table tbody tr:nth-of-type(even)              /* Cible les lignes paires à l'intérieur du corps */
+{
+    background-color: #F7F7F7;
+}
+
+/*-----------------------------------------------------Match information-------------------------------------------------*/
+.information-table
+{
+    border-collapse: collapse;                        /* Fusionner les bordures des cellules */
+    font-size: 0.9em;
+    width: 98.5%;
+    background-color: #A9B3B8;
+    border-radius: 10px;
+    margin-left: 5px;
+    overflow: hidden;                                 /* Faire apparaître les coins arrondis */
+}
+
+.information-table td
+{
+    padding: 12px 30px;
+}
+
+/* Alignement à droite pour les cellules de la deuxième colonne */
+.information-table td:nth-child(2) 
+{
+    text-align: right;
+}
+
+.referee-stadium
+{
+    display: flex;
+    align-items: center;
+}
+
+.referee-stadium img
+{
+    width: 3.5%;
+    margin-right: 8px;
+}
+
+/*-----------------------------------------------------Match composition-------------------------------------------------*/
+.container-compo
+{
+    padding: 10px;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    /*justify-content: center;
+    align-items: center;*/
+}
+
+.bloc-compo
+{
+    /*width: 500px;
+    height: 600px;
+    margin: auto;
+    margin-bottom: 15px;*/
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.compo-team
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    width: 100%;
+}
+
+.compo-team img
+{
+    width: 10%;
+    margin-right: 8px;
+}
+
+.terrain-compo
+{
+    width: 320px;
+    height: 500px;
+    position: relative;
+    margin: auto;
+    background-image: url('../IMG/fondCompo.png');
+    border-radius: 2px;
+}
+
+.outline
+{
+    position: absolute;
+    border: solid 2px #F7F7F7;
+    border-radius: 2px;
+    top: 19px;
+    left: 24px;
+    right: 24px;
+    bottom: 19px;
+}
+
+.outline .but-topG
+{
+    position: absolute;
+    border: solid 6px #F7F7F7;
+    border-radius: 100%;
+    top:27px;
+    left: 100px;
+}
+
+.outline .but-topD
+{
+    position: absolute;
+    border: solid 6px #F7F7F7;
+    border-radius: 100%;
+    top:27px;
+    left: 162px;
+}
+
+.outline .in-goal-top
+{
+    position: absolute;
+    width: 100%;
+    border: solid 1px #F7F7F7;
+    top: 32px;
+}
+
+.outline .line-22-top
+{
+    position: absolute;
+    width: 100%;
+    border: solid 1px #F7F7F7;
+    top: 120px;
+}
+
+.outline .line-mid
+{
+    position: absolute;
+    width: 100%;
+    border: solid 1px #F7F7F7;
+    top: 50%;
+}
+
+.outline .line-22-bot
+{
+    position: absolute;
+    width: 100%;
+    border: solid 1px #F7F7F7;
+    top: 337px;
+}
+
+.outline .but-botG
+{
+    position: absolute;
+    border: solid 6px #F7F7F7;
+    border-radius: 100%;
+    top:419px;
+    left: 100px;
+}
+
+.outline .but-botD
+{
+    position: absolute;
+    border: solid 6px #F7F7F7;
+    border-radius: 100%;
+    top:419px;
+    left: 162px;
+}
+
+.outline .in-goal-bot
+{
+    position: absolute;
+    width: 100%;
+    border: solid 1px #F7F7F7;
+    top: 424px;
+}
+
+.outline-num
+{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1px;
+    width: 18px;
+    height: 18px;
+    background-color: #F7F7F7;
+    font-size: 12px;
+    border-radius: 50%;
+    margin-bottom: 3px;
+}
+
+.fixed-num
+{
+    position: absolute;
+}
+
+.outline .propG
+{
+    top: 43px;
+    left: 30px;
+}
+
+.outline .hooker
+{
+    top: 22px;
+    left: 90px;
+}
+
+.outline .propD
+{
+    top: 1px;
+    left: 150px;
+}
+
+.outline .lockG
+{
+    top: 20px;
+    left: 60px;
+}
+
+.outline .lockD
+{
+    top: -1px;
+    left: 120px;
+} 
+
+.outline .flankerG
+{
+    top: 26px;
+    left: 30px;
+} 
+
+.outline .flankerM
+{
+    top: 25px;
+    left: 90px;
+} 
+
+.outline .flankerD
+{
+    top: -16px;
+    left: 150px;
+} 
+
+.outline .scrum-half
+{
+    top: 22px;
+    left: 90px;
+}
+
+.outline .fly-half
+{
+    top: 32px;
+    left: 128px;
+}
+
+.outline .centre1-3-4
+{
+    top: 51px;
+    left: 150px;
+}
+
+.outline .wingerG
+{
+    top: 68px;
+    left: 30px;
+}
+
+.outline .centre2-3-4
+{
+    top: 47px;
+    left: 172px;
+}
+
+.outline .wingerR
+{
+    top: 77.5px;
+    left: 225px;
+}
+
+.outline .full-back
+{
+    top: 90px;
+    left: 128px;
+}
+
+.name
+{
+    position: absolute;
+    text-align: center;
+    background-color: #146627;
+    border-radius: 10px;
+    font-size: 8px;
+    color:#F7F7F7;
+    width: auto;
+    padding: 1px 4px 1px 4px;
+    top:22px;
+    white-space: nowrap; /* Empêcher le texte de passer à la ligne */
+    cursor: default;
+}
+
+.name-flight-over
+{
+    position: absolute;
+    display: none;
+    text-align: center;
+    margin-top: 80px;
+    padding: 4px;
+    width: 120px;
+    background-color: #F7F7F7;
+    border: 1px solid #242424;
+    border-radius: 10px;
+    
+}
+
+.name:hover + .name-flight-over 
+{
+    display: block;
+    z-index: 1;
+}
+
+/*----------------------------------------------------------Meteo--------------------------------------------------------*/
+.general-weather
+{
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 0px 5px 5px 5px;
+}
+
+.general-weather img
+{
+    margin-top: 8px;
+    width: 10%;
+}
+
+.container-meteo
+{
+    display: flex;
+    align-items: center;
+}
+
+.container-meteo img
+{
+    margin-right: 8px;
+    width: 5%;
+}
+
+/*-----------------------------------------------------------Odds--------------------------------------------------------*/
+.heat-to-head
+{
+    display: grid;
+    grid-template-columns: 1fr 0.5fr 0.5fr 0.5fr 0.5fr;
+    border-bottom: 1px solid #ccc;
+    padding: 10px;
+}
+
+.bookmaker-logo
+{
+    display: flex;
+    align-items: center;
+}
+
+.bookmaker-logo img
+{
+    margin-left: 6px;
+    border-radius: 10px;
+    width: 40%;
+}
+
+.rating
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.rating-v
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 36px;
+    height: 26px;
+    color: #F7F7F7;
+    background-color: #242424;
+    border-radius: 5px;
+}
+
+.rating-d
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    width: 36px;
+    height: 26px;
+    color: #F7F7F7;
+    background-color: #242424;
+    border-radius: 5px;
+}
+
+.rating-n
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    width: 36px;
+    height: 26px;
+    color: #F7F7F7;
+    background-color: #242424;
+    border-radius: 5px;
+}
+
+/*------------------------------------------------------Button match----------------------------------------------------*/
+.informations-matches
+{
+    display: flex;
+    padding: 15px 15px 5px 15px;
+}
+
+.informations-matches li
+{
+    list-style: none;                  /* On retire les puces */
+    margin-right: 20px;
+    color: #242424;
+    background-color: #F7F7F7;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 1);
+    border-radius: 5px;
+    font-size: 14px;
+    padding: 5px;
+}
+
+.informations-matches li:hover,
+.dinformations-matches li.active
+{
+    background-color: #A9B3B8;
+    border-radius: 5px;
+    text-decoration-thickness: 3px;   /* Épaisseur de la ligne */
+    cursor: pointer;
+}
+
+/*--------------------------------------------------------Last match-----------------------------------------------------*/
+.container-grid-tab
+{
+    padding: 10px;
+    margin: 6px;
+}
+
+.container-grid-tab .grid-tab
+{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 0.5fr 1fr;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+/* Style des grid-tabs impairs (1er, 3ème, 5ème, etc.) en fct du parent qui container-grid-tab */
+.container-grid-tab .grid-tab:nth-child(odd) {
+    background-color: #A9B3B8;
+}
+
+/* Style des grid-tabs pairs (2ème, 4ème, 6ème, etc.) */
+.container-grid-tab .grid-tab:nth-child(even) {
+    background-color: #F7F7F7;
+}
+
+.date-tab
+{
+    display: flex;
+    justify-self: center;
+    align-items: center;
+    font-size: 13px;
+    padding: 3px;
+    grid-column: 1;
+    grid-row: 1 / span 2;
+}
+
+.league-tab
+{
+    display: flex;
+    justify-self: center;
+    align-items: center;
+    padding: 3px;
+    font-size: 13px;
+    grid-column: 2;
+    grid-row: 1 / span 2;
+}
+
+.team1-tab
+{
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    grid-column: 3;
+    grid-row: 1;
+}
+
+.team1-tab img
+{
+    width: 18%;
+    margin-right: 6px;
+}
+
+.team2-tab
+{
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    grid-column: 3;
+    grid-row: 2;
+}
+
+.team2-tab img
+{
+    width: 18%;
+    margin-right: 6px;
+}
+
+.victory-tab
+{
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    font-size: 13px;
+    grid-column: 5;
+    grid-row: 1 / span 2;
+}
+
+.score1-tab
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3px;
+    font-size: 15px;
+    grid-column: 4;
+    grid-row: 1;
+}
+
+.score2-tab
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3px;
+    font-size: 15px;
+    grid-column: 4;
+    grid-row: 2;
+}
+
+.container-show-more-arrow
+{
+    display: flex;
+    justify-content: center;
+}
+
+/* On définit le style des boutons grâce leur id */
+#loadMoreButton
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0px 10px 10px 10px;  /* Pas sur le haut car deja une marge bottom sur les grid*/
+    border: none;
+    background-color: #F7F7F7;
+    text-decoration: underline;       /* Ajoute une ligne sous le texte au survol */
+    text-decoration-color: #242424; /* Couleur de la ligne */
+    text-decoration-thickness: 1.5px;   /* Épaisseur de la ligne */
+    text-decoration-skip-ink: none;   /* Option pour éviter la troncation des lettres */
+    cursor: pointer;
+}
+
+#loadMoreButton img
+{
+    width: 10%;
+    margin-left: 6px;
+}
+
+#loadMoreButton:hover
+{
+    text-decoration: none;
+}
+
+/*--------------------------------------------------------Standing------------------------------------------------------*/
+.container-league
+{
+    padding: 5px 10px 5px 10px;
+    margin: 6px;
+}
+
+.grid-league
+{
+    display: grid;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+    padding: 10px;
+}
+
+.grid-tab-ranking
+{
+    display: grid;
+    grid-template-columns: 0.3fr 1.15fr 0.45fr 0.45fr 0.45fr 0.45fr 0.45fr 0.45fr 0.45fr 1fr;
+    border-radius: 5px;
+    font-size: 13px;
+    padding: 10px;
+}
+
+/* Style des grid-tabs impairs (1er, 3ème, 5ème, etc.) en fct du parent qui container-grid-tab */
+.container-grid-tab .grid-tab-ranking:nth-child(odd) 
+{
+    background-color: #e6e8e9;
+}
+
+.container-grid-tab .grid-tab-ranking:first-child {
+    background-color:  #A9B3B8;
+}
+
+.container-grid-tab .grid-tab-ranking:not(:first-child):hover 
+{
+    background-color:   #cbd5e7; /* Couleur de fond différente au survol (sauf la première ligne) */
+}
+
+.rank
+{
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    /*
+    width: 23px;
+    height: 23px;
+    background-color: #344D59;
+    border-radius: 5px;*/
+}
+
+.team-ranking
+{
+    display: flex;
+    align-items: center;
+}
+
+.team-ranking img
+{
+    width: 20%;
+    margin-right: 6px;
+}
+
+.container-nb-ranking
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.passed-match
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.carre-won
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    margin: 2px;
+    padding: 3px;
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    background-color: #34B272;
+}
+
+.carre-drawn
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    margin: 2px;
+    padding: 3px;
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    background-color: #999999;
+}
+
+.carre-defeat
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    margin: 2px;
+    padding: 3px;
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    background-color: #FE993F;
+}
+
+/* More informations */
+.grid-tab-more-informations
+{
+    display: grid;
+    grid-template-columns: 0.3fr 1.15fr 0.5fr 0.5fr 0.5fr 0.5fr 0.5fr 0.5fr 0.5fr 0.5fr;
+    border-radius: 5px;
+    font-size: 13px;
+    padding: 10px;
+}
+
+/* Style des grid-tabs impairs (1er, 3ème, 5ème, etc.) en fct du parent qui container-grid-tab */
+.container-grid-tab .grid-tab-more-informations:nth-child(odd) 
+{
+    background-color: #e6e8e9;
+}
+
+.container-grid-tab .grid-tab-more-informations:first-child {
+    background-color:  #A9B3B8;
+}
+
+.container-grid-tab .grid-tab-more-informations:not(:first-child):hover 
+{
+    background-color:   #cbd5e7; /* Couleur de fond différente au survol (sauf la première ligne) */
+}
+
+/* Legend */
+.grid-tab-legend
+{
+    display: grid;
+    grid-template-columns: 1.5fr 1.5fr 1.5fr 1.5fr;
+    border-radius: 5px;
+    font-size: 13px;
+    margin-left: 58px;
+    padding: 10px;
+}

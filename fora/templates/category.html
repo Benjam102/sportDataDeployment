@@ -1,0 +1,136 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<!-- titre de la fenêtre -->
+		<title>Rugby Data</title>
+
+		<!-- précise l'encodage au navigateur (gestion des accents, ...) -->
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+		<!-- Feuilles de style -->
+		<!-- Feuilles de style -->
+		<link rel="stylesheet" type="text/css" href="{% static 'CSS/headerFooter.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'CSS/fora/category.css' %}">
+
+		<!-- Inhibe la grande largeur sur mobile : évite que le mobile présente un écran large et qu'il faille zoomer -->
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=2.0" />
+
+		<!-- icône de la page -->
+		<link rel="icon" href="http://127.0.0.1:8000//static/rugbyBut.ico" type="image/x-icon">
+	
+	</head>
+
+    <body>
+        <!-- Entête -->
+	   <header>
+        <a href="http://127.0.0.1:8000/" class="logoRugby">
+            <img src="{% static 'IMG/logoHeader.png' %}" alt="">
+            <h1> Rugby Data </h1>
+        </a>
+
+        <ul class="menu">
+            <li> <a href="http://127.0.0.1:8000/leagues/"> Leagues </a> </li>
+            <li> <a href="http://127.0.0.1:8000/teams/"> Teams </a> </li>
+            <li> <a href="http://127.0.0.1:8000/matches/"> Matches </a> </li>
+            <li> <a href="http://127.0.0.1:8000/players/"> Players </a> </li>
+        </ul>
+        
+        {% if user.is_authenticated %}
+            <button class="button-link-connexion">
+                {{ user.username}} 
+                | 
+                <a href="http://127.0.0.1:8000/accounts/logout/">Log out</a>
+            </button>
+        {% else %}
+            <button class="button-link-connexion">
+                <a href="http://127.0.0.1:8000/accounts/login/"> Log in </a> 
+                | 
+                <a href="http://127.0.0.1:8000/accounts/signup/"> Sign up </a>
+            </button>
+        {% endif %}
+        
+        <!-- Menu déroulant quand la fenêtre devient petite -->
+        <div class="petit-menu">
+            <span>
+                <div></div>
+                <div></div>
+            </span>
+            <span>
+                <div></div>
+                <div></div>
+            </span>
+        </div>
+    </header>
+
+    <div class="page-category">
+        <div class="category-selected">
+            {% if category_selected != None %}
+                Category: {{ category_selected.title }}
+            {% else %}
+                No category found
+            {% endif %}
+        </div>
+
+        <div class="container-grid-threads">
+            <div class="grid-threads">
+                <div>
+                    threads
+                </div>
+                <div>
+                    Latest comment
+                </div>
+                <div>
+                    Comments
+                </div>
+                <div>
+                    Status
+                </div>
+            </div>
+
+            {% if l_corresponding_threads > 0 %}
+                {% for thread in sorted_threads_info %}
+                    <a class="grid-threads" href="{% url 'threads_' slug_category=category_selected.slug slug_thread=thread.slug_thread%}">
+                            <div>
+                                {{ thread.slug_thread }}
+                            </div>                          
+                            <div>
+                                {% if today_date == thread.latest_comment|date:"Y-m-d" %}
+                                    Today at
+                                {% elif thread.latest_comment == None%}
+                                    /
+                                {% else %}
+                                    {{ thread.latest_comment|date:"Y-m-d" }} at
+                                {% endif %}
+                                {{ thread.latest_comment|time:"H:i" }}    
+                            </div>
+                            <div>
+                                {{ thread.comments_count }}
+                            </div>
+                            <div>
+                                {% if thread.closed_thread == 0 %}
+                                    Opened
+                                {% else %}
+                                    Closed
+                                {% endif %}
+                            </div>
+                    </a>
+                {% endfor %}
+            {% else %}
+                <div class="no-thread">
+                    No threads for this category !
+                </div> 
+            {% endif %}
+        </div>        
+    </div>
+    <footer>
+        <div class="plan">
+            <li> <a href="http://127.0.0.1:8000/contact-us/"> Contact us </a>  </li>
+            <li> <a href="http://127.0.0.1:8000/image-sources/"> Image sources </a> </li>
+            <li> <a href="http://127.0.0.1:8000/url-sources/"> Scraping sources </a> </li>
+        </div>
+    </footer>
+    </body>
+</html>

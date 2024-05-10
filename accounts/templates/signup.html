@@ -1,0 +1,72 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<!-- titre de la fenêtre -->
+		<title>Rugby Data</title>
+
+		<!-- précise l'encodage au navigateur (gestion des accents, ...) -->
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+		<!-- Feuilles de style -->
+		<link rel="stylesheet" type="text/css" href="{% static 'CSS/signup.css' %}"-->
+
+		<!-- Inhibe la grande largeur sur mobile : évite que le mobile présente un écran large et qu'il faille zoomer -->
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=2.0" />
+
+		<!-- icône de la page -->
+		<link rel="icon" href="http://127.0.0.1:8000/static/rugbyBut.ico" type="image/x-icon">
+	
+	</head>
+
+    <body>
+		<div class="bloc-signup">
+			<a href="http://127.0.0.1:8000/">
+				<img src="{% static 'IMG/joueurRugby.png' %}" alt="">
+			</a>
+			
+			<div class="espace-signup">
+				<form method="post">
+					{% csrf_token %}
+					<div class="title">
+						<img src="{% static 'IMG/logoHeader.png' %}" alt="">
+						<h1> Rugby Data </h1>
+					</div>
+					
+					<div class="champs">
+            			<input type="text" name="username" required placeholder="Username"> 
+						<img src="{% static 'IMG/authentification/user.png' %}" alt="">
+					</div>
+					
+					<div class="champs">
+						<input type="password" name="password1" required placeholder="Password">
+						<img src="{% static 'IMG/authentification/lock.png' %}" alt="">
+					</div>
+					
+					<div class="champs">
+						<input type="password" name="password2" required placeholder="Confirm your password">
+						<img src="{% static 'IMG/authentification/key.png' %}" alt="">
+					</div>
+
+                    <div class="champs">
+						<input type="text" name="email" required placeholder="Email">
+						<img src="{% static 'IMG/authentification/mail.png' %}" alt="">
+					</div>
+					
+					<button type="submit" class="signup">Sign up</button>
+	
+					<!-- Permet d'afficher un message d'erreur en cas d'une mauvaise saisie -->
+					{% if messages %}
+						<div class="message-error">
+							{% for message_erreur in messages %}
+								<p>{{ message_erreur }}</p>
+							{% endfor %}
+						</div>
+					{% endif %}
+				</form>
+			</div>
+		</div>
+    </body>
+</html>

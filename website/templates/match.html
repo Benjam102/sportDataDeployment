@@ -1,0 +1,2505 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<!-- titre de la fenêtre -->
+		<title>Rugby Data</title>
+
+		<!-- précise l'encodage au navigateur (gestion des accents, ...) -->
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+		<!-- Feuilles de style -->
+		<link rel="stylesheet" type="text/css" href="{% static 'CSS/match.css' %}">
+
+		<!-- Inhibe la grande largeur sur mobile : évite que le mobile présente un écran large et qu'il faille zoomer -->
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=2.0" />
+
+		<!-- icône de la page -->
+		<link rel="icon" href="http://127.0.0.1:8000//static/rugbyBut.ico" type="image/x-icon">
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	</head>
+
+    <body>
+        <div class="container-page" id="c-p">
+            <div class="page">
+                <header>
+                    <a href="http://127.0.0.1:8000/" class="logoRugby">
+                        <img src="{% static 'IMG/logoHeader.png' %}" alt="">
+                        <h1> Rugby Data </h1>
+                    </a>
+                </header>
+
+                <div class="duel-participant">
+                    <div class="container-team">
+                        
+                        <div class="team">
+                            <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                        </div>
+                        <div class="name-equipe"> 
+                            Clermont1 
+                        </div>
+                    </div>
+                    <div class="date-score"> 
+                        <div class="date">17/04/2024 20:00 </div>
+                        <div class="score">
+                            20 - 21
+                        </div>
+                    </div>
+                    <div class="container-team">
+                        <div class="team">
+                            <img src="https://www.allrugby.com/img/logo/clubs/90/toulouse2021.png" alt="">
+                        </div>
+                        <div class="name-equipe"> 
+                            Clermont2
+                        </div>
+                    </div>
+                </div>
+
+                <div class="details">
+                    <li id="1">Summary</li>
+                    <li id="2">H2H</li>
+                    <li id="3">Standings</li>
+                </div>
+
+                <!-- Contenu pour chaque catégorie (initialement caché) -->
+                <div class="category-content" id="content-1">
+                    <div class="container-banner">
+                        <div class="banner">
+                            Preview: {{ comment_count }} comments
+                        </div>
+                    </div>
+                    <div class="container-link-com">
+                        <div class="grid-last-com">
+                            <div class="border-latest-com">
+                                Last comment:
+                            </div>
+                            <div class="border-latest-com">
+                                <!--img src="{% static 'IMG/joueurRugby.png' %}" alt=""-->
+                                {{ latest_comment.user.username }}
+                            </div>
+                            <div class="border-latest-com">
+                                {% if latest_comment != None %}                                  
+                                        {{ latest_comment.content|truncatewords:6 }}                                 
+                                {% else %}
+                                        No comments for the moment !
+                                {% endif %}
+                            </div>
+                            <div class="date-latest-com">
+                                {% if today_date|date:"Y-m-d" == latest_comment.date|date:"Y-m-d" %}
+                                    {{ latest_comment.date|time:"H:i" }}
+                                {% else %}
+                                    {{ latest_comment.date|date:"Y-m-d" }}
+                                {% endif %}
+                            </div>         
+                        </div>
+                        <a href="{% url 'threads_' slug_type=country_slug slug_category=category_slug slug_thread=match_.slug %}">
+                            <div class="link-com">
+                                <img src="{% static 'IMG/comment.png' %}" alt="">
+                                Add a comment
+                            </div>
+                        </a>
+                    </div>
+                    <div class="container-banner">
+                        <div class="banner">
+                            Form
+                        </div>
+                    </div>
+
+                    <div class="container-form">
+                        <div class="block-home-team">
+                            <div class="home-team">
+                                <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                            </div>
+                            <div class="rank-home-team">
+                                1.
+                            </div>
+                            <div class="block-team-name">
+                                team1
+                            </div>
+                            <div class="block-team-vd">
+                                <div class="victory">
+                                    V
+                                </div>
+                                <div class="defeat">
+                                    D
+                                </div>
+                                <div class="draw">
+                                    N
+                                </div>
+                                <div class="victory">
+                                    V
+                                </div>
+                                <div class="victory">
+                                    V
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="container-vs">
+                            <div class="vs">
+                                <div class="vs-content"> vs </div>
+                            </div>
+                        </div>
+
+                        <div class="block-away-team">
+                            <div class="away-team">
+                                <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                            </div>
+                            <div class="rank-away-team">
+                                10.
+                            </div>
+                            <div class="block-away-team-name">
+                                team2
+                            </div>
+                            <div class="block-away-team-vd">
+                                <div class="victory">
+                                    V
+                                </div>
+                                <div class="defeat">
+                                    D
+                                </div>
+                                <div class="draw">
+                                    N
+                                </div>
+                                <div class="victory">
+                                    V
+                                </div>
+                                <div class="victory">
+                                    V
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container-banner">
+                        <div class="banner">
+                           Match informations
+                        </div>
+                    </div>
+
+                    <div class="container-table">
+                        <table class="information-table">
+                            <tbody>
+                            <tr>
+                                <td>                            
+                                    <div class="referee-stadium">
+                                        <img src="{% static 'IMG/sifflet.png' %}" alt="">
+                                        Referee:
+                                    </div>                              
+                                </td>
+
+                                <td>  
+                                    Nom                 
+                                </td>
+                            </tr>
+                           
+                            <tr>
+                                <td>
+                                    <div class="referee-stadium">
+                                        <img src="{% static 'IMG/terrainRugby.png' %}" alt="">
+                                        Stadium:
+                                    </div>
+                                </td>
+                                <td>
+                                     Nom
+                               </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="container-banner">
+                        <div class="banner">
+                            Bookmaker (pre-match odds)
+                        </div>
+                    </div>
+
+                    <div class="container-grid-tab">
+                        <div class="heat-to-head">
+                            <div> </div>
+                            <div class="rating">Home</div>
+                            <div class="rating">Draw</div>
+                            <div class="rating">Away</div>
+                            <div class="rating">±</div>
+                        </div>
+
+                        <div class="heat-to-head">
+                            <div class="bookmaker-logo">
+                                <img src="{% static 'IMG/WilliamHillLogo.png' %}" alt="">
+                            </div>
+                            <div class="rating">
+                                <div class="rating-v">
+                                    1.2
+                                </div>
+                            </div>
+                            <div class="rating">
+                                <div class="rating-n">
+                                    1.3
+                                </div>
+                            </div>
+                            <div class="rating">
+                                <div class="rating-d">
+                                    2
+                                </div>
+                            </div>
+                            <div class="rating">
+                                3  
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container-banner">
+                        <div class="banner">
+                            Meteorological parameters 
+                        </div>
+                    </div>
+
+                    <div class="container-table">
+                        <div class="general-weather">
+                            General weather:
+                            <img src="{% static 'IMG/meteo/soleil_0.png' %}" alt="">
+                        </div>
+
+                        <table class="content-table">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="container-meteo">
+                                            <img src="{% static 'IMG/meteo/temperature.png' %}" alt="">
+                                            Temperature:
+                                        </div> 
+                                    </td>
+                                    <td>
+                                        12.1 °C
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="container-meteo">
+                                            <img src="{% static 'IMG/meteo/humidity.png' %}" alt="">
+                                            Humidity:
+                                        </div> 
+                                    </td>
+                                    <td>
+                                        74 %
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="container-meteo">
+                                            <img src="{% static 'IMG/meteo/pressure.png' %}" alt="">
+                                            Pressure:
+                                        </div>
+                                    </td>
+                                    <td>
+                                        1024.90 hPa
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="container-meteo">
+                                            <img src="{% static 'IMG/meteo/precipitation.png' %}" alt="">
+                                            Precipitation:
+                                        </div>
+                                        
+                                    </td>
+                                    <td>
+                                        0 mm
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="container-meteo">
+                                            <img src="{% static 'IMG/meteo/wind.png' %}" alt="">
+                                            Wind speed:
+                                        </div>
+                                    </td>
+                                    <td>
+                                        10.73 km/h
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>      
+
+                    <div class="container-banner">
+                        <div class="banner">
+                           Principal lineup
+                        </div>
+                    </div>
+
+                    <div class="container-compo">
+                        <div class="bloc-compo">
+                            <div class="compo-team">
+                                <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                Team1
+                            </div>
+                            <div class="terrain-compo">
+                                <div class="outline">
+                                    <div class="in-goal-top"></div>
+                                    <div class="but-topG"></div>
+                                    <div class="but-topD"></div>
+                                    <div class="line-22-top"></div>
+                                    <div class="line-mid"></div>
+                                    <div class="line-22-bot"></div>
+                                    <div class="but-botG"></div>
+                                    <div class="but-botD"></div>
+                                    
+                                    <div class="outline-num propG">
+                                        <span class="fixed-num">1</span>
+                                        <div class="name">
+                                            Left prop
+                                        </div>
+                                        <div class="name-flight-over">Played last 5 games</div>
+                                    </div>
+                                    
+                                    <div class="outline-num hooker">
+                                        <span class="fixed-num">2</span>
+                                        <div class="name">
+                                            Hooker
+                                        </div>
+                                        <div class="name-flight-over">Played last 5 games</div>
+                                    </div>
+                                    
+                                    <div class="outline-num propD">
+                                        <span class="fixed-num">3</span>
+                                        <div class="name">
+                                            Right prop
+                                        </div>
+                                        <div class="name-flight-over">Played last 5 games</div>
+                                    </div>
+                                    
+                                    <div class="outline-num lockG">
+                                        <span class="fixed-num">4</span>
+                                        <div class="name">
+                                            Left lock
+                                        </div>
+                                        <div class="name-flight-over">Played last 5 games</div>
+                                    </div>
+                                    
+                                    <div class="outline-num lockD">
+                                        <span class="fixed-num">5</span>
+                                        <div class="name">
+                                            Right lock
+                                        </div>
+                                        <div class="name-flight-over">Played last 5 games</div>
+                                    </div>
+
+                                    <div class="outline-num flankerG">
+                                        <span class="fixed-num">6</span>
+                                        <div class="name">
+                                            Left Flanker
+                                        </div>
+                                        <div class="name-flight-over">Played last 5 games</div>
+                                    </div>
+
+                                    <div class="outline-num flankerM">
+                                        <span class="fixed-num">7</span>
+                                        <div class="name">
+                                            Central Flanker
+                                        </div>
+                                        <div class="name-flight-over">Played last 5 games</div>
+                                    </div>
+
+                                    <div class="outline-num flankerD">
+                                        <span class="fixed-num">8</span>
+                                        <div class="name">
+                                            Right Flanker
+                                        </div>
+                                        <div class="name-flight-over">Played last 5 games</div>
+                                    </div>
+                                    
+                                    <div class="outline-num scrum-half">
+                                        <span class="fixed-num">9</span>
+                                        <div class="name">
+                                            Scrum half
+                                        </div>
+                                        <div class="name-flight-over">Played last 5 games</div>
+                                    </div>
+                                    
+                                    <div class="outline-num fly-half">
+                                        <span class="fixed-num">10</span>
+                                        <div class="name">
+                                            Fly half
+                                        </div>
+                                        <div class="name-flight-over">Played last 5 games</div>
+                                    </div>
+                                    
+                                    <div class="outline-num centre1-3-4">
+                                        <span class="fixed-num">12</span>
+                                        <div class="name">
+                                            Centre three quarter
+                                        </div>
+                                        <div class="name-flight-over">Played last 5 games</div>
+                                    </div>
+
+                                    <div class="outline-num wingerG">
+                                        <span class="fixed-num">11</span>
+                                        <div class="name">
+                                            Left wingler
+                                        </div>
+                                        <div class="name-flight-over">Played last 5 games</div>
+                                    </div>
+
+                                    <div class="outline-num centre2-3-4">
+                                        <span class="fixed-num">13</span>
+                                        <div class="name">
+                                            Centre three quarter
+                                        </div>
+                                        <div class="name-flight-over">Played last 5 games</div>
+                                    </div>
+
+                                    <div class="outline-num wingerR">
+                                        <span class="fixed-num">10</span>
+                                        <div class="name">
+                                            Right winger
+                                        </div>
+                                        <div class="name-flight-over">Played last 5 games</div>
+                                    </div>
+
+                                    <div class="outline-num full-back">
+                                        <span class="fixed-num">15</span>
+                                        <div class="name">
+                                            full back
+                                        </div>
+                                        <div class="name-flight-over">Played last 5 games</div>
+                                    </div>  
+
+                                    <div class="in-goal-bot"></div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <div class="bloc-compo">
+                            <div class="compo-team">
+                                <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                Team1
+                            </div>
+                            <div class="terrain-compo">
+                                <div class="outline">
+                                    <div class="in-goal-top"></div>
+                                    <div class="but-topG"></div>
+                                    <div class="but-topD"></div>
+                                    <div class="line-22-top"></div>
+                                    <div class="line-mid"></div>
+                                    <div class="line-22-bot"></div>
+                                    <div class="but-botG"></div>
+                                    <div class="but-botD"></div>
+                                    
+                                    <div class="outline-num propG">
+                                        <span class="fixed-num">1</span>
+                                        <div class="name">
+                                            Left prop
+                                        </div>
+                                        <div class="name-flight-over">Played last 5 games</div>
+                                    </div>
+                                    
+                                    <div class="outline-num hooker">
+                                        <span class="fixed-num">2</span>
+                                        <div class="name">
+                                            Hooker
+                                        </div>
+                                        <div class="name-flight-over">Played last 5 games</div>
+                                    </div>
+                                    
+                                    <div class="outline-num propD">
+                                        <span class="fixed-num">3</span>
+                                        <div class="name">
+                                            Right prop
+                                        </div>
+                                        <div class="name-flight-over">Played last 5 games</div>
+                                    </div>
+                                    
+                                    <div class="outline-num lockG">
+                                        <span class="fixed-num">4</span>
+                                        <div class="name">
+                                            Left lock
+                                        </div>
+                                        <div class="name-flight-over">Played last 5 games</div>
+                                    </div>
+                                    
+                                    <div class="outline-num lockD">
+                                        <span class="fixed-num">5</span>
+                                        <div class="name">
+                                            Right lock
+                                        </div>
+                                        <div class="name-flight-over">Played last 5 games</div>
+                                    </div>
+
+                                    <div class="outline-num flankerG">
+                                        <span class="fixed-num">6</span>
+                                        <div class="name">
+                                            Left Flanker
+                                        </div>
+                                        <div class="name-flight-over">Played last 5 games</div>
+                                    </div>
+
+                                    <div class="outline-num flankerM">
+                                        <span class="fixed-num">7</span>
+                                        <div class="name">
+                                            Central Flanker
+                                        </div>
+                                        <div class="name-flight-over">Played last 5 games</div>
+                                    </div>
+
+                                    <div class="outline-num flankerD">
+                                        <span class="fixed-num">8</span>
+                                        <div class="name">
+                                            Right Flanker
+                                        </div>
+                                        <div class="name-flight-over">Played last 5 games</div>
+                                    </div>
+                                    
+                                    <div class="outline-num scrum-half">
+                                        <span class="fixed-num">9</span>
+                                        <div class="name">
+                                            Scrum half
+                                        </div>
+                                        <div class="name-flight-over">Played last 5 games</div>
+                                    </div>
+                                    
+                                    <div class="outline-num fly-half">
+                                        <span class="fixed-num">10</span>
+                                        <div class="name">
+                                            Fly half
+                                        </div>
+                                        <div class="name-flight-over">Played last 5 games</div>
+                                    </div>
+                                    
+                                    <div class="outline-num centre1-3-4">
+                                        <span class="fixed-num">12</span>
+                                        <div class="name">
+                                            Centre three quarter
+                                        </div>
+                                        <div class="name-flight-over">Played last 5 games</div>
+                                    </div>
+
+                                    <div class="outline-num wingerG">
+                                        <span class="fixed-num">11</span>
+                                        <div class="name">
+                                            Left wingler
+                                        </div>
+                                        <div class="name-flight-over">Played last 5 games</div>
+                                    </div>
+
+                                    <div class="outline-num centre2-3-4">
+                                        <span class="fixed-num">13</span>
+                                        <div class="name">
+                                            Centre three quarter
+                                        </div>
+                                        <div class="name-flight-over">Played last 5 games</div>
+                                    </div>
+
+                                    <div class="outline-num wingerR">
+                                        <span class="fixed-num">10</span>
+                                        <div class="name">
+                                            Right winger
+                                        </div>
+                                        <div class="name-flight-over">Played last 5 games</div>
+                                    </div>
+
+                                    <div class="outline-num full-back">
+                                        <span class="fixed-num">15</span>
+                                        <div class="name">
+                                            full back
+                                        </div>
+                                        <div class="name-flight-over">Played last 5 games</div>
+                                    </div>  
+
+                                    <div class="in-goal-bot"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container-banner">
+                        <div class="banner">
+                            Will not play
+                        </div>
+                    </div>
+
+                    <div class="container-table">
+                        <table class="content-table">
+                            <tbody>
+                            <tr>
+                                <td>                            
+                                    <div class="container-player">
+                                        <span>S. Igor</span>
+                                        <span class="injury">(injury)</span>   
+                                    </div>                                    
+                                </td>
+
+                                <td>  
+                                    <div class="container-player">
+                                        <span>S. Igor</span>
+                                        <span class="injury">(injury)</span>   
+                                    </div>                              
+                                </td>
+                            </tr>
+                           
+                            <tr>
+                                <td>
+                                    
+                                </td>
+                                <td>
+                                    <div class="container-player">
+                                        <span>S. Igor</span>
+                                        <span class="injury">(injury)</span>   
+                                    </div> 
+                               </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                     
+                                </td>
+                                <td>
+                                    <div class="container-player">
+                                        <span>S. Igor</span>
+                                        <span class="injury">(injury)</span>   
+                                    </div> 
+                               </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="category-content" id="content-2">
+                    <div class="informations-matches">
+                        <li id="cat2.1">Overall</li>
+                        <li id="cat2.2">Team 1 - Home</li>
+                        <li id="cat2.3">Team 2 - Away</li>
+                    </div>
+
+                    <div class="under-category-content" id="content-cat2.1">
+                        <div class="container-banner">
+                            <div class="banner">
+                                Last matches: Home Team1
+                            </div>
+                        </div>
+    
+                        <div class="container-grid-tab" id="1matchesContainer1">                     
+                            <div class="grid-tab">
+                                <div class="date-tab">
+                                    28/04/2024
+                                </div>
+                                <div class="league-tab">
+                                    League
+                                </div>
+                                <div class="team1-tab">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Team 1
+                                </div>
+                                <div class="team2-tab">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Team 2
+                                </div>
+                                <div class="score1-tab">
+                                    16
+                                </div>
+                                <div class="score2-tab">
+                                    10
+                                </div>
+                                <div class="victory-tab">
+                                    <div class="victory">
+                                        V
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid-tab">
+                                <div class="date-tab">
+                                    28/04/2024
+                                </div>
+                                <div class="league-tab">
+                                    League
+                                </div>
+                                <div class="team1-tab">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Team 1
+                                </div>
+                                <div class="team2-tab">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Team 2
+                                </div>
+                                <div class="score1-tab">
+                                    16
+                                </div>
+                                <div class="score2-tab">
+                                    10
+                                </div>
+                                <div class="victory-tab">
+                                    <div class="victory">
+                                        V
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid-tab">
+                                <div class="date-tab">
+                                    28/04/2024
+                                </div>
+                                <div class="league-tab">
+                                    League
+                                </div>
+                                <div class="team1-tab">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Team 1
+                                </div>
+                                <div class="team2-tab">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Team 2
+                                </div>
+                                <div class="score1-tab">
+                                    16
+                                </div>
+                                <div class="score2-tab">
+                                    10
+                                </div>
+                                <div class="victory-tab">
+                                    <div class="victory">
+                                        V
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div class="container-show-more-arrow">
+                                <button class="button-more" data-target="1matchesContainer1" id="loadMoreButton">
+                                    Show more
+                                    <img src="{% static 'IMG/arrowMore.png' %}" alt="">
+                                </button> 
+                        </div>  
+                        
+                        <div class="container-banner">
+                            <div class="banner">
+                                Last matches: Away Team2
+                            </div>
+                        </div>
+    
+                        <div class="container-grid-tab" id="1matchesContainer2">                     
+                            <div class="grid-tab">
+                                <div class="date-tab">
+                                    28/04/2024
+                                </div>
+                                <div class="league-tab">
+                                    League
+                                </div>
+                                <div class="team1-tab">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Team 1
+                                </div>
+                                <div class="team2-tab">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Team 2
+                                </div>
+                                <div class="score1-tab">
+                                    16
+                                </div>
+                                <div class="score2-tab">
+                                    10
+                                </div>
+                                <div class="victory-tab">
+                                    <div class="victory">
+                                        V
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid-tab">
+                                <div class="date-tab">
+                                    28/04/2024
+                                </div>
+                                <div class="league-tab">
+                                    League
+                                </div>
+                                <div class="team1-tab">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Team 1
+                                </div>
+                                <div class="team2-tab">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Team 2
+                                </div>
+                                <div class="score1-tab">
+                                    16
+                                </div>
+                                <div class="score2-tab">
+                                    10
+                                </div>
+                                <div class="victory-tab">
+                                    <div class="victory">
+                                        V
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid-tab">
+                                <div class="date-tab">
+                                    28/04/2024
+                                </div>
+                                <div class="league-tab">
+                                    League
+                                </div>
+                                <div class="team1-tab">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Team 1
+                                </div>
+                                <div class="team2-tab">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Team 2
+                                </div>
+                                <div class="score1-tab">
+                                    16
+                                </div>
+                                <div class="score2-tab">
+                                    10
+                                </div>
+                                <div class="victory-tab">
+                                    <div class="victory">
+                                        V
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div class="container-show-more-arrow">
+                                <button class="button-more" data-target="1matchesContainer2" id="loadMoreButton">
+                                    Show more
+                                    <img src="{% static 'IMG/arrowMore.png' %}" alt="">
+                                </button> 
+                        </div>
+                        
+                        <div class="container-banner">
+                            <div class="banner">
+                                Head-To-Head matches
+                            </div>
+                        </div>
+    
+                        <div class="container-grid-tab" id="1matchesContainer3">                     
+                            <div class="grid-tab">
+                                <div class="date-tab">
+                                    28/04/2024
+                                </div>
+                                <div class="league-tab">
+                                    League
+                                </div>
+                                <div class="team1-tab">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Team 1
+                                </div>
+                                <div class="team2-tab">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Team 2
+                                </div>
+                                <div class="score1-tab">
+                                    16
+                                </div>
+                                <div class="score2-tab">
+                                    10
+                                </div>
+                            </div>
+                            <div class="grid-tab">
+                                <div class="date-tab">
+                                    28/04/2024
+                                </div>
+                                <div class="league-tab">
+                                    League
+                                </div>
+                                <div class="team1-tab">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Team 1
+                                </div>
+                                <div class="team2-tab">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Team 2
+                                </div>
+                                <div class="score1-tab">
+                                    16
+                                </div>
+                                <div class="score2-tab">
+                                    10
+                                </div>
+                            </div>
+                        </div>
+                            <div class="container-show-more-arrow">
+                                <button class="button-more" data-target="1matchesContainer3" id="loadMoreButton">
+                                    Show more
+                                    <img src="{% static 'IMG/arrowMore.png' %}" alt="">
+                                </button> 
+                            </div>
+                    </div>
+                    
+                    <div class="under-category-content" id="content-cat2.2">
+                        <div class="container-banner">
+                            <div class="banner">
+                                Last matches: Home Team1
+                            </div>
+                        </div>
+
+                        <div class="container-grid-tab" id="2matchesContainer1">                     
+                            <div class="grid-tab">
+                                <div class="date-tab">
+                                    28/04/2024
+                                </div>
+                                <div class="league-tab">
+                                    League
+                                </div>
+                                <div class="team1-tab">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Team 1
+                                </div>
+                                <div class="team2-tab">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Team 2
+                                </div>
+                                <div class="score1-tab">
+                                    16
+                                </div>
+                                <div class="score2-tab">
+                                    10
+                                </div>
+                                <div class="victory-tab">
+                                    <div class="victory">
+                                        V
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid-tab">
+                                <div class="date-tab">
+                                    28/04/2024
+                                </div>
+                                <div class="league-tab">
+                                    League
+                                </div>
+                                <div class="team1-tab">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Team 1
+                                </div>
+                                <div class="team2-tab">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Team 2
+                                </div>
+                                <div class="score1-tab">
+                                    16
+                                </div>
+                                <div class="score2-tab">
+                                    10
+                                </div>
+                                <div class="victory-tab">
+                                    <div class="victory">
+                                        V
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid-tab">
+                                <div class="date-tab">
+                                    28/04/2024
+                                </div>
+                                <div class="league-tab">
+                                    League
+                                </div>
+                                <div class="team1-tab">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Team 1
+                                </div>
+                                <div class="team2-tab">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Team 2
+                                </div>
+                                <div class="score1-tab">
+                                    16
+                                </div>
+                                <div class="score2-tab">
+                                    10
+                                </div>
+                                <div class="victory-tab">
+                                    <div class="victory">
+                                        V
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="container-show-more-arrow">
+                                <button class="button-more" data-target="2matchesContainer1" id="loadMoreButton">
+                                    Show more
+                                    <img src="{% static 'IMG/arrowMore.png' %}" alt="">
+                                </button> 
+                        </div>
+
+                        <div class="container-banner">
+                            <div class="banner">
+                                Head-To-Head matches
+                            </div>
+                        </div>
+
+                        <div class="container-grid-tab" id="2matchesContainer2">                     
+                            <div class="grid-tab">
+                                <div class="date-tab">
+                                    28/04/2024
+                                </div>
+                                <div class="league-tab">
+                                    League
+                                </div>
+                                <div class="team1-tab">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Team 1
+                                </div>
+                                <div class="team2-tab">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Team 2
+                                </div>
+                                <div class="score1-tab">
+                                    16
+                                </div>
+                                <div class="score2-tab">
+                                    10
+                                </div>
+                                <div class="victory-tab">
+                                    <div class="victory">
+                                        V
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid-tab">
+                                <div class="date-tab">
+                                    28/04/2024
+                                </div>
+                                <div class="league-tab">
+                                    League
+                                </div>
+                                <div class="team1-tab">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Team 1
+                                </div>
+                                <div class="team2-tab">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Team 2
+                                </div>
+                                <div class="score1-tab">
+                                    16
+                                </div>
+                                <div class="score2-tab">
+                                    10
+                                </div>
+                                <div class="victory-tab">
+                                    <div class="victory">
+                                        V
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid-tab">
+                                <div class="date-tab">
+                                    28/04/2024
+                                </div>
+                                <div class="league-tab">
+                                    League
+                                </div>
+                                <div class="team1-tab">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Team 1
+                                </div>
+                                <div class="team2-tab">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Team 2
+                                </div>
+                                <div class="score1-tab">
+                                    16
+                                </div>
+                                <div class="score2-tab">
+                                    10
+                                </div>
+                                <div class="victory-tab">
+                                    <div class="victory">
+                                        V
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="container-show-more-arrow">
+                                <button class="button-more" data-target="2matchesContainer2" id="loadMoreButton">
+                                    Show more
+                                    <img src="{% static 'IMG/arrowMore.png' %}" alt="">
+                                </button> 
+                        </div>
+                        
+                    </div>
+
+                    <div class="under-category-content" id="content-cat2.3">
+                        <div class="container-banner">
+                            <div class="banner">
+                                Last matches: Away Team2
+                            </div>
+                        </div>
+
+                        <div class="container-grid-tab" id="3matchesContainer1">                     
+                            <div class="grid-tab">
+                                <div class="date-tab">
+                                    28/04/2024
+                                </div>
+                                <div class="league-tab">
+                                    League
+                                </div>
+                                <div class="team1-tab">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Team 1
+                                </div>
+                                <div class="team2-tab">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Team 2
+                                </div>
+                                <div class="score1-tab">
+                                    16
+                                </div>
+                                <div class="score2-tab">
+                                    10
+                                </div>
+                                <div class="victory-tab">
+                                    <div class="victory">
+                                        V
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid-tab">
+                                <div class="date-tab">
+                                    28/04/2024
+                                </div>
+                                <div class="league-tab">
+                                    League
+                                </div>
+                                <div class="team1-tab">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Team 1
+                                </div>
+                                <div class="team2-tab">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Team 2
+                                </div>
+                                <div class="score1-tab">
+                                    16
+                                </div>
+                                <div class="score2-tab">
+                                    10
+                                </div>
+                                <div class="victory-tab">
+                                    <div class="victory">
+                                        V
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid-tab">
+                                <div class="date-tab">
+                                    28/04/2024
+                                </div>
+                                <div class="league-tab">
+                                    League
+                                </div>
+                                <div class="team1-tab">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Team 1
+                                </div>
+                                <div class="team2-tab">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Team 2
+                                </div>
+                                <div class="score1-tab">
+                                    16
+                                </div>
+                                <div class="score2-tab">
+                                    10
+                                </div>
+                                <div class="victory-tab">
+                                    <div class="victory">
+                                        V
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="container-show-more-arrow">
+                                <button class="button-more" data-target="3matchesContainer1" id="loadMoreButton">
+                                    Show more
+                                    <img src="{% static 'IMG/arrowMore.png' %}" alt="">
+                                </button> 
+                        </div>
+
+                        <div class="container-banner">
+                            <div class="banner">
+                                Head-To-Head matches
+                            </div>
+                        </div>
+
+                        <div class="container-grid-tab" id="3matchesContainer2">                     
+                            <div class="grid-tab">
+                                <div class="date-tab">
+                                    28/04/2024
+                                </div>
+                                <div class="league-tab">
+                                    League
+                                </div>
+                                <div class="team1-tab">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Team 1
+                                </div>
+                                <div class="team2-tab">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Team 2
+                                </div>
+                                <div class="score1-tab">
+                                    16
+                                </div>
+                                <div class="score2-tab">
+                                    10
+                                </div>
+                                <div class="victory-tab">
+                                    <div class="victory">
+                                        V
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid-tab">
+                                <div class="date-tab">
+                                    28/04/2024
+                                </div>
+                                <div class="league-tab">
+                                    League
+                                </div>
+                                <div class="team1-tab">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Team 1
+                                </div>
+                                <div class="team2-tab">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Team 2
+                                </div>
+                                <div class="score1-tab">
+                                    16
+                                </div>
+                                <div class="score2-tab">
+                                    10
+                                </div>
+                                <div class="victory-tab">
+                                    <div class="victory">
+                                        V
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid-tab">
+                                <div class="date-tab">
+                                    28/04/2024
+                                </div>
+                                <div class="league-tab">
+                                    League
+                                </div>
+                                <div class="team1-tab">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Team 1
+                                </div>
+                                <div class="team2-tab">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Team 2
+                                </div>
+                                <div class="score1-tab">
+                                    16
+                                </div>
+                                <div class="score2-tab">
+                                    10
+                                </div>
+                                <div class="victory-tab">
+                                    <div class="victory">
+                                        V
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="container-show-more-arrow">
+                                <button class="button-more" data-target="3matchesContainer2" id="loadMoreButton">
+                                    Show more
+                                    <img src="{% static 'IMG/arrowMore.png' %}" alt="">
+                                </button> 
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <div class="category-content" id="content-3">
+                    <div class="informations-matches">
+                        <li id="cat3.1">Overall</li>
+                        <li id="cat3.2">Team 1 - Home</li>
+                        <li id="cat3.3">Team 2 - Away</li>
+                    </div>
+
+                    <div class="under-category-content" id="content-cat3.1">
+                        <div class="container-banner">
+                            <div class="banner">
+                                Ranking
+                            </div>
+                        </div>
+                        
+                        <!--div class="container-select">
+                            <div class="select">
+                                <span class="selected">2024</span>
+                                <div class="caret"></div>
+                            </div>
+                            <div class="years">
+                                <div class="years-scrollbar">
+                                    <li class="active"> 2024 </li>
+                                    <li> 2023 </li>
+                                </div>  
+                            </div>  
+                        </div-->
+    
+                        <div class="container-grid-tab">
+                            <div class="grid-tab-ranking">
+                                <div> </div>
+                                <div class="team-ranking">
+                                </div>
+                                <div class="container-nb-ranking">
+                                    MP
+                                </div>
+                                <div class="container-nb-ranking">
+                                    W
+                                </div>
+                                <div class="container-nb-ranking">
+                                    D
+                                </div>
+                                <div class="container-nb-ranking">
+                                    L
+                                </div>
+                                <div class="container-nb-ranking">
+                                    P
+                                </div>
+                                <div class="container-nb-ranking">
+                                    PD
+                                </div>
+                                <div class="container-nb-ranking">
+                                    B
+                                </div>
+                                <div class="passed-match">
+                                    Form
+                                </div>
+                            </div>
+    
+                            <div class="grid-tab-ranking">
+                                <div class="rank"> 
+                                    1
+                                </div>
+                                <div class="team-ranking">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Leinster
+                                </div>
+                                <div class="container-nb-ranking">
+                                    14
+                                </div>
+                                <div class="container-nb-ranking">
+                                    11
+                                </div>
+                                <div class="container-nb-ranking">
+                                    0
+                                </div>
+                                <div class="container-nb-ranking">
+                                    3
+                                </div>
+                                <div class="container-nb-ranking">
+                                    67
+                                </div>
+                                <div class="container-nb-ranking">
+                                    427
+                                </div>
+                                <div class="container-nb-ranking">
+                                    30
+                                </div>
+                                <div class="passed-match">
+                                    <div class="carre">
+                                        <div class="carre-won">V</div>
+                                    </div>
+                                    <div class="carre">
+                                        <div class="carre-drawn">N</div>
+                                    </div>
+                                    <div class="carre">
+                                        <div class="carre-defeat">D</div>
+                                    </div>
+                                    <div class="carre">
+                                        <div class="carre-won">V</div>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="grid-tab-ranking">
+                                <div class="rank"> 
+                                    2
+                                </div>
+                                <div class="team-ranking">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Leinster
+                                </div>
+                                <div class="container-nb-ranking">
+                                    14
+                                </div>
+                                <div class="container-nb-ranking">
+                                    11
+                                </div>
+                                <div class="container-nb-ranking">
+                                    0
+                                </div>
+                                <div class="container-nb-ranking">
+                                    3
+                                </div>
+                                <div class="container-nb-ranking">
+                                    67
+                                </div>
+                                <div class="container-nb-ranking">
+                                    427
+                                </div>
+                                <div class="container-nb-ranking">
+                                    30
+                                </div>
+                                <div class="passed-match">
+                                    <div class="carre">
+                                        <div class="carre-won">V</div>
+                                    </div>
+                                    <div class="carre">
+                                        <div class="carre-drawn">N</div>
+                                    </div>
+                                    <div class="carre">
+                                        <div class="carre-defeat">D</div>
+                                    </div>
+                                    <div class="carre">
+                                        <div class="carre-won">V</div>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="grid-tab-ranking">
+                                <div class="rank"> 
+                                    3
+                                </div>
+                                <div class="team-ranking">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Leinster
+                                </div>
+                                <div class="container-nb-ranking">
+                                    14
+                                </div>
+                                <div class="container-nb-ranking">
+                                    11
+                                </div>
+                                <div class="container-nb-ranking">
+                                    0
+                                </div>
+                                <div class="container-nb-ranking">
+                                    3
+                                </div>
+                                <div class="container-nb-ranking">
+                                    67
+                                </div>
+                                <div class="container-nb-ranking">
+                                    427
+                                </div>
+                                <div class="container-nb-ranking">
+                                    30
+                                </div>
+                                <div class="passed-match">
+                                    <div class="carre">
+                                        <div class="carre-won">V</div>
+                                    </div>
+                                    <div class="carre">
+                                        <div class="carre-drawn">N</div>
+                                    </div>
+                                    <div class="carre">
+                                        <div class="carre-defeat">D</div>
+                                    </div>
+                                    <div class="carre">
+                                        <div class="carre-won">V</div>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="grid-tab-ranking">
+                                <div class="rank"> 
+                                    4
+                                </div>
+                                <div class="team-ranking">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Leinster
+                                </div>
+                                <div class="container-nb-ranking">
+                                    14
+                                </div>
+                                <div class="container-nb-ranking">
+                                    11
+                                </div>
+                                <div class="container-nb-ranking">
+                                    0
+                                </div>
+                                <div class="container-nb-ranking">
+                                    3
+                                </div>
+                                <div class="container-nb-ranking">
+                                    67
+                                </div>
+                                <div class="container-nb-ranking">
+                                    427
+                                </div>
+                                <div class="container-nb-ranking">
+                                    30
+                                </div>
+                                <div class="passed-match">
+                                    <div class="carre">
+                                        <div class="carre-won">V</div>
+                                    </div>
+                                    <div class="carre">
+                                        <div class="carre-drawn">N</div>
+                                    </div>
+                                    <div class="carre">
+                                        <div class="carre-defeat">D</div>
+                                    </div>
+                                    <div class="carre">
+                                        <div class="carre-won">V</div>
+                                    </div>
+                                </div>
+                            </div>
+    
+                        </div>
+
+                        <div class="container-banner">
+                            <div class="banner">
+                                More informations
+                            </div>
+                        </div>
+    
+                        <div class="container-league">
+                            <div class="grid-league">
+                                League
+                            </div>
+                        </div>
+                        
+                        <div class="container-grid-tab">
+                            <div class="grid-tab-more-informations">
+                                <div class="rank"> </div>
+                                <div class="team-ranking"> </div>
+                                <div class="container-nb-ranking">
+                                    F
+                                </div>
+                                <div class="container-nb-ranking">
+                                    AF
+                                </div>
+                                <div class="container-nb-ranking">
+                                    A
+                                </div>
+                                <div class="container-nb-ranking">
+                                    AA
+                                </div>
+                                <div class="container-nb-ranking">
+                                    TF
+                                </div>
+                                <div class="container-nb-ranking">
+                                    TA
+                                </div>
+                                <div class="container-nb-ranking">
+                                    AB
+                                </div>
+                                <div class="container-nb-ranking">
+                                    DB
+                                </div>
+                            </div>
+    
+                            <div class="grid-tab-more-informations">
+                                <div class="rank"> 
+                                    1
+                                </div>
+                                <div class="team-ranking">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Leinster
+                                </div>
+                                <div class="container-nb-ranking">
+                                    14
+                                </div>
+                                <div class="container-nb-ranking">
+                                    24
+                                </div>
+                                <div class="container-nb-ranking">
+                                    42
+                                </div>
+                                <div class="container-nb-ranking">
+                                    52
+                                </div>
+                                <div class="container-nb-ranking">
+                                    5
+                                </div>
+                                <div class="container-nb-ranking">
+                                    25
+                                </div>
+                                <div class="container-nb-ranking">
+                                    72
+                                </div>
+                                <div class="container-nb-ranking">
+                                    87
+                                </div>
+                            </div>
+    
+                            <div class="grid-tab-more-informations">
+                                <div class="rank"> 
+                                    2
+                                </div>
+                                <div class="team-ranking">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Leinster
+                                </div>
+                                <div class="container-nb-ranking">
+                                    14
+                                </div>
+                                <div class="container-nb-ranking">
+                                    24
+                                </div>
+                                <div class="container-nb-ranking">
+                                    42
+                                </div>
+                                <div class="container-nb-ranking">
+                                    52
+                                </div>
+                                <div class="container-nb-ranking">
+                                    5
+                                </div>
+                                <div class="container-nb-ranking">
+                                    25
+                                </div>
+                                <div class="container-nb-ranking">
+                                    72
+                                </div>
+                                <div class="container-nb-ranking">
+                                    87
+                                </div>
+                            </div>
+    
+                            <div class="grid-tab-more-informations">
+                                <div class="rank"> 
+                                    3
+                                </div>
+                                <div class="team-ranking">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Leinster
+                                </div>
+                                <div class="container-nb-ranking">
+                                    14
+                                </div>
+                                <div class="container-nb-ranking">
+                                    24
+                                </div>
+                                <div class="container-nb-ranking">
+                                    42
+                                </div>
+                                <div class="container-nb-ranking">
+                                    52
+                                </div>
+                                <div class="container-nb-ranking">
+                                    5
+                                </div>
+                                <div class="container-nb-ranking">
+                                    25
+                                </div>
+                                <div class="container-nb-ranking">
+                                    72
+                                </div>
+                                <div class="container-nb-ranking">
+                                    87
+                                </div>
+                            </div>
+    
+                        </div>
+                    </div>
+                    
+                    <div class="under-category-content" id="content-cat3.2">
+                        <div class="container-banner">
+                            <div class="banner">
+                                Ranking1
+                            </div>
+                        </div>
+                        
+                        <div class="container-league">
+                            <div class="grid-league">
+                                League1
+                            </div>
+                        </div>
+    
+                        <div class="container-grid-tab">
+                            <div class="grid-tab-ranking">
+                                <div> </div>
+                                <div class="team-ranking">
+                                </div>
+                                <div class="container-nb-ranking">
+                                    MP
+                                </div>
+                                <div class="container-nb-ranking">
+                                    W
+                                </div>
+                                <div class="container-nb-ranking">
+                                    D
+                                </div>
+                                <div class="container-nb-ranking">
+                                    L
+                                </div>
+                                <div class="container-nb-ranking">
+                                    P
+                                </div>
+                                <div class="container-nb-ranking">
+                                    PD
+                                </div>
+                                <div class="container-nb-ranking">
+                                    B
+                                </div>
+                                <div class="passed-match">
+                                    Form
+                                </div>
+                            </div>
+    
+                            <div class="grid-tab-ranking">
+                                <div class="rank"> 
+                                    1
+                                </div>
+                                <div class="team-ranking">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Leinster
+                                </div>
+                                <div class="container-nb-ranking">
+                                    14
+                                </div>
+                                <div class="container-nb-ranking">
+                                    11
+                                </div>
+                                <div class="container-nb-ranking">
+                                    0
+                                </div>
+                                <div class="container-nb-ranking">
+                                    3
+                                </div>
+                                <div class="container-nb-ranking">
+                                    67
+                                </div>
+                                <div class="container-nb-ranking">
+                                    427
+                                </div>
+                                <div class="container-nb-ranking">
+                                    30
+                                </div>
+                                <div class="passed-match">
+                                    <div class="carre">
+                                        <div class="carre-won">V</div>
+                                    </div>
+                                    <div class="carre">
+                                        <div class="carre-drawn">N</div>
+                                    </div>
+                                    <div class="carre">
+                                        <div class="carre-defeat">D</div>
+                                    </div>
+                                    <div class="carre">
+                                        <div class="carre-won">V</div>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="grid-tab-ranking">
+                                <div class="rank"> 
+                                    2
+                                </div>
+                                <div class="team-ranking">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Leinster
+                                </div>
+                                <div class="container-nb-ranking">
+                                    14
+                                </div>
+                                <div class="container-nb-ranking">
+                                    11
+                                </div>
+                                <div class="container-nb-ranking">
+                                    0
+                                </div>
+                                <div class="container-nb-ranking">
+                                    3
+                                </div>
+                                <div class="container-nb-ranking">
+                                    67
+                                </div>
+                                <div class="container-nb-ranking">
+                                    427
+                                </div>
+                                <div class="container-nb-ranking">
+                                    30
+                                </div>
+                                <div class="passed-match">
+                                    <div class="carre">
+                                        <div class="carre-won">V</div>
+                                    </div>
+                                    <div class="carre">
+                                        <div class="carre-drawn">N</div>
+                                    </div>
+                                    <div class="carre">
+                                        <div class="carre-defeat">D</div>
+                                    </div>
+                                    <div class="carre">
+                                        <div class="carre-won">V</div>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="grid-tab-ranking">
+                                <div class="rank"> 
+                                    3
+                                </div>
+                                <div class="team-ranking">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Leinster
+                                </div>
+                                <div class="container-nb-ranking">
+                                    14
+                                </div>
+                                <div class="container-nb-ranking">
+                                    11
+                                </div>
+                                <div class="container-nb-ranking">
+                                    0
+                                </div>
+                                <div class="container-nb-ranking">
+                                    3
+                                </div>
+                                <div class="container-nb-ranking">
+                                    67
+                                </div>
+                                <div class="container-nb-ranking">
+                                    427
+                                </div>
+                                <div class="container-nb-ranking">
+                                    30
+                                </div>
+                                <div class="passed-match">
+                                    <div class="carre">
+                                        <div class="carre-won">V</div>
+                                    </div>
+                                    <div class="carre">
+                                        <div class="carre-drawn">N</div>
+                                    </div>
+                                    <div class="carre">
+                                        <div class="carre-defeat">D</div>
+                                    </div>
+                                    <div class="carre">
+                                        <div class="carre-won">V</div>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="grid-tab-ranking">
+                                <div class="rank"> 
+                                    4
+                                </div>
+                                <div class="team-ranking">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Leinster
+                                </div>
+                                <div class="container-nb-ranking">
+                                    14
+                                </div>
+                                <div class="container-nb-ranking">
+                                    11
+                                </div>
+                                <div class="container-nb-ranking">
+                                    0
+                                </div>
+                                <div class="container-nb-ranking">
+                                    3
+                                </div>
+                                <div class="container-nb-ranking">
+                                    67
+                                </div>
+                                <div class="container-nb-ranking">
+                                    427
+                                </div>
+                                <div class="container-nb-ranking">
+                                    30
+                                </div>
+                                <div class="passed-match">
+                                    <div class="carre">
+                                        <div class="carre-won">V</div>
+                                    </div>
+                                    <div class="carre">
+                                        <div class="carre-drawn">N</div>
+                                    </div>
+                                    <div class="carre">
+                                        <div class="carre-defeat">D</div>
+                                    </div>
+                                    <div class="carre">
+                                        <div class="carre-won">V</div>
+                                    </div>
+                                </div>
+                            </div>
+    
+                        </div>
+                        
+                        <div class="container-banner">
+                            <div class="banner">
+                                More informations
+                            </div>
+                        </div>
+    
+                        <div class="container-league">
+                            <div class="grid-league">
+                                League
+                            </div>
+                        </div>
+                        
+                        <div class="container-grid-tab">
+                            <div class="grid-tab-more-informations">
+                                <div class="rank"> </div>
+                                <div class="team-ranking"> </div>
+                                <div class="container-nb-ranking">
+                                    F
+                                </div>
+                                <div class="container-nb-ranking">
+                                    AF
+                                </div>
+                                <div class="container-nb-ranking">
+                                    A
+                                </div>
+                                <div class="container-nb-ranking">
+                                    AA
+                                </div>
+                                <div class="container-nb-ranking">
+                                    TF
+                                </div>
+                                <div class="container-nb-ranking">
+                                    TA
+                                </div>
+                                <div class="container-nb-ranking">
+                                    AB
+                                </div>
+                                <div class="container-nb-ranking">
+                                    DB
+                                </div>
+                            </div>
+    
+                            <div class="grid-tab-more-informations">
+                                <div class="rank"> 
+                                    1
+                                </div>
+                                <div class="team-ranking">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Leinster
+                                </div>
+                                <div class="container-nb-ranking">
+                                    14
+                                </div>
+                                <div class="container-nb-ranking">
+                                    24
+                                </div>
+                                <div class="container-nb-ranking">
+                                    42
+                                </div>
+                                <div class="container-nb-ranking">
+                                    52
+                                </div>
+                                <div class="container-nb-ranking">
+                                    5
+                                </div>
+                                <div class="container-nb-ranking">
+                                    25
+                                </div>
+                                <div class="container-nb-ranking">
+                                    72
+                                </div>
+                                <div class="container-nb-ranking">
+                                    87
+                                </div>
+                            </div>
+    
+                            <div class="grid-tab-more-informations">
+                                <div class="rank"> 
+                                    2
+                                </div>
+                                <div class="team-ranking">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Leinster
+                                </div>
+                                <div class="container-nb-ranking">
+                                    14
+                                </div>
+                                <div class="container-nb-ranking">
+                                    24
+                                </div>
+                                <div class="container-nb-ranking">
+                                    42
+                                </div>
+                                <div class="container-nb-ranking">
+                                    52
+                                </div>
+                                <div class="container-nb-ranking">
+                                    5
+                                </div>
+                                <div class="container-nb-ranking">
+                                    25
+                                </div>
+                                <div class="container-nb-ranking">
+                                    72
+                                </div>
+                                <div class="container-nb-ranking">
+                                    87
+                                </div>
+                            </div>
+    
+                            <div class="grid-tab-more-informations">
+                                <div class="rank"> 
+                                    3
+                                </div>
+                                <div class="team-ranking">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Leinster
+                                </div>
+                                <div class="container-nb-ranking">
+                                    14
+                                </div>
+                                <div class="container-nb-ranking">
+                                    24
+                                </div>
+                                <div class="container-nb-ranking">
+                                    42
+                                </div>
+                                <div class="container-nb-ranking">
+                                    52
+                                </div>
+                                <div class="container-nb-ranking">
+                                    5
+                                </div>
+                                <div class="container-nb-ranking">
+                                    25
+                                </div>
+                                <div class="container-nb-ranking">
+                                    72
+                                </div>
+                                <div class="container-nb-ranking">
+                                    87
+                                </div>
+                            </div>
+    
+                        </div>
+                    </div>
+
+                    <div class="under-category-content" id="content-cat3.3">
+                        <div class="container-banner">
+                            <div class="banner">
+                                Ranking3
+                            </div>
+                        </div>
+                        
+                        <div class="container-league">
+                            <div class="grid-league">
+                                League3
+                            </div>
+                        </div>
+    
+                        <div class="container-grid-tab">
+                            <div class="grid-tab-ranking">
+                                <div> </div>
+                                <div class="team-ranking">
+                                </div>
+                                <div class="container-nb-ranking">
+                                    MP
+                                </div>
+                                <div class="container-nb-ranking">
+                                    W
+                                </div>
+                                <div class="container-nb-ranking">
+                                    D
+                                </div>
+                                <div class="container-nb-ranking">
+                                    L
+                                </div>
+                                <div class="container-nb-ranking">
+                                    P
+                                </div>
+                                <div class="container-nb-ranking">
+                                    PD
+                                </div>
+                                <div class="container-nb-ranking">
+                                    B
+                                </div>
+                                <div class="passed-match">
+                                    Form
+                                </div>
+                            </div>
+    
+                            <div class="grid-tab-ranking">
+                                <div class="rank"> 
+                                    1
+                                </div>
+                                <div class="team-ranking">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Leinster
+                                </div>
+                                <div class="container-nb-ranking">
+                                    14
+                                </div>
+                                <div class="container-nb-ranking">
+                                    11
+                                </div>
+                                <div class="container-nb-ranking">
+                                    0
+                                </div>
+                                <div class="container-nb-ranking">
+                                    3
+                                </div>
+                                <div class="container-nb-ranking">
+                                    67
+                                </div>
+                                <div class="container-nb-ranking">
+                                    427
+                                </div>
+                                <div class="container-nb-ranking">
+                                    30
+                                </div>
+                                <div class="passed-match">
+                                    <div class="carre">
+                                        <div class="carre-won">V</div>
+                                    </div>
+                                    <div class="carre">
+                                        <div class="carre-drawn">N</div>
+                                    </div>
+                                    <div class="carre">
+                                        <div class="carre-defeat">D</div>
+                                    </div>
+                                    <div class="carre">
+                                        <div class="carre-won">V</div>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="grid-tab-ranking">
+                                <div class="rank"> 
+                                    2
+                                </div>
+                                <div class="team-ranking">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Leinster
+                                </div>
+                                <div class="container-nb-ranking">
+                                    14
+                                </div>
+                                <div class="container-nb-ranking">
+                                    11
+                                </div>
+                                <div class="container-nb-ranking">
+                                    0
+                                </div>
+                                <div class="container-nb-ranking">
+                                    3
+                                </div>
+                                <div class="container-nb-ranking">
+                                    67
+                                </div>
+                                <div class="container-nb-ranking">
+                                    427
+                                </div>
+                                <div class="container-nb-ranking">
+                                    30
+                                </div>
+                                <div class="passed-match">
+                                    <div class="carre">
+                                        <div class="carre-won">V</div>
+                                    </div>
+                                    <div class="carre">
+                                        <div class="carre-drawn">N</div>
+                                    </div>
+                                    <div class="carre">
+                                        <div class="carre-defeat">D</div>
+                                    </div>
+                                    <div class="carre">
+                                        <div class="carre-won">V</div>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="grid-tab-ranking">
+                                <div class="rank"> 
+                                    3
+                                </div>
+                                <div class="team-ranking">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Leinster
+                                </div>
+                                <div class="container-nb-ranking">
+                                    14
+                                </div>
+                                <div class="container-nb-ranking">
+                                    11
+                                </div>
+                                <div class="container-nb-ranking">
+                                    0
+                                </div>
+                                <div class="container-nb-ranking">
+                                    3
+                                </div>
+                                <div class="container-nb-ranking">
+                                    67
+                                </div>
+                                <div class="container-nb-ranking">
+                                    427
+                                </div>
+                                <div class="container-nb-ranking">
+                                    30
+                                </div>
+                                <div class="passed-match">
+                                    <div class="carre">
+                                        <div class="carre-won">V</div>
+                                    </div>
+                                    <div class="carre">
+                                        <div class="carre-drawn">N</div>
+                                    </div>
+                                    <div class="carre">
+                                        <div class="carre-defeat">D</div>
+                                    </div>
+                                    <div class="carre">
+                                        <div class="carre-won">V</div>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="grid-tab-ranking">
+                                <div class="rank"> 
+                                    4
+                                </div>
+                                <div class="team-ranking">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Leinster
+                                </div>
+                                <div class="container-nb-ranking">
+                                    14
+                                </div>
+                                <div class="container-nb-ranking">
+                                    11
+                                </div>
+                                <div class="container-nb-ranking">
+                                    0
+                                </div>
+                                <div class="container-nb-ranking">
+                                    3
+                                </div>
+                                <div class="container-nb-ranking">
+                                    67
+                                </div>
+                                <div class="container-nb-ranking">
+                                    427
+                                </div>
+                                <div class="container-nb-ranking">
+                                    30
+                                </div>
+                                <div class="passed-match">
+                                    <div class="carre">
+                                        <div class="carre-won">V</div>
+                                    </div>
+                                    <div class="carre">
+                                        <div class="carre-drawn">N</div>
+                                    </div>
+                                    <div class="carre">
+                                        <div class="carre-defeat">D</div>
+                                    </div>
+                                    <div class="carre">
+                                        <div class="carre-won">V</div>
+                                    </div>
+                                </div>
+                            </div>
+    
+                        </div>
+                        
+                        <div class="container-banner">
+                            <div class="banner">
+                                More informations
+                            </div>
+                        </div>
+    
+                        <div class="container-league">
+                            <div class="grid-league">
+                                League
+                            </div>
+                        </div>
+                        
+                        <div class="container-grid-tab">
+                            <div class="grid-tab-more-informations">
+                                <div class="rank"> </div>
+                                <div class="team-ranking"> </div>
+                                <div class="container-nb-ranking">
+                                    F
+                                </div>
+                                <div class="container-nb-ranking">
+                                    AF
+                                </div>
+                                <div class="container-nb-ranking">
+                                    A
+                                </div>
+                                <div class="container-nb-ranking">
+                                    AA
+                                </div>
+                                <div class="container-nb-ranking">
+                                    TF
+                                </div>
+                                <div class="container-nb-ranking">
+                                    TA
+                                </div>
+                                <div class="container-nb-ranking">
+                                    AB
+                                </div>
+                                <div class="container-nb-ranking">
+                                    DB
+                                </div>
+                            </div>
+    
+                            <div class="grid-tab-more-informations">
+                                <div class="rank"> 
+                                    1
+                                </div>
+                                <div class="team-ranking">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Leinster
+                                </div>
+                                <div class="container-nb-ranking">
+                                    14
+                                </div>
+                                <div class="container-nb-ranking">
+                                    24
+                                </div>
+                                <div class="container-nb-ranking">
+                                    42
+                                </div>
+                                <div class="container-nb-ranking">
+                                    52
+                                </div>
+                                <div class="container-nb-ranking">
+                                    5
+                                </div>
+                                <div class="container-nb-ranking">
+                                    25
+                                </div>
+                                <div class="container-nb-ranking">
+                                    72
+                                </div>
+                                <div class="container-nb-ranking">
+                                    87
+                                </div>
+                            </div>
+    
+                            <div class="grid-tab-more-informations">
+                                <div class="rank"> 
+                                    2
+                                </div>
+                                <div class="team-ranking">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Leinster
+                                </div>
+                                <div class="container-nb-ranking">
+                                    14
+                                </div>
+                                <div class="container-nb-ranking">
+                                    24
+                                </div>
+                                <div class="container-nb-ranking">
+                                    42
+                                </div>
+                                <div class="container-nb-ranking">
+                                    52
+                                </div>
+                                <div class="container-nb-ranking">
+                                    5
+                                </div>
+                                <div class="container-nb-ranking">
+                                    25
+                                </div>
+                                <div class="container-nb-ranking">
+                                    72
+                                </div>
+                                <div class="container-nb-ranking">
+                                    87
+                                </div>
+                            </div>
+    
+                            <div class="grid-tab-more-informations">
+                                <div class="rank"> 
+                                    3
+                                </div>
+                                <div class="team-ranking">
+                                    <img src="https://www.allrugby.com/img/logo/clubs/90/bayonne2022.png" alt="">
+                                    Leinster
+                                </div>
+                                <div class="container-nb-ranking">
+                                    14
+                                </div>
+                                <div class="container-nb-ranking">
+                                    24
+                                </div>
+                                <div class="container-nb-ranking">
+                                    42
+                                </div>
+                                <div class="container-nb-ranking">
+                                    52
+                                </div>
+                                <div class="container-nb-ranking">
+                                    5
+                                </div>
+                                <div class="container-nb-ranking">
+                                    25
+                                </div>
+                                <div class="container-nb-ranking">
+                                    72
+                                </div>
+                                <div class="container-nb-ranking">
+                                    87
+                                </div>
+                            </div>
+    
+                        </div>
+                    </div>
+
+                    <div class="container-banner">
+                        <div class="banner">
+                            Legend
+                        </div>
+                    </div>
+
+                    <div class="container-grid-tab">
+                        <div class="grid-tab-legend">
+                            <div> <b>MP:</b> matches played</div>
+                            <div> <b>W:</b> matches won</div>
+                            <div> <b>D:</b> matches drawn</div>
+                            <div> <b>L:</b> matches lost</div>
+                        </div>
+
+                        <div class="grid-tab-legend">
+                            <div> <b>P:</b> points</div>
+                            <div> <b>PD:</b> points difference </div>
+                            <div> <b>B:</b> bonus</div>
+                            <div> <b>F:</b> points for</div>
+                        </div>
+
+                        <div class="grid-tab-legend">
+                            <div> <b>AF:</b> average F</div>
+                            <div> <b>A:</b> points against</div>
+                            <div> <b>AA:</b> average A</div>
+                            <div> <b>TF:</b> tries for</div>
+                        </div>
+
+                        <div class="grid-tab-legend">
+                            <div> <b>TA:</b> tries against</div>
+                            <div> <b>AB:</b> attack bonus</div>
+                            <div> <b>DB:</b> defense bonus</div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>    
+       </div> 
+       
+       <script src="{% static 'JS/categoriesClick.js' %}"></script>
+       <script src="{% static 'JS/loadMore.js' %}"></script>
+
+    </body>
+</html>

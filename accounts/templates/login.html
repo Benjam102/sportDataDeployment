@@ -1,0 +1,91 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<!-- titre de la fenêtre -->
+		<title>Rugby Data</title>
+
+		<!-- précise l'encodage au navigateur (gestion des accents, ...) -->
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+		<!-- Feuilles de style -->
+		<link rel="stylesheet" type="text/css" href="{% static 'CSS/login.css' %}"-->
+
+		<!-- Inhibe la grande largeur sur mobile : évite que le mobile présente un écran large et qu'il faille zoomer -->
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=2.0" />
+
+		<!-- icône de la page -->
+		<link rel="icon" href="http://127.0.0.1:8000/static/rugbyBut.ico" type="image/x-icon">
+	</head>
+
+    <body>
+		<div class="bloc-connection">
+			<a href="http://127.0.0.1:8000/">
+				<img src="{% static 'IMG/joueurRugby.png' %}" alt="">
+			</a>
+			
+			<div class="espace-connection">
+				<form method="post">
+					{% csrf_token %}
+					<div class="title">
+						<img src="{% static 'IMG/logoHeader.png' %}" alt="">
+						<h1> Rugby Data </h1>
+					</div>
+					
+					<div class="champs">
+            			<input type="text" name="username" required placeholder="Username"> 
+						<img src="{% static 'IMG/authentification/user.png' %}" alt="">
+					</div>
+					
+					<div class="champs">
+						<input type="password" name="password" required placeholder="Password">
+						<img src="{% static 'IMG/authentification/lock.png' %}" alt="">
+					</div>
+					
+					
+					
+					
+					<!--div id="g_id_onload"
+						data-client_id="395934194101-rkpt66qhr6tmh0g8spvrt6m0bnnmgp1a.apps.googleusercontent.com"
+						data-login_uri= "http://127.0.0.1:8000/">
+					</div-->
+					
+
+					<button type="submit" class="connection">Log in</button>
+	
+					<!-- Permet d'afficher un message d'erreur en cas d'une mauvaise saisie -->
+					{% if messages %}
+						<div class="message-error">
+							{% for message_erreur in messages %}
+								<p>{{ message_erreur }}</p>
+							{% endfor %}
+						</div>
+					{% endif %}
+				</form>
+				
+				<!--div id="g_id_onload"
+					data-client_id="395934194101-rkpt66qhr6tmh0g8spvrt6m0bnnmgp1a.apps.googleusercontent.com"
+					data-context="signin"
+					data-ux_mode="redirect"
+					data-login_uri="https://127.0.0.1:8000/"
+					data-auto_prompt="false">
+				</div>
+
+				<div class="g_id_signin"
+					data-type="standard"
+					data-shape="pill"
+					data-theme="outline"
+					data-text="signin_with"
+					data-size="large"
+					data-logo_alignment="left">
+				</div-->
+
+			</div>
+		</div>
+    </body>
+
+	<!--script src="//accounts.google.com/gsi/client" async></script-->
+	
+</html>

@@ -1,0 +1,77 @@
+.content-table-league
+{
+    border-collapse: collapse;                        /* Fusionner les bordures des cellules */
+    font-size: 0.9em;
+    min-width: 400px;
+    background-color: #f7f7f7;
+    border-radius: 20px;
+    overflow: hidden;                                 /* Faire apparaître les coins arrondis */
+}
+
+.content-table-league thead tr
+{
+    background-color: #344D59;                      /* #3B5892 */
+    color: #f7f7f7;
+    text-align: left;                                 /* Naturellement au centre */
+    font-weight: bold;
+}
+
+/* A voir pour généraliser si on ajoute des drapeaux à gauche des compétitions */
+.content-table-league thead th
+{
+    display: flex;
+    align-items: center;
+}
+
+.content-table-league thead th img
+{
+    width: 5%;
+    margin-right: 10px;
+}
+
+.content-table-league th,
+.content-table-league td
+{
+    padding: 12px 15px;
+}
+
+.content-table-league tbody tr
+{
+    border-bottom: 1px solid #dddddd;
+}
+
+.content-table-league tbody tr:nth-of-type(even)              /* Cible les lignes paires à l'intérieur du corps */
+{
+    background-color: #EDEDED;
+}
+
+/* Flèche déplacement */
+.content-table-league tbody td
+{
+    border-bottom: 1px solid #dddddd;
+    position: relative;                                 /* Pour positionner la flèche dans la ligne */
+}
+
+.image 
+{
+    position: absolute;                                 /* Pour positionner la flèche dans la ligne */
+    left: 90%;                                          /* Position horizontale de la flèche dans la ligne */
+    top: 27%;                                           /* Hauteur de la flèche */
+    transition: left 0.3s ease, top 0.3s ease;
+}
+
+.image img
+{
+    width: 45%;                                         /* % permet d'avoir une flèche qui se réduit */
+}
+
+.content-table-league tbody tr:hover
+{
+    background-color: rgba(52, 77, 89, 0.40);
+}
+
+.content-table-league tbody tr:hover .image
+{
+    left: 93%;
+    top: 35%;
+}

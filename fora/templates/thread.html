@@ -1,0 +1,80 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<!-- titre de la fenêtre -->
+		<title>Rugby Data</title>
+
+		<!-- précise l'encodage au navigateur (gestion des accents, ...) -->
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+		<!-- Feuilles de style -->
+		<!-- Feuilles de style -->
+		<link rel="stylesheet" type="text/css" href="{% static 'CSS/headerFooter.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'CSS/fora/thread.css' %}">
+
+		<!-- Inhibe la grande largeur sur mobile : évite que le mobile présente un écran large et qu'il faille zoomer -->
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=2.0" />
+
+		<!-- icône de la page -->
+		<link rel="icon" href="http://127.0.0.1:8000//static/rugbyBut.ico" type="image/x-icon">
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+	</head>
+
+    <body>
+        <div class="container-page">
+            <div class="page">                
+                    <div class="container-banner">
+                        <div class="banner">
+                            Comments
+                        </div>
+                    </div>
+                    
+                    <div class="space-com">                  
+                        <div class="comments" id="comment-list">
+                            {% if comments %}
+                                {% for comment in comments %}
+                                    <div class="grid-comment">
+                                        <div class="username">
+                                            <img src="{% static 'IMG/joueurRugby.png' %}" alt="">
+                                            {{ comment.user.username }}
+                                        </div>
+                                        <div class="com-content">
+                                            {{ comment.content }}
+                                        </div>
+                                        <div class="com-date">
+                                            {% if yesterday_date|date:"Y-m-d" == comment.date|date:"Y-m-d" %}
+                                                Yesterday at {{ comment.date|time:"H:i" }}
+                                            {% elif today_date|date:"Y-m-d" == comment.date|date:"Y-m-d" %}
+                                                {{ comment.date|time:"H:i" }}
+                                            {% else %}
+                                                {{ comment.date|date:"Y-m-d" }} at {{ comment.date|time:"H:i" }}
+                                            {% endif %}
+                                        </div>                                      
+                                    </div>                                                                                 
+                                {% endfor %}
+                            {% else %}
+                                <p id="no-comments-msg"> No comments available for this match.</p>
+                            {% endif %}
+                        </div>
+                    
+                        <form id="comment-form" data-url="{% url 'add_comment' slug_category=slug_category slug_thread=slug_thread %}">
+                            {% csrf_token %}
+                            <textarea id="comment-content" name="content" placeholder="Add Comment..." required></textarea><br>
+                            
+                            <div class="container-input">
+                                <input type="submit" value="Post Comment">
+                            </div>
+                            
+                        </form>
+                    </div>                
+            </div>
+        </div>
+
+        <script src="{% static 'JS/tchatCommentMatch.js' %}"></script>
+    </body>
+</html>
