@@ -32,7 +32,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['sportdatafornerds.com', 'www.sportdatafornerds.com']
+ALLOWED_HOSTS = ['sportdatafornerds.tcdrail.com', 'www.sportdatafornerds.tcdrail.com']
 
 # Application definition
 
