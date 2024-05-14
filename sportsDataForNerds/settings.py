@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 from dotenv import load_dotenv
 load_dotenv()  # loads the configs from .env
 
-SITE_ID = 2
+SITE_ID = 3
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -56,7 +56,16 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
 ]
-
+'''
+SOCIALACCOUNT_PROVIDERS={
+    "google": {
+        "SCOPE": [
+            "email"
+        ],
+        "AUTH_PARAMS": {"access_type": "online"}
+    }
+}
+'''
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -158,7 +167,8 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 # For allauth (réseaux sociaux)
-LOGIN_REDIRECT_URL = os.environ.get('HOME_PAGE')
-ACCOUNT_LOGOUT_REDIRECT_URL = os.environ.get('HOME_PAGE')
-SOCIAL_ACCOUNT_QUERY_EMAIL = True
+LOGIN_REDIRECT_URL = 'http://127.0.0.1:8000/'
+ACCOUNT_LOGOUT_REDIRECT_URL = 'http://127.0.0.1:8000/'
+#SOCIAL_ACCOUNT_QUERY_EMAIL = True
 ACCOUNT_SESSION_REMEMBER = True
+#SOCIALACCOUNT_LOGIN_ON_GET=True

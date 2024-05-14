@@ -1,4 +1,6 @@
 {% load static %}
+{% load i18n %}
+{% load allauth %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -40,17 +42,33 @@
 					</div>
 					
 					<div class="champs">
-						<input type="password" name="password" required placeholder="Password">
+						<input type="password" name="password" required placeholder="Password" autocomplete="current-password webauthn">
 						<img src="{% static 'IMG/authentification/lock.png' %}" alt="">
 					</div>
 					
-					
-					
-					
-					<!--div id="g_id_onload"
+					{% load socialaccount %}
+					<a class="google-button" href="{% provider_login_url 'google' %}">
+						<img src="{% static 'IMG/google.png' %}" alt="">
+						<p>Se connecter avec Google</p>
+					</a>
+
+					<div id="g_id_onload"
 						data-client_id="395934194101-rkpt66qhr6tmh0g8spvrt6m0bnnmgp1a.apps.googleusercontent.com"
-						data-login_uri= "http://127.0.0.1:8000/">
-					</div-->
+						data-context="signin"
+						data-ux_mode="popup"
+						data-login_uri="https://sportdatafornerds.tcdrail.com"
+						data-itp_support="true">
+					</div>
+
+					<div class="g_id_signin"
+						data-type="standard"
+						data-shape="pill"
+						data-theme="outline"
+						data-text="signin_with"
+						data-size="large"
+						data-locale="en"
+						data-logo_alignment="left">
+					</div>
 					
 
 					<button type="submit" class="connection">Log in</button>
@@ -64,28 +82,11 @@
 						</div>
 					{% endif %}
 				</form>
-				
-				<!--div id="g_id_onload"
-					data-client_id="395934194101-rkpt66qhr6tmh0g8spvrt6m0bnnmgp1a.apps.googleusercontent.com"
-					data-context="signin"
-					data-ux_mode="redirect"
-					data-login_uri="https://127.0.0.1:8000/"
-					data-auto_prompt="false">
-				</div>
-
-				<div class="g_id_signin"
-					data-type="standard"
-					data-shape="pill"
-					data-theme="outline"
-					data-text="signin_with"
-					data-size="large"
-					data-logo_alignment="left">
-				</div-->
 
 			</div>
 		</div>
     </body>
 
-	<!--script src="//accounts.google.com/gsi/client" async></script-->
+	<script src="//accounts.google.com/gsi/client" async></script>
 	
 </html>
