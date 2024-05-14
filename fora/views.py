@@ -26,9 +26,9 @@ def fora(request) :
 
     return render(request, "fora.html", context)
 
-def categories(request, slug) :
-    category_selected = tchat_match_category.objects.get(slug=slug)
-    id_category_selected = tchat_match_category.objects.get(slug=slug)     # sans rien preciser on recupere l id autogenere
+def categories(request, slug_type, slug_category) :
+    category_selected = tchat_match_category.objects.get(slug_title=slug_category)
+    id_category_selected = tchat_match_category.objects.get(slug_title=slug_category)     # sans rien preciser on recupere l id autogenere
 
     corresponding_threads = threads.objects.filter(category=id_category_selected)
 
@@ -43,10 +43,10 @@ def categories(request, slug) :
         comments_count = tchat_match_comment.objects.filter(thread=thread).count()
 
         thread_info = {
-                'slug_thread': thread.match.slug,
-                'latest_comment': latest_comment,
-                'comments_count': comments_count,
-                'closed_thread': thread.closed,
+            'slug_thread': thread.match.slug,
+            'latest_comment': latest_comment,
+            'comments_count': comments_count,
+            'closed_thread': thread.closed,
             }
 
         # Ajouter le dictionnaire à la liste
@@ -106,7 +106,7 @@ def add_comment(request, slug_category, slug_thread):
 def display_category(request, slug_category) :
     category_selected = tchat_match_category.objects.get(slug_title=slug_category)     # sans rien preciser on recupere l id autogenere
     
-    corresponding_threads = threads.objects.filter(category=category_selected)
+    corresponding_threads = threads.objects.filter(category=category_selected, closed=False)
 
     threads_info = []
     for thread in corresponding_threads :

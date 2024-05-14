@@ -58,6 +58,12 @@ a
     cursor:auto;
 }
 
+.container-grid-threads .grid-threads:last-child 
+{
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
 .container-grid-threads .grid-threads:not(:first-child):hover 
 {
     background-color:   #cbd5e7; /* Couleur de fond différente au survol (sauf la première ligne) */

@@ -64,8 +64,12 @@ def presentationMatch(request, slug_match) :
     # Récupérer la date du commentaire le plus récent pour ce thread
     comments = tchat_match_comment.objects.filter(thread=threads_)
     latest_comment_date = comments.aggregate(latest_comment=Max('date'))["latest_comment"]
-    latest_comment = tchat_match_comment.objects.get(thread=threads_, date=latest_comment_date)
-                 
+    
+    if latest_comment_date != None :
+        latest_comment = tchat_match_comment.objects.get(thread=threads_, date=latest_comment_date)
+    else :
+        latest_comment = None  
+      
     category_slug = tchat_match_category.objects.get(title=match_.league).slug_title
     country_slug = tchat_match_category.objects.get(title=match_.league).slug_country
 

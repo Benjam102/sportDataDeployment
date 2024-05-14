@@ -125,6 +125,12 @@
     align-items: center;
 }
 
+.text-check-box a
+{
+    text-decoration: none;
+    color: black;
+}
+
 input[type="checkbox"] 
 {
     accent-color: #344D59;

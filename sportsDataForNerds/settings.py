@@ -18,6 +18,7 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Access to environment variables
 from dotenv import load_dotenv
 load_dotenv()  # loads the configs from .env
 
@@ -30,9 +31,10 @@ SITE_ID = 2
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['sportdatafornerds.tcdrail.com', 'www.sportdatafornerds.tcdrail.com']
+ALLOWED_HOSTS = []
+#ALLOWED_HOSTS = ['sportdatafornerds.tcdrail.com', 'www.sportdatafornerds.tcdrail.com']
 
 # Application definition
 
@@ -142,6 +144,8 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),]
 
+STATIC_ROOT = 'www/data/sportDataDeployment/staticfiles'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
@@ -154,7 +158,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 # For allauth (réseaux sociaux)
-LOGIN_REDIRECT_URL = 'http://127.0.0.1:8000/'
-ACCOUNT_LOGOUT_REDIRECT_URL = 'http://127.0.0.1:8000/'
+LOGIN_REDIRECT_URL = os.environ.get('HOME_PAGE')
+ACCOUNT_LOGOUT_REDIRECT_URL = os.environ.get('HOME_PAGE')
 SOCIAL_ACCOUNT_QUERY_EMAIL = True
 ACCOUNT_SESSION_REMEMBER = True

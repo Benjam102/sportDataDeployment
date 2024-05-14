@@ -17,7 +17,7 @@
 		<meta name="viewport" content="initial-scale=1.0, maximum-scale=2.0" />
 
 		<!-- icône de la page -->
-		<link rel="icon" href="http://127.0.0.1:8000//static/rugbyBut.ico" type="image/x-icon">
+		<link rel="icon" href="{% static 'rugbyBut.ico' %}" type="image/x-icon">
         
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	</head>
@@ -26,7 +26,7 @@
         <div class="container-page" id="c-p">
             <div class="page">
                 <header>
-                    <a href="http://127.0.0.1:8000/" class="logoRugby">
+                    <a href="{% url 'homePage' %}" class="logoRugby">
                         <img src="{% static 'IMG/logoHeader.png' %}" alt="">
                         <h1> Rugby Data </h1>
                     </a>
@@ -78,7 +78,11 @@
                             </div>
                             <div class="border-latest-com">
                                 <!--img src="{% static 'IMG/joueurRugby.png' %}" alt=""-->
-                                {{ latest_comment.user.username }}
+                                {% if latest_comment != None %}
+                                    {{ latest_comment.user.username }}
+                                {% else %}
+                                    /
+                                {% endif %}
                             </div>
                             <div class="border-latest-com">
                                 {% if latest_comment != None %}                                  
@@ -88,10 +92,14 @@
                                 {% endif %}
                             </div>
                             <div class="date-latest-com">
-                                {% if today_date|date:"Y-m-d" == latest_comment.date|date:"Y-m-d" %}
-                                    {{ latest_comment.date|time:"H:i" }}
+                                {% if latest_comment != None %}
+                                    {% if today_date|date:"Y-m-d" == latest_comment.date|date:"Y-m-d" %}
+                                        {{ latest_comment.date|time:"H:i" }}
+                                    {% else %}
+                                        {{ latest_comment.date|date:"Y-m-d" }}
+                                    {% endif %}
                                 {% else %}
-                                    {{ latest_comment.date|date:"Y-m-d" }}
+                                    /
                                 {% endif %}
                             </div>         
                         </div>
