@@ -1,0 +1,93 @@
+{% load static %}
+{% load myFiltersHTML %}
+
+<div class="container-recurrent">
+    {% if nb_teams_pool == 0 %} 
+        <div></div> <!-- a cause des pools-->
+        <div class="grid-tab-ranking">
+            <div> </div>
+            <div> </div>
+            <div class="container-nb-ranking-passed-match">
+                MP
+            </div>
+            <div class="container-nb-ranking-passed-match">
+                W
+            </div>
+            <div class="container-nb-ranking-passed-match">
+                D
+            </div>
+            <div class="container-nb-ranking-passed-match">
+                L
+            </div>
+            <div class="container-nb-ranking-passed-match">
+                P
+            </div>
+            <div class="container-nb-ranking-passed-match">
+                PD
+            </div>
+            <div class="container-nb-ranking-passed-match">
+                B
+            </div>
+            <div class="container-nb-ranking-passed-match">
+                Form
+            </div>
+        </div>
+        {% for standing in standings_home %}
+            <div class="grid-tab-ranking">
+                <div class="rank"> 
+                    {{ standing.rank }}
+                </div>
+                <div class="team-ranking">
+                    <img src="{{ standing.team.logo }}" alt="">
+                    {{ standing.team.name }}
+                </div>
+                <div class="container-nb-ranking-passed-match">
+                    {{ standing.played }}
+                </div>
+                <div class="container-nb-ranking-passed-match">
+                    {{ standing.won }}
+                </div>
+                <div class="container-nb-ranking-passed-match">
+                    {{ standing.draw }}
+                </div>
+                <div class="container-nb-ranking-passed-match">
+                    {{ standing.lost }}
+                </div>
+                <div class="container-nb-ranking-passed-match">
+                    {{ standing.points }}
+                </div>
+                <div class="container-nb-ranking-passed-match">
+                    {{ standing.points_difference }}
+                </div>
+                <div class="container-nb-ranking-passed-match">
+                    {{ standing.bonus }}
+                </div>
+                <div class="container-nb-ranking-passed-match">
+                    {% with standing.tendency|split as seq_list %}
+                        {% for r in seq_list|slice:":4" %}
+                            {% if r == 'V' %}
+                                <div class="carre V">
+                                    V
+                                </div>
+                            {% elif r == 'D' %}
+                                <div class="carre D">
+                                    D
+                                </div>
+                            {% else %}
+                                <div class="carre N">
+                                    N
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endwith %}
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="container-recurrent">
+            <div class="grid-no-info">
+                No informations !
+            </div>
+        </div>                           
+    {% endif %}
+</div>

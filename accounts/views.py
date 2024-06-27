@@ -10,6 +10,11 @@ from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from allauth.socialaccount.providers.oauth2.views import OAuth2LoginView
 
+import os
+# Access to environment variables
+from dotenv import load_dotenv
+load_dotenv()  # loads the configs from .env
+
 def login_user(request) :
     if request.method == 'POST' :
             username = request.POST["username"]
@@ -19,7 +24,7 @@ def login_user(request) :
             
             if user != None : 
                 login(request, user)
-                return redirect("http://127.0.0.1:8000/")
+                return redirect(os.environ.get('DOMAIN_NAME_1'))
             else :
                 messages.info(request, "Incorrect login or password !")
 
@@ -30,7 +35,7 @@ def login_user(request) :
 
 def logout_user(request) :
     logout(request)
-    return redirect("http://127.0.0.1:8000/")
+    return redirect(os.environ.get('DOMAIN_NAME_1'))
 
 def signup_user(request) :
     if request.method == 'POST':

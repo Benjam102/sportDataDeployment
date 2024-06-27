@@ -175,17 +175,7 @@
     margin-right: 10px;
 }
 
-
-
-
-
-
 /*--------------------------------------------------------Country--------------------------------------------------------*/
-.container-grid-cate
-{
-    padding: 10px;
-}
-
 .grid-country
 {
     display: grid;
@@ -301,37 +291,76 @@ input[type="checkbox"]:hover
     align-items: center;
     background-color: #F7F7F7;
     border-radius: 10px;
-    padding: 10px;
-    font-size: 15px;
+    font-size: 14px;
+    padding: 5px;
     margin: 0px 10px 10px 10px;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 0.15fr 1fr 1fr;
     column-gap: 10px;
+    row-gap: 5px;
     cursor: pointer;
 }
 
-.toto
+.grid-match
 {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.toto img
-{
-    width: 20%;
-    margin-right: 5px;
-}
-
-.toto a
-{
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    text-decoration: none;
     color: black;
 }
 
-.teams
+.date
 {
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.hour
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    grid-column: 2;
+    grid-row: 2;
+}
+
+.team-home
+{
+    display: flex;
+    align-items: center;
+    grid-column: 3;
+    grid-row: 1;
+}
+
+.team-away
+{
+    display: flex;
+    align-items: center;
+    grid-column: 3;
+    grid-row: 2;
+}
+
+.team-home img
+{
+    width: 12px;
+    margin-right: 5px;
+}
+
+.team-away img
+{
+    width: 12px;
+    margin-right: 5px;
+}
+
+.illustration
+{
+    display: flex;
+    align-items: center;
+    grid-column: 1;
+    grid-row: 1 / span 2;
+}
+
+.illustration img
+{
+    width: 28px;
 }

@@ -33,10 +33,8 @@
 			</a>
 
 			<ul class="menu">
-				<li> <a href="{% url 'leagues' %}"> Leagues </a> </li>
-				<li> <a href="{% url 'teams' %}"> Teams </a> </li>
-				<li> <a href="{% url 'matches' %}"> Matches </a> </li>
-				<li> <a href="{% url 'players' %}"> Players </a> </li>
+				<li> <a href="{% url 'standings' %}"> Standings </a> </li>
+                <li> <a href="{% url 'fora' %}"> Fora </a> </li>
 			</ul>
 			
 			{% if user.is_authenticated %}
@@ -67,36 +65,38 @@
 		</header>
 
     <div class="page">
-        <div class="left-column">
+        <div class="categories-tchats">
             <div class="container-grid-cate">   
                 <div class="grid-title">
                     Categories
                 </div>
                 
-                {% for country, categories in categories_by_country.items %}
-                    <div class="grid-country">
-                        {{ country }}
+                {% for cate, categories in leagues_by_categories.items %}
+                    <div class="grid-category">
+                        {{ cate }}
                         <div class="second-col">
                             <div class="caret"></div>
                         </div>
                     </div>
-                    <div class="grid-categories-none" id="{{ country }}">
+                    <div class="leagues-tchats-none" id="{{ cate }}">
                         {% for category in categories %}
-                            <div class="grid-cate text-check-box">
-                                <a class="text-league" href="{% url 'categories' slug_type=category.slug_country slug_category=category.slug_title %}">
-                                    {{ category.title }}
+                            <!-- Grâce au label on peut lier la grid à la checkbox par l'id -->
+                            <!-- Quand on clique sur en dehors de case on peut quand même la cocher -->
+                            <label class="grid-league-tchat text-check-box" for="thread-{{ category.slug_thread_league }}">
+                                <a class="league-tchat" href="{% url 'categories' slug_thread_category=category.slug_thread_category slug_thread_league=category.slug_thread_league %}">
+                                    {{ category.thread_league }}
                                 </a>
-                                <input type="checkbox" class="category-checkbox" data-url="{% url 'display_category' slug_category=category.slug_title %}">
-                            </div>
+                                <input type="checkbox" class="category-checkbox" id="thread-{{ category.slug_thread_league }}" data-url="{% url 'display_threads' slug_category_thread=category.slug_thread_league %}">
+                            </label>
                         {% endfor %}
                     </div>
                 {% endfor %}     
             </div>
         </div>
-
-        <div class="right-column">
-           <div class="container-grid-recents">
-                <div class="grid-legend-tab">
+           
+        <div class="threads-tchats">
+            <div class="container-grid-threads-tchats">
+                <div class="grid-first">
                     <div class="element-grid">
                         <b>Thread</b>
                     </div>
@@ -111,31 +111,80 @@
                     </div>
                 </div>
                 
-                    <div class="container-futur-threads">
-                        <!-- Ajoutés grâce à une requête ajax -->
-                        <div class="no-thread"> 
-                            No threads
+                <div class="container-futur-threads">
+                    <!-- Ajoutés grâce à une requête ajax -->
+                    <div class="no-thread"> 
+                        Nothing is selected.
+                    </div>
+                </div>
+            </div>
+        </div>
+                
+        <div class="categories-tchats">
+            <div class="container-grid-cate-tchat">   
+                <div class="grid-title">
+                    Tchats
+                </div>
+
+                {% for tchat_category, tchats_info in tchats_by_categories.items %}
+                    <div class="grid-category">
+                        {{ tchat_category }}
+                        <div class="second-col">
+                            <div class="caret"></div>
                         </div>
                     </div>
-                
-                
-           </div>
+
+                    <div class="leagues-tchats-none" id="{{ tchat_category }}">
+                        {% for tchat in tchats_info %}
+                            <label class="grid-league-tchat text-check-box" for="tchat-{{ tchat.tchat_slug }}">
+                                <a class="league-tchat">
+                                    {{ tchat.tchat_name }}
+                                </a>
+                                <input type="checkbox" class="category-checkbox" id="tchat-{{ tchat.tchat_slug }}" data-url="{% url 'display_tchats' slug_tchat_name=tchat.tchat_slug %}">
+                            </label>
+                        {% endfor %}
+                    </div>
+                {% endfor %}     
+            </div>  
         </div>
+
+        <div class="threads-tchats">
+            <div class="container-grid-threads-tchats">
+                <div class="grid-first-tchat">
+                    <div class="element-grid">
+                        <b>Tchat</b>
+                    </div>
+                    <div class="element-grid">
+                        <b>Latest comment</b>
+                    </div>
+                    <div class="element-grid">
+                        <b>Comments</b>
+                    </div>
+                </div>
+                
+                <div class="container-futur-tchats">
+                    <!-- Add thank to the Ajax request -->
+                    <div class="no-thread"> 
+                        Nothing is selected.
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
+    
     <footer>
         <div class="plan">
-            <li> <a href="{% url 'contact' %}"> Contact us </a>  </li>
             <li> <a href="{% url 'imgSources' %}"> Image sources </a> </li>
-            <li> <a href="{% url 'urlSources' %}"> Scraping sources </a> </li>
         </div>
     </footer>
 
-    <!-- Sript pour les checkboxes -->
+    <!-- Sript for the drop down menu -->
 	<script src="{% static 'JS/dropDownMenu.js' %}"></script>
 
-    <!-- Sript pour les checkboxes -->
-	<script src="{% static 'JS/threadsCategory.js' %}"></script>
+    <!-- Sript for display threads/tchats -->
+	<script src="{% static 'JS/threadsTchatsCategory.js' %}"></script>
     </body>
 </html>
 

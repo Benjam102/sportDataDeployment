@@ -47,32 +47,15 @@
 					</div>
 					
 					{% load socialaccount %}
-					<a class="google-button" href="{% provider_login_url 'google' %}">
+					<!--a class="google-button" href="{% provider_login_url 'google' %}">
 						<img src="{% static 'IMG/google.png' %}" alt="">
 						<p>Se connecter avec Google</p>
-					</a>
-
-					<div id="g_id_onload"
-						data-client_id="395934194101-rkpt66qhr6tmh0g8spvrt6m0bnnmgp1a.apps.googleusercontent.com"
-						data-context="signin"
-						data-ux_mode="popup"
-						data-login_uri="https://sportdatafornerds.tcdrail.com"
-						data-itp_support="true">
-					</div>
-
-					<div class="g_id_signin"
-						data-type="standard"
-						data-shape="pill"
-						data-theme="outline"
-						data-text="signin_with"
-						data-size="large"
-						data-locale="en"
-						data-logo_alignment="left">
-					</div>
-					
+					</a-->
 
 					<button type="submit" class="connection">Log in</button>
-	
+					
+					<a href="{% url 'reset_password' %}" class="reset-pw" >Forgot password?</a>
+
 					<!-- Permet d'afficher un message d'erreur en cas d'une mauvaise saisie -->
 					{% if messages %}
 						<div class="message-error">
@@ -86,7 +69,6 @@
 			</div>
 		</div>
     </body>
-
 	<script src="//accounts.google.com/gsi/client" async></script>
 	
 </html>

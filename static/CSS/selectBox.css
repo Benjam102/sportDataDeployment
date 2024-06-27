@@ -7,13 +7,29 @@
     width: 180px;
     border-radius: 10px;
     padding: 6px;
+    margin: 0px 6px 0px 6px;
     background-color: #F7F7F7;
+    border: 1px solid #242424;
     cursor: pointer;
+}
+
+.select.predic
+{
+    width: 95px;
+    padding: 3px;
+    height: 22px;
+    margin: 5px;
+    font-size: 13px;
 }
 
 .select:hover
 {
     background-color: #A9B3B8;
+}
+
+.select.predic:hover
+{
+    background-color:#F7F7F7;
 }
 
 .caret
@@ -28,65 +44,88 @@
     transition: 0.3s;
 }
 
+.caret.predic
+{
+    left: 76px;
+}
+
 /* Js */
 .caret-rotate
 {
     transform: rotate(180deg);
 }
 
-.years-scrollbar
+.val-scrollbar
 {
     padding: 6px;
     margin: 3px;  /* Permet de decaler la barre*/
     overflow: auto;
-    z-index: 10;
+    z-index: 1;
     scrollbar-color: black;
     max-height: 150px; /* Optionnel: spécifie la hauteur maximale de la liste avant que la barre de défilement n'apparaisse */
 }
 
-.years
+.val-scrollbar.predic
 {
+    padding: 3px;
+    margin: 1px;
+}
+
+.val
+{
+    margin: 5px 6px 0px 6px;
     list-style: none;
     padding: 3px;
     background-color: #F7F7F7;
     width: 180px;
     border-radius: 10px;
-    margin-top: 5px;
     display: none;
     transition: 0.2s;
     position: absolute;
     box-shadow: 0 0 10px rgba(0, 0, 0, 1);
-    
 }
 
-.years-scrollbar::-webkit-scrollbar                /* Scroll-bar plus jolie */
+.val.predic
+{
+    width: 95px;
+    margin: 0px 0px 0px 5px;
+}
+
+.val-scrollbar::-webkit-scrollbar                /* Scroll-bar plus jolie */
 {
     margin-right: 3px;
     width:5px;
 }
 
-.years-scrollbar::-webkit-scrollbar-thumb
+.val-scrollbar::-webkit-scrollbar-thumb
 {
     background-color: #242424;
     border-radius: 40px;
 }
 
-.years li
+.val li
 {
     padding: 5px;
+    margin: 6px 0px 6px 0px;
     cursor: pointer;
 }
 
-.years li:hover
+.val.predic li
+{
+    padding: 3px;
+    font-size: 13px;
+}
+
+.val li:hover
 {
     background-color: #cbd5e7;
     border-radius: 10px;
 }
 
-.years-open
+.val-open
 {
     display: block;
-   
+    z-index: 10;
 }
 
 .active

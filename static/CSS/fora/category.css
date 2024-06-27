@@ -1,5 +1,16 @@
-/*--------------------------------------------------------recent threads------------------------------------------------*/
-.category-selected
+/*------------------------------------------------------------Page------------------------------------------------------*/
+.page-category
+{
+    padding: 10px;
+}
+
+a
+{
+    text-decoration: none;
+    color: black;
+}
+/*--------------------------------------------------------Recent threads------------------------------------------------*/
+.category-selected                                   /* Category: '...' */
 {
     display: flex;
     align-items: center;
@@ -8,9 +19,47 @@
     color: #F7F7F7;
 }
 
-.container-grid-threads
+.container-grid-threads                              
 {
     padding: 10px;
+}
+
+.grid-threads                                        /* Grid for each thread */
+{
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 0.5fr 0.5fr;
+    padding: 10px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.container-grid-threads .grid-threads:nth-child(odd)        /* Color for the odd thread */
+{
+    background-color: #e6e8e9;
+}
+
+.container-grid-threads .grid-threads:nth-child(even)       /* Color for the even thread */
+{
+    background-color: #F7F7F7;
+}
+
+.container-grid-threads .grid-threads:first-child          /* Color for the first child: threads, latest comment comments, status */
+{
+    background-color:  #A9B3B8;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    cursor:auto;
+}
+
+.container-grid-threads .grid-threads:last-child           /* Arronding the edge of the last child */
+{
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.container-grid-threads .grid-threads:not(:first-child):hover  /* No hover for the first child */
+{
+    background-color:   #cbd5e7;
 }
 
 .no-thread
@@ -23,49 +72,3 @@
     font-size: 14px;
     padding: 10px;
 }
-
-a
-{
-    text-decoration: none;
-    color: black;
-}
-
-.container-grid-threads .grid-threads
-{
-    display: grid;
-    grid-template-columns: 1.5fr 1fr 0.5fr 0.5fr;
-    font-size: 14px;
-    padding: 10px;
-    cursor: pointer;
-}
-
-/* Style des grid-tabs impairs (1er, 3ème, 5ème, etc.) en fct du parent qui container-grid-tab */
-.container-grid-threads .grid-threads:nth-child(odd) 
-{
-    background-color: #e6e8e9;
-}
-
-.container-grid-threads .grid-threads:nth-child(even) 
-{
-    background-color: #F7F7F7;
-}
-
-.container-grid-threads .grid-threads:first-child 
-{
-    background-color:  #A9B3B8;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    cursor:auto;
-}
-
-.container-grid-threads .grid-threads:last-child 
-{
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-}
-
-.container-grid-threads .grid-threads:not(:first-child):hover 
-{
-    background-color:   #cbd5e7; /* Couleur de fond différente au survol (sauf la première ligne) */
-}
-

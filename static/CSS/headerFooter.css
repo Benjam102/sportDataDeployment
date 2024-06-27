@@ -245,7 +245,7 @@ footer                                /* Dernière partie de la page web */
     {
         display: flex;
         position: absolute;
-        top: 95px;                   /* Hauteur du menu déroulant -> évite de couper l'icône ou le lien espace client */
+        top: 76px;                   /* Hauteur du menu déroulant -> évite de couper l'icône ou le lien espace client */
         left: 0;
         background-color:#F7F7F7;
         flex-direction: column;

@@ -1,0 +1,50 @@
+{% load static %}
+
+<div class="container-recurrent" id="1matchesContainer1">    
+    {% for result, m in last_matches_home_team %}                 
+        <div class="grid-h2h">
+            <div class="date-h2h">
+                {{ m.date|date:"d/m/Y" }}
+            </div>
+            <div class="league-h2h">
+                {{ m.competition }}
+            </div>
+            <div class="teams-h2h t1">
+                <img src="{{ m.home_team.logo }}" alt="">
+                {{ m.home_team.name }}
+            </div>
+            <div class="teams-h2h t2">
+                <img src="{{ m.away_team.logo }}" alt="">
+                {{ m.away_team.name }}
+            </div>
+            <div class="scores-h2h te1">
+                {{ m.home_score }}
+            </div>
+            <div class="scores-h2h te2">
+                {{ m.away_score }}
+            </div>
+            <div class="result-match">
+                {% if result == 'V' %}
+                    <a class="result V" href="{% url 'presentationMatch' slug_match=m.key_id %}">
+                        V
+                    </a>
+                {% elif result == 'D' %}
+                    <a class="result D" href="{% url 'presentationMatch' slug_match=m.key_id %}">
+                        D
+                    </a>
+                {% else %}
+                    <a class="result N" href="{% url 'presentationMatch' slug_match=m.key_id %}">
+                        N
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<div class="container-show-more-arrow">
+    <button class="button-more" data-target="1matchesContainer1">
+        Show more
+        <img src="{% static 'IMG/arrowMore.png' %}" alt="">
+    </button> 
+</div>  

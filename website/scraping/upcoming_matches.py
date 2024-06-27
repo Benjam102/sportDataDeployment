@@ -8,8 +8,8 @@ import time
 import csv
 from datetime import datetime
 
-from fora.models import threads, tchat_match_category
-from website.models import up_match
+from fora.models import threads_match, threads_categories_match
+from website.models import matches
 from website.scraping.meteo import get_weather, associate_weather_code
 
 # Compétitions d'intérêt
@@ -49,7 +49,7 @@ def trigger_load_more(url) :
     # Searching for a div with attributes : onclick and a specific class
     onclick = soup.find('div', {'onclick': 'FixturesResultsView.loadMore();', 'class': 'load-more'})
 
-    print(onclick)
+    #print(onclick)
     
     # Check if the onclick exists
     if onclick :
@@ -132,7 +132,7 @@ def get_upcoming_matches(url: str) -> BeautifulSoup :
                         round_ = match.find(class_="round").get_text()
                         #print(round_)
                         
-                        find_match = up_match.objects.filter(team_home = team_home1, team_away = team_away2, league = name_competition, date = whole_date)
+                        find_match = matches.objects.filter(home_team = team_home1, away_team = team_away2, competition = name_competition, date = whole_date)
                         #print(find_match)
                         if not find_match.exists(): 
                             
@@ -155,24 +155,24 @@ def get_upcoming_matches(url: str) -> BeautifulSoup :
                                 wind_speed_ = None
                                 code_ = None
                                 
-                            new_match = up_match(
+                            new_match = matches(
                                 status = 'Scheduled',
-                                team_home = team_home1,
-                                team_away = team_away2,
-                                score_home = None,
-                                score_away = None,
+                                home_team = team_home1,
+                                away_team = team_away2,
+                                home_score = None,
+                                away_score = None,
                                 referee = None,
                                 date = whole_date,
-                                hour = hour_24,
-                                stade_name = stadium,
-                                league = name_competition,
+                                kickoff = hour_24,
+                                stadium = stadium,
+                                competition = name_competition,
                                 phase = round_,
                                 temperature = temperature_,
                                 humidity = humidity_,
                                 pressure = pressure_,
                                 precipitation = precipitation_,
                                 wind_speed = wind_speed_,
-                                code = code_,
+                                weather_code = code_,
                                 code_url = path_code,
                                 neutrality = None
                             )
@@ -180,8 +180,8 @@ def get_upcoming_matches(url: str) -> BeautifulSoup :
                             new_match.save()
                             
                             # Créer un nouveau thread associé au match
-                            cate_match = tchat_match_category.objects.get(title=new_match.league)
-                            new_thread = threads.objects.create(match=new_match, category=cate_match)
+                            cate_match = threads_categories_match.objects.get(thread_league=new_match.league)
+                            new_thread = threads_match.objects.create(match=new_match, category=cate_match)
 
                             new_thread.save()
 

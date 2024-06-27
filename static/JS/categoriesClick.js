@@ -2,6 +2,10 @@
 // Pour les categories 
 document.addEventListener('DOMContentLoaded', function() {
     const liElements = document.querySelectorAll('.details li');
+    const sideMenu = document.querySelector('.side-menu');
+    const sideCaret = document.querySelector('.side-caret');
+    const sideBar = document.querySelector('.side-bar');
+    
 
     function showContentById(id) {
         const contentId = `content-${id}`;
@@ -17,9 +21,16 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         liElements.forEach(function(li) {
-            if (li.getAttribute('id') === id) {
+            if (li.getAttribute('id') === id) 
+            {
                 li.classList.add('active');
-            } else {
+                
+                sideMenu.classList.remove('open');
+                sideCaret.classList.remove('side-caret-rotate');
+                sideBar.style.display = 'none';
+            } 
+            else 
+            {
                 li.classList.remove('active');
             }
         });
@@ -51,6 +62,10 @@ document.addEventListener('DOMContentLoaded', function() {
 // Pour les sous categories
 document.addEventListener('DOMContentLoaded', function() 
 {
+    const sideMenu = document.querySelector('.side-menu');
+    const sideCaret = document.querySelector('.side-caret');
+    const sideBar = document.querySelector('.side-bar');
+    
     // Sélectionner toutes les catégories et initialiser les contenus par défaut
     const categories = document.querySelectorAll('.category-content');
 
@@ -75,9 +90,14 @@ document.addEventListener('DOMContentLoaded', function()
         const liElements = document.querySelectorAll('#' + categoryId + ' .informations-matches li');
         //console.log(liElements)
         liElements.forEach(function(li) {
-            if (li.getAttribute('id') === id) {
+            if (li.getAttribute('id') === id) 
+            {
                 li.classList.add('active');
-            } else {
+                sideMenu.classList.remove('open');
+                sideCaret.classList.remove('side-caret-rotate');
+                sideBar.style.display = 'none';
+            } 
+            else {
                 li.classList.remove('active');
             }
         });
@@ -106,45 +126,6 @@ document.addEventListener('DOMContentLoaded', function()
     });
 });
 
-/*document.addEventListener('DOMContentLoaded', function() {
-    // Sélectionnez tous les éléments <li> sous la classe 'details'
-    const liElements = document.querySelectorAll('.details li');
 
-    // Fonction pour afficher le contenu correspondant à un ID donné
-    function showContentById(id) {
-        const contentId = `content-${id}`;
 
-        // Sélectionnez tous les éléments de contenu et cachez-les
-        const allContent = document.querySelectorAll('.category-content');
-        allContent.forEach(function(content) {
-            content.style.display = 'none';
-        });
 
-        // Affichez uniquement le contenu correspondant à l'ID spécifié
-        const selectedContent = document.getElementById(contentId);
-        if (selectedContent) {
-            selectedContent.style.display = 'block';
-        }
-
-        // Ajoutez la classe 'active' à l'élément <li> correspondant à l'ID sélectionné
-        liElements.forEach(function(li) {
-            if (li.getAttribute('id') === id) {
-                li.classList.add('active');
-            } else {
-                li.classList.remove('active');
-            }
-        });
-    }
-
-    // Par défaut, affichez le contenu correspondant à l'ID "1"
-    showContentById('1');
-
-    // Ajoutez un gestionnaire d'événement 'click' à chaque élément <li>
-    liElements.forEach(function(li) {
-        li.addEventListener('click', function() {
-            const id = li.getAttribute('id');
-            showContentById(id); // Affichez le contenu correspondant à l'ID cliqué
-        });
-    });
-});
-*/

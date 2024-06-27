@@ -4,12 +4,13 @@
     align-items: center;
     justify-content: center;
 }
-.slider table
+
+.slider .tkt
 {
     display: none;
 }
 
-.slider table.active 
+.slider .tkt.active 
 {
     display: inline-block;
     animation: fade 0.8s;

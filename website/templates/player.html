@@ -1,0 +1,223 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<!-- Title of the window -->
+		<title>Rugby Data</title>
+
+		<!-- Specifies encoding to the browser (management of accents, etc.) -->
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+		<!-- Style sheets -->
+		<link rel="stylesheet" type="text/css" href="{% static 'CSS/player.css' %}">
+
+		<!-- Inhibits wide screens on mobile phones: prevents the mobile phone from having a wide screen that requires zooming in -->
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=2.0" />
+
+		<!-- Page icon -->
+		<link rel="icon" href="{% static 'rugbyBut.ico' %}" type="image/x-icon">
+	
+	</head>
+
+    <body>
+		<div class="container-page">
+			<div class="page">
+				<header>
+                    <a href="{% url 'homePage' %}" class="logoRugby">
+                        <img src="{% static 'IMG/logoHeader.png' %}" alt="">
+                        <h1> Rugby Data </h1>
+                    </a>
+                </header>
+
+				<div class="grid-player">
+					<div class="container-player-club">
+						<div class="player-club">
+							<img src="{{ player_info.picture }}" alt="">
+						</div>
+
+						<div class="name-player-club">
+							{{ player_info.name }} 
+						</div>
+					</div>
+					<div class="container-player-club">
+						<div class="player-club">
+							<img src="{{ player_club_logo }}" alt="">
+						</div>
+
+						<div class="name-player-club">
+							{{ player_info.club }}
+						</div>
+					</div>
+				</div>
+
+				<div class="container-banner">
+					<div class="banner">
+						General Informations
+					</div>
+				</div>
+				
+				<div class="container-grid">
+					<div class="grid-general-info">
+						<div>
+							Position:
+						</div>
+						<div class="info-player">
+							{% if player_info.position %}
+								{{ player_info.position }}
+							{% else %}
+								/
+							{% endif %}
+						</div>
+					</div>	
+					<div class="grid-general-info">
+						<div>
+							First nationality:
+						</div>
+						<div class="info-player">
+							{% if player_info.nationality %}
+								{{ player_info.nationality }}
+							{% else %}
+								/
+							{% endif %}
+						</div>
+					</div>
+					<div class="grid-general-info">
+						<div>
+							Second nationality:
+						</div>
+						<div class="info-player">
+							{% if player_info.nationality2 %}
+								{{ player_info.nationality2 }}
+							{% else %}
+								/
+							{% endif %}
+						</div>
+					</div>
+					<div class="grid-general-info">
+						<div>
+							Sport nationality:
+						</div>
+						<div class="info-player">
+							{% if player_info.sport_nationality %}
+								{{ player_info.sport_nationality }}
+							{% else %}
+								/
+							{% endif %}
+						</div>
+					</div>
+					<div class="grid-general-info">
+						<div>
+							Age:
+						</div>
+						<div class="info-player">
+							{% if player_info.age %}
+								{{ player_info.age }}
+							{% else %}
+								/
+							{% endif %}
+						</div>
+					</div>
+					<div class="grid-general-info">
+						<div>
+							Height:
+						</div>
+						<div class="info-player">
+							{% if player_info.height %}
+								{{ player_info.height }}
+							{% else %}
+								/
+							{% endif %}
+						</div>
+					</div>
+					<div class="grid-general-info">
+						<div>
+							Weight:
+						</div>
+						<div class="info-player">
+							{% if player_info.weight %}
+								{{ player_info.weight }}
+							{% else %}
+								/
+							{% endif %}
+						</div>
+					</div>						
+				</div>
+				
+				<div class="container-banner">
+					<div class="banner">
+						Player performance
+					</div>
+				</div>
+
+				<div class="container-grid">
+					<div class="grid-general-info">
+						<div>
+							Tenure percentage over the last two seasons:
+						</div>
+						<div class="info-player">
+							{% if player_info.percentage %}
+								{{ player_info.percentage }}
+							{% else %}
+								/
+							{% endif %}
+						</div>
+					</div>	
+					<div class="grid-general-info">
+						<div>
+							Matches played/Number of matches:
+						</div>
+						<div class="info-player">
+							{% if player_info.ratio %}
+								{{ player_info.ratio }}
+							{% else %}
+								/
+							{% endif %}
+						</div>
+					</div>
+					<div class="grid-general-info">
+						<div>
+							Number of minutes played:
+						</div>
+						<div class="info-player">
+							{% if player_info.minute_played %}
+								{{ player_info.minute_played }}
+							{% else %}
+								/
+							{% endif %}
+						</div>
+					</div>
+				</div>
+
+				<div class="container-banner">
+					<div class="banner">
+						Unavailability
+					</div>
+				</div>
+
+				<div class="container-grid">
+					<div class="grid-general-info">
+						<div>
+							{% if player_info.unavailability %}
+								{{ player_info.unavailability }}
+							{% else %}
+								/
+							{% endif %}
+						</div>
+						<div class="info-player">
+							{% if player_info.unavailability_motiv %}
+								{{ player_info.unavailability_motiv }}
+							{% else %}
+								/
+							{% endif %}
+						</div>
+					</div>	
+				</div>
+				<!--form method="get" action="#">
+					<input type="text" id="player-search" placeholder="Type player name...">
+				</form-->
+			</div>
+		</div>
+	</body>
+</html>

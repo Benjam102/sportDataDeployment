@@ -1,0 +1,143 @@
+/*-----------------------------------------------------------Page---------------------------------------------------------*/
+.container-page
+{
+    display: flex;
+    justify-content: center;
+}
+
+.page
+{
+    width: 700px;
+    background-color: #F7F7F7;
+}
+
+/*----------------------------------------------------Banner : 'Comments'-------------------------------------------------*/
+.container-banner
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+}
+
+.banner
+{
+    width: 100%;
+    margin: 5px;
+    padding: 5px;
+    background-color: #242424;
+    color: #F7F7F7;
+    border-radius: 6px;
+}
+
+/*-------------------------------------------------------------Comments----------------------------------------------------*/
+.space-com                                          /* Container of all comments + post comment */
+{
+    display: flex;
+    flex-direction: column;    
+}
+
+.comments                                           /* Container of all comments */
+{
+    width: 95.5%;
+    margin-left: 15px;
+    padding: 10px;
+    background-color: #A9B3B8;
+    color: black;
+    border-radius: 6px;
+}
+
+.grid-comment                                       /* Grid for a comment */
+{
+    display: grid;
+    grid-template-columns: 0.5fr 1fr;
+    column-gap: 10px;   
+    padding: 5px;
+    border-bottom: 1px solid #344D59;
+}
+
+.username
+{   
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid #344D59;             /* Right border for the first column */
+    grid-column: 1;
+    grid-row: 1 / span 2;
+}
+
+.username img
+{
+    width: 20%;
+}
+
+.com-date
+{
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+    grid-column: 2;
+    grid-row: 2;
+    font-size: 12px;
+}
+
+.com-content
+{
+    font-size: 16px;
+}
+
+#comment-content                                   /* field for add a comment */
+{
+    box-sizing: border-box;                        /* Includes padding in width/height */
+    resize: none;                                  /* Prevents the text area from being resized */
+    width: 95.5%;
+    height: 100px;
+    margin-top: 20px;
+    margin-left: 15px;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #A9B3B8;
+    border-radius: 5px;
+}
+
+#comment-content:focus                             /* The border of the field changes when we click on the field */
+{
+    outline-color: #344D59;
+}
+
+.container-input                                   /* Container for the button 'post comment' */
+{
+    display: flex;
+    justify-content: right;
+    margin: 10px 15px 10px 10px;
+}
+
+input[type="submit"]                               /* Style for the button 'Post Comment' */
+{
+    padding: 10px;
+    background-color: #344D59;
+    color: #F7F7F7;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+/*----------------------------------------------------------Responsive web-------------------------------------------------------*/
+@media screen and (max-width:800px)
+{
+    .page
+    {
+        width: 500px;
+    }
+
+    .comments                                      /* Enables the banner to be aligned with the comments */
+    {
+        width: 94%;
+    }
+
+    #comment-content                               /* Enables the banner to be aligned with the field 'add comment' */
+    {
+        width: 94%;
+    }
+}

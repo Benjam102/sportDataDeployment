@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Sélectionnez tous les boutons "Voir plus" par leur classe
     const loadMoreButtons = document.querySelectorAll('.under-category-content .button-more');
-    const matchesPerPage = 1; // Nombre de matches à afficher par page
+    const matchesPerPage = 3; // Nombre de matches à afficher par page
 
     // Parcourez chaque bouton "Voir plus" et ajoutez un gestionnaire d'événements
     loadMoreButtons.forEach(function(button) {
@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (targetContainer) {
             // Fonction pour afficher les matches en fonction du nombre visible actuel
             function displayMatches() {
-                const matches = targetContainer.querySelectorAll('.grid-tab');
+                const matches = targetContainer.querySelectorAll('.grid-h2h');
 
                 visibleMatches = 0; // Nombre initial de matches visibles
 

@@ -30,10 +30,8 @@
 			</a>
 
 			<ul class="menu">
-				<li> <a href="{% url 'leagues' %}"> Leagues </a> </li>
-				<li> <a href="{% url 'teams' %}"> Teams </a> </li>
-				<li> <a href="{% url 'matches' %}"> Matches </a> </li>
-				<li> <a href="{% url 'players' %}"> Players </a> </li>
+				<li> <a href="{% url 'standings' %}"> Standings </a> </li>
+				<li> <a href="{% url 'fora' %}"> Fora </a> </li>
 			</ul>
 			
 			{% if user.is_authenticated %}
@@ -417,9 +415,7 @@
 
 		<footer>
 			<div class="plan">
-				<li> <a href="{% url 'contact' %}"> Contact us </a>  </li>
 				<li> <a href="{% url 'imgSources' %}"> Image sources </a> </li>
-				<li> <a href="{% url 'urlSources' %}"> Scraping sources </a> </li>
 			</div>
 		</footer>
 

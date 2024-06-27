@@ -1,133 +1,149 @@
 window.addEventListener('DOMContentLoaded', function() 
 {
-    /* Permet d'avoir les bords inférieurs de la dernière catégorie arrondis */
-    var gridCountryElements = document.querySelectorAll('.container-grid-cate .grid-country');
-    var lastGridCountryElement = gridCountryElements[gridCountryElements.length - 1];
-    lastGridCountryElement.classList.add('last-border')
-   
-    /* Permet d'avoir une alternance de couleurs pour les catégories des leagues */
-    gridCountryElements.forEach(function(grid, index) 
+    /**
+     * Allows parts containing checkboxes to function properly (drop down menu).
+     *
+     * @param {string} containerGeneral Principal container of the drop down menu.
+     * @param {string} containerTheadsTchats Container of the threads/tchats that are displayed when you check a checkbox.
+     * @param {string} lastId Id of the last container in the drop-down menu.
+     */
+    function initializeDropDownMenu(containerGeneral, containerTheadsTchats, lastId) 
     {
-        // Permet d'avoir une couleur uniforme avec la catégorie lors du défilement
-        var nextElement = grid.nextElementSibling; 
-        var leagues = nextElement.querySelectorAll('.grid-cate.text-check-box');
+        // Allows the bottom edges of the last category (id = lastId) to be rounded off  
+        var gridCategoryElements = document.querySelectorAll(containerGeneral + ' .grid-category');
+        var lastGridCategoryElement = gridCategoryElements[gridCategoryElements.length - 1];
+        lastGridCategoryElement.classList.add('last-border');
 
-        if (index % 2 === 0) 
+        // Alternating colours for club, international and other and also for countries and general 
+        gridCategoryElements.forEach(function(categoryElement, index) 
         {
-            grid.classList.add('even');
-            
-            leagues.forEach(function(league)
+            var nextElement = categoryElement.nextElementSibling; 
+            var leagues = nextElement.querySelectorAll('.grid-league-tchat.text-check-box');
+
+            if (index % 2 === 0) 
             {
-                league.classList.add('even');
-            });
-        } 
-        else 
-        {
-            
-            grid.classList.add('odd');
-            
-            leagues.forEach(function(league)
-            {
-                league.classList.add('odd');
-            });
-        }
-    });
-
-    /* Permet de dérouler la liste des leagues lorsqu'on clique sur une catégorie */
-    gridCountryElements.forEach(function(countryElement) 
-    {
-        countryElement.addEventListener('click', function() 
-        {
-            /* Permet à la flèche de tourner */
-            var arrow = countryElement.querySelector('.caret')
-            arrow.classList.add('caret-rotate')
-
-            /* Texte correspondant à l'identifiant des leagues */
-            var countryId = this.textContent.trim();   //trim() supprimer les espaces blancs debut/fin
-
-            /* On cherche les leagues correspondant à l'id */
-            var selectedCategoryGrid = document.getElementById(countryId);
-            
-            if (selectedCategoryGrid.classList.contains('grid-categories-none')) 
-            {
-                selectedCategoryGrid.classList.remove('grid-categories-none');
-                selectedCategoryGrid.classList.add('grid-categories-display');
-
-                /* Changer la catégorie s'il y en a une autre en dessous de Other */
-                if (countryId == 'Other')
-                {
-                    // Récupérer la dernière league avec l'id world
-                    var lastCate = selectedCategoryGrid.lastElementChild
+                categoryElement.classList.add('even');
                 
-                    lastGridCountryElement.classList.remove('last-border');
-                    lastCate.classList.add('last-border');
-                }
+                // Enables the colour of the leagues/tchats to be consistent with their category when scrolling the menu
+                leagues.forEach(function(league)
+                {
+                    league.classList.add('even');
+                });
+            } 
+            else 
+            {
+                
+                categoryElement.classList.add('odd');
+                
+                // Enables the colour of the leagues/tchats to be consistent with their category when scrolling the menu
+                leagues.forEach(function(league)
+                {
+                    league.classList.add('odd');
+                });
             }
-            else
-            {
-                selectedCategoryGrid.classList.remove('grid-categories-display');
-                selectedCategoryGrid.classList.add('grid-categories-none');
-
-                /* Permet à la flèche de tourner */
-                var arrow = countryElement.querySelector('.caret')
-                arrow.classList.remove('caret-rotate')
-
-                if (countryId == 'Other')
-                {
-                    // Récupérer la dernière league avec l'id world
-                    var lastCate = selectedCategoryGrid.lastElementChild
-                
-                    lastCate.classList.remove('last-border');
-                    lastGridCountryElement.classList.add('last-border');
-                }
-        }
         });
-    });
 
-    /* Permet de sélectionner qu'une seule checkbox à la fois */
-    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-
-    checkboxes.forEach(function(checkbox) 
-    {
-        checkbox.addEventListener('change', function() 
+        // Scrolls the list of leagues/tchat when you click on a category 
+        gridCategoryElements.forEach(function(categoryElement) 
         {
-            // Désélectionne toutes les autres cases à cocher
-            checkboxes.forEach(function(cb) 
+            categoryElement.addEventListener('click', function() 
             {
-                if (cb !== checkbox) 
+                // Allows the arrow to turn through 180°
+                var arrow = categoryElement.querySelector('.caret')
+                arrow.classList.add('caret-rotate')
+
+                // Text corresponding to the leagues/tchats identifier 
+                var countryId = this.textContent.trim();                        //trim() remove leading/trailing white spaces
+
+                // Search for leagues/tchats matching the id
+                var selectedCategoryGrid = document.getElementById(countryId);
+                
+                if (selectedCategoryGrid.classList.contains('leagues-tchats-none')) 
                 {
-                    cb.checked = false;
-                }
-            });
+                    selectedCategoryGrid.classList.remove('leagues-tchats-none');
+                    selectedCategoryGrid.classList.add('leagues-tchats-display');
 
-            // Vérifiez si aucune case n'est cochée
-            var aucunCoche = true;
-            checkboxes.forEach(function(cb) 
-            {
-                if (cb.checked) 
+                    // Change the rounding if the last class in the drop-down menu is no longer other/general 
+                    if (countryId == lastId)
+                    {
+                        // Retrieve the latest league/tchat
+                        var lastCate = selectedCategoryGrid.lastElementChild
+                    
+                        lastGridCategoryElement.classList.remove('last-border');
+                        lastCate.classList.add('last-border');
+                    }
+                }
+                else
                 {
-                    aucunCoche = false;
-                }
-            });
+                    selectedCategoryGrid.classList.remove('leagues-tchats-display');
+                    selectedCategoryGrid.classList.add('leagues-tchats-none');
 
-            // Si aucune case n'est cochée, nettoyez le conteneur
-            if (aucunCoche) 
-            {
-                // Sélectionnez l'élément où vous souhaitez ajouter les threads
-                var gridContainer = $('.container-futur-threads');
+                    // Allows the arrow to turn through 180° 
+                    var arrow = categoryElement.querySelector('.caret')
+                    arrow.classList.remove('caret-rotate')
 
-                // Videz d'abord le conteneur au cas où il contiendrait des éléments précédents
-                gridContainer.empty();
-
-                gridContainer.append(
-                    '<div class="no-thread">' +
-                        'No threads '+
-                    '</div>'
-                );
+                    // Change the rounding if the last class in the drop-down menu is no longer other/general
+                    if (countryId == lastId)
+                    {
+                        // Retrieve the latest league/tchat
+                        var lastCate = selectedCategoryGrid.lastElementChild
+                    
+                        lastCate.classList.remove('last-border');
+                        lastGridCategoryElement.classList.add('last-border');
+                    }
             }
             });
-    });
+        });
+
+        // For each group of checkboxes in their containerGeneral, only one can be selected at a time
+        var checkboxes = document.querySelectorAll(containerGeneral + ' input[type="checkbox"]');
+
+        checkboxes.forEach(function(checkbox) 
+        {
+            checkbox.addEventListener('change', function() 
+            {
+                // Deselects all checkboxes except the selected one
+                checkboxes.forEach(function(cb) 
+                {
+                    if (cb !== checkbox) 
+                    {
+                        cb.checked = false;
+                    }
+                });
+
+                // Verify that no checkbox is checked
+                var aucunCoche = true;
+                checkboxes.forEach(function(cb) 
+                {
+                    if (cb.checked) 
+                    {
+                        aucunCoche = false;
+                    }
+                });
+
+                if (aucunCoche) 
+                {
+                    // Select containerTheadsTchats where we want to add the threads/tchats
+                    var gridContainer = $(containerTheadsTchats);
+
+                    // Empty the container first
+                    gridContainer.empty();
+
+                    // Add 'Nothing is selected.'
+                    gridContainer.append(
+                        '<div class="no-thread">' +
+                            'Nothing is selected.'+
+                        '</div>'
+                    );
+                }
+            });
+        });
+    }
+
+    // Threads
+    initializeDropDownMenu('.container-grid-cate', '.container-futur-threads', 'Other');
+
+    // Tchats
+    initializeDropDownMenu('.container-grid-cate-tchat', '.container-futur-tchats', 'General');
 });
-
-
 

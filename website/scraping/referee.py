@@ -4,7 +4,7 @@ from pprint import pprint
 import re
 
 # Importation de la table match
-from website.models import up_match
+from website.models import matches
 from fuzzywuzzy import fuzz
 
 # Nombre d'articles sur la première page à scrappper(Max : 10)
@@ -112,7 +112,7 @@ def get_referee(url: str) -> BeautifulSoup:
                                             compet = competitions_nom[index]
                                             
                                             # BDD
-                                            find_match = up_match.objects.filter(league = compet, referee = None)
+                                            find_match = matches.objects.filter(league = compet, referee = None)
                                             #print("\n", find_match, "\n")
 
                                             for m in find_match :

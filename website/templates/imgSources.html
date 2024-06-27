@@ -4,22 +4,20 @@
 <html lang="en">
 
 	<head>
-		<!-- titre de la fenêtre -->
+		<!-- title of the window -->
 		<title>Rugby Data</title>
 
-		<!-- précise l'encodage au navigateur (gestion des accents, ...) -->
+		<!-- Specifies encoding to the browser (management of accents, etc.) -->
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-		<!-- Feuilles de style -->
+		<!-- Style sheets -->
 		<link rel="stylesheet" type="text/css" href="{% static 'CSS/headerFooter.css' %}">
 		<link rel="stylesheet" type="text/css" href="{% static 'CSS/sourcePages/sourcePages.css' %}">
-		<link rel="stylesheet" type="text/css" href="{% static 'CSS/sourcePages/imgSourcesPage/tableImgSources.css' %}">
-		<link rel="stylesheet" type="text/css" href="{% static 'CSS/sourcePages/responsiveSources.css' %}">
 
-		<!-- Inhibe la grande largeur sur mobile : évite que le mobile présente un écran large et qu'il faille zoomer -->
+		<!-- Inhibits wide screens on mobile phones: prevents the mobile phone from having a wide screen that requires zooming in -->
 		<meta name="viewport" content="initial-scale=1.0, maximum-scale=2.0" />
 
-		<!-- icône de la page -->
+		<!-- Page icon -->
 		<link rel="icon" href="{% static 'rugbyBut.ico' %}" type="image/x-icon">
 	
 	</head>
@@ -32,10 +30,8 @@
 			</a>
 
 			<ul class="menu">
-				<li> <a href="{% url 'leagues' %}"> Leagues </a> </li>
-				<li> <a href="{% url 'teams' %}"> Teams </a> </li>
-				<li> <a href="{% url 'matches' %}"> Matches </a> </li>
-				<li> <a href="{% url 'players' %}"> Players </a> </li>
+				<li> <a href="{% url 'standings' %}"> Standings </a> </li>
+				<li> <a href="{% url 'fora' %}"> Fora </a> </li>
 			</ul>
 			
 			{% if user.is_authenticated %}
@@ -52,7 +48,7 @@
 				</button>
 			{% endif %}
 			
-			<!-- Menu déroulant quand la fenêtre devient petite -->
+			<!-- Drop-down menu when the window becomes small -->
 			<div class="petit-menu">
 				<span>
 					<div></div>
@@ -65,58 +61,37 @@
 			</div>
 		</header>
 
-		<div class="container">
-			<table class="content-table">
-				<thead>
-				<tr>
-					<th>Images</th>
-					<th>Sources</th>
-				</tr>
-				</thead>
-				<tbody>
-			
-				<tr>
-					<td> 
-						<a href="https://boxicons.com ">
-							<img src="{% static 'IMG/logoHeader.png' %}" alt=""> 
-						</a>
-					</td>
-
-					<td> 
-						<a href="https://boxicons.com ">
-							https://boxicons.com 
+		<div class="page">
+			<div class="container-grid">
+				<div class="grid-source">
+					<div>
+						Pictures
+					</div>
+					<div>
+						Sources
+					</div>
+				</div>
+				{% for source in img_sources %}
+					<div class="grid-source">
+						<div>
+							<img src="{% static source.image_url %}" alt="">
+						</div>
+						<a href="{{ source.image_source }}">
+							{{ source.image_source }}
 						</a>
 
-						<div class="image">
-							<img src="{% static 'IMG/fleche.png' %}" alt="">
-						</div>
-					</td>
-				</tr>
-
-				<tr>
-					<td> <img src="{% static 'IMG/logoHeader.png' %}" alt=""> </td>
-
-					<td> 
-						https://boxicons.com https://boxicons.com 
-						<div class="image">
-							<img src="{% static 'IMG/fleche.png' %}" alt="">
-						</div>
-					</td>
-				</tr>
-				</tbody>
-			</table>
+					</div>
+				{% endfor %}
+			</div>
 		</div>
 		
-
 		<footer>
 			<div class="plan">
-				<li> <a href="{% url 'contact' %}"> Contact us </a>  </li>
 				<li> <a href="{% url 'imgSources' %}"> Image sources </a> </li>
-				<li> <a href="{% url 'urlSources' %}"> Scraping sources </a> </li>
 			</div>
 		</footer>
     </body>
 
-	<!-- Sript pour le petit menu déroulant -->
+	<!-- Script for the small drop-down menu -->
 	<script src="{% static 'JS/script_menu.js' %}"></script>
 </html>

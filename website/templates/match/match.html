@@ -1,0 +1,421 @@
+{% load static %}
+{% load myFiltersHTML %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<!-- Title of the window -->
+		<title>Rugby Data</title>
+
+		<!-- Specifies encoding to the browser (management of accents, etc.) -->
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+		<!-- Style sheets -->
+		<link rel="stylesheet" type="text/css" href="{% static 'CSS/match.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'CSS/selectBox.css' %}">
+        
+
+		<!-- Inhibits wide screens on mobile phones: prevents the mobile phone from having a wide screen that requires zooming in -->
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=2.0" />
+
+		<!-- Page icon -->
+		<link rel="icon" href="{% static 'rugbyBut.ico' %}" type="image/x-icon">
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	</head>
+
+    <body>
+        <div class="container-page" id="c-p">
+            <div class="page" id="debut">
+                <header>
+                    <a href="{% url 'homePage' %}" class="logoRugby">
+                        <img src="{% static 'IMG/logoHeader.png' %}" alt="">
+                        <h1> Rugby Data </h1>
+                    </a>
+                </header>
+
+                {% include 'match/summary/1confrontation.html' %}
+                
+                {% include 'match/summary/2prediction.html' %}                
+
+                <div class="details">
+                    <li id="1">Summary</li>
+                    <li id="2">H2H</li>
+                    <li id="3">Standings</li>
+                </div>
+
+                <!-- Contenu pour chaque catégorie (initialement caché) -->
+                <div class="category-content" id="content-1" name="Summary">
+                    <div class="container-banner">
+                        <div class="banner" id="Preview">
+                            Preview: {{ comment_count }} comments
+                        </div>
+                    </div>
+                    
+                    {% include 'match/summary/3comment.html' %}
+                    
+                    <div class="container-banner">
+                        <div class="banner" id="Form">
+                            Form
+                        </div>
+                    </div>
+
+                    {% include 'match/summary/4form.html' %}
+
+                    <div class="container-banner">
+                        <div class="banner" id="Infos">
+                           Match informations
+                        </div>
+                    </div>
+
+                    {% include 'match/summary/5matchInfo.html' %}
+                    
+                    <div class="container-banner">
+                        <div class="banner" id="Odds">
+                            Bookmaker (pre-match odds)
+                        </div>
+                    </div>
+                    
+                    {% include 'match/summary/6bookmakers.html' %}
+
+                    <div class="container-banner">
+                        <div class="banner" id="Meteo">
+                            Meteorological parameters 
+                        </div>
+                    </div>
+
+                    {% include 'match/summary/7meteo.html' %}
+
+                    <div class="container-banner">
+                        <div class="banner" id="Lineup">
+                           Principal lineup
+                        </div>
+                    </div>
+
+                    {% include 'match/summary/8lineup.html' %}
+                </div>
+
+                <div class="category-content" id="content-2" name="H2H">
+                    <div class="informations-matches">
+                        <li id="cat2.1">Overall</li>
+                        <li id="cat2.2">{{ match.home_team.name }} - Home</li>
+                        <li id="cat2.3">{{ match.away_team.name }} - Away</li>
+                    </div>
+
+                    <div class="under-category-content" id="content-cat2.1" name="Overall">
+                        <div class="container-banner">
+                            <div class="banner" id="Last matches: {{ match.home_team.name }}">
+                                Last matches: {{ match.home_team.name }}  <!-- Home team -->
+                            </div>
+                        </div>
+                        
+                        {% include 'match/h2h/1overall.html' %}
+                        
+                        <div class="container-banner">
+                            <div class="banner" id="Last matches: {{ match.away_team.name }}">
+                                Last matches: {{ match.away_team.name }}  <!-- Away team -->
+                            </div>
+                        </div>
+                        
+                        {% include 'match/h2h/2overallHome.html' %}
+                        
+                        <div class="container-banner">
+                            <div class="banner" id="H2H matches">
+                                Head-To-Head matches
+                            </div>
+                        </div>
+                        
+                        {% include 'match/h2h/3overallH2h.html' %}
+                    </div>
+                    
+                    <div class="under-category-content" id="content-cat2.2" name="{{ match.home_team.name }} - Home">
+                        <div class="container-banner">
+                            <div class="banner" id="Last matches: {{ match.home_team.name }}">
+                                Last matches: {{ match.home_team.name }}  <!-- Home team -->
+                            </div>
+                        </div>
+
+                        {% include 'match/h2h/4homeHome.html' %}
+
+                        <div class="container-banner">
+                            <div class="banner" id="H2H matches">
+                                Head-To-Head matches
+                            </div>
+                        </div>
+
+                        {% include 'match/h2h/5homeH2h.html' %}                        
+                    </div>
+
+                    <div class="under-category-content" id="content-cat2.3" name="{{ match.away_team.name }} - Away">
+                        <div class="container-banner">
+                            <div class="banner" id="Last matches: {{ match.away_team.name }}">
+                                Last matches: {{ match.away_team.name }} <!-- Away team -->
+                            </div>
+                        </div>
+
+                        {% include 'match/h2h/6awayAway.html' %} 
+
+                        <div class="container-banner">
+                            <div class="banner" id="H2H matches">
+                                Head-To-Head matches
+                            </div>
+                        </div>
+
+                        {% include 'match/h2h/7awayH2h.html' %}  
+                    </div>                   
+                </div>
+
+                <div class="category-content" id="content-3" name="Standings">
+                    <div class="informations-matches">
+                        <li id="cat3.1">Overall</li>                
+                        <li id="cat3.2">Home</li>
+                        <li id="cat3.3">Away</li>                        
+                        <li id="cat3.4">Draw</li>                 
+                    </div>
+
+                    <div class="under-category-content" id="content-cat3.1" name="Overall">
+                        <div class="container-banner">
+                            <div class="banner" id="Ranking">
+                                Ranking
+                            </div>
+                        </div>
+                        
+                        <div class="container-recurrent">
+                            <div class="container-select">
+                                <div class="select">
+                                    <span class="selected">{{ match.competition }}</span>
+                                    <div class="caret"></div>
+                                </div>
+                                <div class="val">
+                                    <div class="val-scrollbar">
+                                        {% for c in competitions %}
+                                            {% if c == match.competition %}
+                                                <li class="active" id="{{ match.date.year }}{{ match.competition }}"> {{ match.competition }}</li>
+                                            {% else %}
+                                                <li id="{{ match.date.year }}{{ c }}"> {{ c }} </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>  
+                                </div>  
+                            </div>
+                        </div>
+                        
+                        {% include 'match/standings/1generalOverall.html' %}                         
+
+                        <div class="container-banner">
+                            <div class="banner" id="More infos">
+                                More informations
+                            </div>
+                        </div>
+                        
+                        {% include 'match/standings/2moreInfosOverall.html' %} 
+
+                        <div class="container-banner">
+                            <div class="banner" id="Legend">
+                                Legend
+                            </div>
+                        </div>
+                        
+                        {% include 'match/standings/legendStandings.html' %}
+                    </div>
+                            
+                    <div class="under-category-content" id="content-cat3.2" name="Home">
+                        <div class="container-banner">
+                            <div class="banner" id="Home">
+                                Home
+                            </div>
+                        </div>
+
+                        {% include 'match/standings/3generalHome.html' %}
+
+                        <div class="container-banner">
+                            <div class="banner" id="More infos">
+                                More informations
+                            </div>
+                        </div>
+                        
+                        {% include 'match/standings/4moreInfosHome.html' %}
+
+                        <div class="container-banner">
+                            <div class="banner" id="Legend">
+                                Legend
+                            </div>
+                        </div>
+                        
+                        {% include 'match/standings/legendStandings.html' %}
+                    </div>
+
+                    <div class="under-category-content" id="content-cat3.3" name="Away">
+                        <div class="container-banner">
+                            <div class="banner" id="Away">
+                                Away
+                            </div>
+                        </div>
+    
+                        {% include 'match/standings/5generalAway.html' %}
+                        
+                        <div class="container-banner">
+                            <div class="banner" id="More infos">
+                                More informations
+                            </div>
+                        </div>
+    
+                        {% include 'match/standings/6moreInfosAway.html' %}
+
+                        <div class="container-banner">
+                            <div class="banner" id="Legend">
+                                Legend
+                            </div>
+                        </div>
+                        
+                        {% include 'match/standings/legendStandings.html' %}
+                    </div>
+
+                    <div class="under-category-content" id="content-cat3.4" name="Draw">
+                        <div class="container-recurrent">
+                            
+                            {% if final_match != None and semi_final_match != None and quarter_final_match != None and round_of_16_match != None %}
+                                {% if final_match != None %}
+                                    <div class="draw">Final:</div>
+                                    <div class="grid-h2h">
+                                        <div class="date-h2h">
+                                            {{ final_match.date|date:"d/m/Y" }}
+                                        </div>
+                                        <div class="league-h2h">
+                                            {{ final_match.competition }}
+                                        </div>
+                                        <div class="teams-h2h t1">
+                                            <img src="{{ m.home_team.logo }}" alt="">
+                                            {{ final_match.home_team.name }}
+                                        </div>
+                                        <div class="teams-h2h t2">
+                                            <img src="{{ m.away_team.logo }}" alt="">
+                                            {{ final_match.away_team.name }}
+                                        </div>
+                                        <div class="scores-h2h te1">
+                                            {{ final_match.home_score }}
+                                        </div>
+                                        <div class="scores-h2h te2">
+                                            {{ final_match.away_score }}
+                                        </div>
+                                    </div>
+                                {% endif %}
+
+                                {% if semi_final_match != None %}
+                                    <div class="draw">Semi-Final:</div>
+                                    {% for s in semi_final_match %}
+                                        <div class="grid-h2h">
+                                            <div class="date-h2h">
+                                                {{ s.date|date:"d/m/Y" }}
+                                            </div>
+                                            <div class="league-h2h">
+                                                {{ s.competition }}
+                                            </div>
+                                            <div class="teams-h2h t1">
+                                                <img src="{{ m.home_team.logo }}" alt="">
+                                                {{ s.home_team.name }}
+                                            </div>
+                                            <div class="teams-h2h t2">
+                                                <img src="{{ m.away_team.logo }}" alt="">
+                                                {{ s.away_team.name }}
+                                            </div>
+                                            <div class="scores-h2h te1">
+                                                {{ s.home_score }}
+                                            </div>
+                                            <div class="scores-h2h te2">
+                                                {{ s.away_score }}
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+
+                                {% if quarter_final_match != None %}
+                                    <div class="draw">Semi-Final:</div>
+                                    {% for q in quarter_final_match %}
+                                        <div class="grid-h2h">
+                                            <div class="date-h2h">
+                                                {{ q.date|date:"d/m/Y" }}
+                                            </div>
+                                            <div class="league-h2h">
+                                                {{ q.competition }}
+                                            </div>
+                                            <div class="teams-h2h t1">
+                                                <img src="{{ m.home_team.logo }}" alt="">
+                                                {{ q.home_team.name }}
+                                            </div>
+                                            <div class="teams-h2h t2">
+                                                <img src="{{ m.away_team.logo }}" alt="">
+                                                {{ q.away_team.name }}
+                                            </div>
+                                            <div class="scores-h2h te1">
+                                                {{ q.home_score }}
+                                            </div>
+                                            <div class="scores-h2h te2">
+                                                {{ q.away_score }}
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+
+                                {% if round_of_16_match != None %}
+                                    {% for r in round_of_16_match %}
+                                        <div class="draw">Round of 16:</div>
+                                        <div class="grid-h2h">
+                                            <div class="date-h2h">
+                                                {{ r.date|date:"d/m/Y" }}
+                                            </div>
+                                            <div class="league-h2h">
+                                                {{ r.competition }}
+                                            </div>
+                                            <div class="teams-h2h t1">
+                                                <img src="{{ m.home_team.logo }}" alt="">
+                                                {{ r.home_team.name }}
+                                            </div>
+                                            <div class="teams-h2h t2">
+                                                <img src="{{ m.away_team.logo }}" alt="">
+                                                {{ r.away_team.name }}
+                                            </div>
+                                            <div class="scores-h2h te1">
+                                                {{ r.home_score }}
+                                            </div>
+                                            <div class="scores-h2h te2">
+                                                {{ r.away_score }}
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% else %}
+                                <div class="grid-no-info">
+                                    No informations for the moment !
+                                </div>
+                            {% endif %}
+                        </div> 
+                    </div>
+                </div>
+            </div>
+
+            <div class="side-menu">
+                <div class="side-caret">
+
+                </div>
+           </div>
+           <div class="side-bar">
+                
+           </div>
+          
+       </div> 
+       
+       
+
+       <script src="{% static 'JS/categoriesClick.js' %}"></script>
+       <script src="{% static 'JS/loadMore.js' %}"></script>
+       <script src="{% static 'JS/prediction.js' %}"></script> <!-- le placer avant pour avoir les listener sur li-->
+       <script src="{% static 'JS/selectBox.js' %}"></script>
+       <script src="{% static 'JS/displayStandings.js' %}"></script>
+       <!-- Script pour le défilement des tableaux -->
+	   <script src="{% static 'JS/slider.js' %}"></script>
+       <script src="{% static 'JS/sidebar.js' %}"></script>
+
+    </body>
+</html>

@@ -1,0 +1,12 @@
+{% extends 'base_thread_tchat.html' %}
+
+{% block comment_form %}   
+    <form id="comment-form" data-url="{% url 'add_comment_tchat' slug_tchat_name=slug_tchat_name %}">
+        {% csrf_token %}
+        <textarea id="comment-content" name="content" placeholder="Add Comment..." required></textarea><br>
+        
+        <div class="container-input">
+            <input type="submit" value="Post Comment">
+        </div> 
+    </form>
+{% endblock %}
