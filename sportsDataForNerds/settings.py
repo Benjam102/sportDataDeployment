@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Access to environment variables
 from dotenv import load_dotenv
-load_dotenv()  # loads the configs from .env
+load_dotenv(os.path.join(BASE_DIR, '../'))  # loads the configs from .env
 
 SITE_ID = 5
 
@@ -151,7 +151,7 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),]
 
-STATIC_ROOT = 'www/data/sportDataDeployment/staticfiles'
+STATIC_ROOT = '/www/data/sportDataDeployment/staticfiles'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -165,12 +165,21 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 # For allauth (réseaux sociaux)
-LOGIN_REDIRECT_URL = 'http://127.0.0.1:8000/'
-ACCOUNT_LOGOUT_REDIRECT_URL = 'http://127.0.0.1:8000/'
+LOGIN_REDIRECT_URL = os.environ.get('REDIRECTION')
+ACCOUNT_LOGOUT_REDIRECT_URL = os.environ.get('REDIRECTION')
 #SOCIAL_ACCOUNT_QUERY_EMAIL = True
 ACCOUNT_SESSION_REMEMBER = True
 #SOCIALACCOUNT_LOGIN_ON_GET=True
 
+# For CSRF
+CSRF_TRUSTED_ORIGINS = [
+'https://*.tcdrail.com/'
+]
+
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+# For send a mail when the user forgot his password
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = '587'
