@@ -11,18 +11,18 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-# Ajouter
-from datetime import timedelta
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Access to environment variables
-from dotenv import load_dotenv
-load_dotenv(os.path.join(BASE_DIR, '../'))  # loads the configs from .env
+from dotenv import load_dotenv                     
+load_dotenv(os.path.join(BASE_DIR, '../', '.env')) 
 
-SITE_ID = 5
+# It corresponds to the line of the website in the database. 
+# It is not equal to 0 because when I cleared the table it did not return to 0.
+SITE_ID = 5 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -36,7 +36,6 @@ DEBUG = False
 ALLOWED_HOSTS = [os.environ.get('DOMAIN_NAME_1'), os.environ.get('DOMAIN_NAME_2')]
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -47,7 +46,8 @@ INSTALLED_APPS = [
     'website.apps.WebsiteConfig',
     'accounts.apps.AccountsConfig',
     'fora.apps.ForaConfig',
-    # For allauth (réseaux sociaux)
+    'prediction.apps.PredictionConfig',
+    # For allauth (social networks)
     'django.contrib.sites',
     'allauth',
     'allauth.account',
@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
 ]
+
 '''
 SOCIALACCOUNT_PROVIDERS={
     "google": {
@@ -65,6 +66,7 @@ SOCIALACCOUNT_PROVIDERS={
     }
 }
 '''
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -74,7 +76,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
-    # For allauth
+    # For allauth (social networks)
     "allauth.account.middleware.AccountMiddleware",
 ]
 
@@ -92,7 +94,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 
-                # For allauth (réseaux sociaux)
+                # For allauth (social networks)
                 'django.template.context_processors.request',
             ],
         },
@@ -147,39 +149,40 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-# Ajouter
+# Allows us to charge the static fields simply
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),]
 
+# Indicates the location of static files when they are collected for deployment. 
+# Nginx will then be able to serve our static files located in this file.
 STATIC_ROOT = '/www/data/sportDataDeployment/staticfiles'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# For allauth (réseaux sociaux)
+# For allauth (social networks)
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
-# For allauth (réseaux sociaux)
-LOGIN_REDIRECT_URL = os.environ.get('REDIRECTION')
-ACCOUNT_LOGOUT_REDIRECT_URL = os.environ.get('REDIRECTION')
-#SOCIAL_ACCOUNT_QUERY_EMAIL = True
+# For allauth (social networks)
+LOGIN_REDIRECT_URL = 'http://127.0.0.1:8000/'
+ACCOUNT_LOGOUT_REDIRECT_URL = 'http://127.0.0.1:8000/'
+# SOCIAL_ACCOUNT_QUERY_EMAIL = True
 ACCOUNT_SESSION_REMEMBER = True
-#SOCIALACCOUNT_LOGIN_ON_GET=True
+# SOCIALACCOUNT_LOGIN_ON_GET=True
 
-# For CSRF
+# For CSRF in production
 CSRF_TRUSTED_ORIGINS = [
-'https://*.tcdrail.com/'
+     'https://*.tcdrail.com/'
 ]
 
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
-# For send a mail when the user forgot his password
+# Allows us to send an email for changing password
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = '587'
