@@ -1,177 +1,183 @@
 {% load static %}
 {% load myFiltersHTML %}
 
-<div class="container-recurrent" id="container-add-standing1">                            
-    {% if nb_teams_pool == 0 %} 
-        <div></div> <!-- a cause des pools-->
-        <div class="grid-tab-ranking">
-            <div> </div>
-            <div> </div>
-            <div class="container-nb-ranking-passed-match">
-                MP
-            </div>
-            <div class="container-nb-ranking-passed-match">
-                W
-            </div>
-            <div class="container-nb-ranking-passed-match">
-                D
-            </div>
-            <div class="container-nb-ranking-passed-match">
-                L
-            </div>
-            <div class="container-nb-ranking-passed-match">
-                P
-            </div>
-            <div class="container-nb-ranking-passed-match">
-                PD
-            </div>
-            <div class="container-nb-ranking-passed-match">
-                B
-            </div>
-            <div class="container-nb-ranking-passed-match hidden">
-                Form
-            </div>
-        </div>
-        {% for standing in standings %}
+<div class="container-recurrent" id="container-add-standing1">     
+    {% if match.competition|lower != 'tests matchs' %}                       
+        {% if nb_teams_pool == 0 %} 
+            <div></div> <!-- a cause des pools-->
             <div class="grid-tab-ranking">
-                <div class="rank"> 
-                    {{ standing.rank }}
-                </div>
-                <div class="team-ranking">
-                    <img src="{{ standing.team.logo }}" alt="">
-                    {{ standing.team.name }}
+                <div> </div>
+                <div> </div>
+                <div class="container-nb-ranking-passed-match">
+                    MP
                 </div>
                 <div class="container-nb-ranking-passed-match">
-                    {{ standing.played }}
+                    W
                 </div>
                 <div class="container-nb-ranking-passed-match">
-                    {{ standing.won }}
+                    D
                 </div>
                 <div class="container-nb-ranking-passed-match">
-                    {{ standing.draw }}
+                    L
                 </div>
                 <div class="container-nb-ranking-passed-match">
-                    {{ standing.lost }}
+                    P
                 </div>
                 <div class="container-nb-ranking-passed-match">
-                    {{ standing.points }}
+                    PD
                 </div>
                 <div class="container-nb-ranking-passed-match">
-                    {{ standing.points_difference }}
+                    B
                 </div>
-                <div class="container-nb-ranking-passed-match">
-                    {{ standing.bonus }}
-                </div>
-                <div class="container-nb-ranking-passed-match hidden-form">
-                    {% with standing.tendency|split as seq_list %}
-                        {% for r in seq_list|slice:":4" %}
-                            {% if r == 'V' %}
-                                <div class="carre V">
-                                    V
-                                </div>
-                            {% elif r == 'D' %}
-                                <div class="carre D">
-                                    D
-                                </div>
-                            {% else %}
-                                <div class="carre N">
-                                    N
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-                    {% endwith %}
+                <div class="container-nb-ranking-passed-match hidden">
+                    Form
                 </div>
             </div>
-        {% endfor %}
-    {% else %}
-        <div class="slider">
-            {% for pool, standings_ in pools_teams.items %}
-                <div class="c{% if forloop.first %} slider-active{% endif %}">
-                    <div class="grid-league-pool">Pool {{pool}}:</div>
-                    <div class="grid-tab-ranking">
-                        <div></div>
-                        <div></div>
-                        <div class="container-nb-ranking-passed-match">
-                            MP
-                        </div>
-                        <div class="container-nb-ranking-passed-match">
-                            W
-                        </div>
-                        <div class="container-nb-ranking-passed-match">
-                            D
-                        </div>
-                        <div class="container-nb-ranking-passed-match">
-                            L
-                        </div>
-                        <div class="container-nb-ranking-passed-match">
-                            P
-                        </div>
-                        <div class="container-nb-ranking-passed-match">
-                            PD
-                        </div>
-                        <div class="container-nb-ranking-passed-match">
-                            B
-                        </div>
-                        <div class="container-nb-ranking-passed-match">
-                            Form
-                        </div>
+            {% for standing in standings %}
+                <div class="grid-tab-ranking">
+                    <div class="rank"> 
+                        {{ standing.rank }}
                     </div>
-                    {% for standing in standings_ %}
-                        <div class="grid-tab-ranking">
-                            <div class="rank"> 
-                                {{ standing.rank }}
-                            </div>
-                            <div class="team-ranking">
-                                <img src="{{ standing.team.logo }}" alt="">
-                                {{ standing.team.name }}
-                            </div>
-                            <div class="container-nb-ranking-passed-match">
-                                {{ standing.played }}
-                            </div>
-                            <div class="container-nb-ranking-passed-match">
-                                {{ standing.won }}
-                            </div>
-                            <div class="container-nb-ranking-passed-match">
-                                {{ standing.draw }}
-                            </div>
-                            <div class="container-nb-ranking-passed-match">
-                                {{ standing.lost }}
-                            </div>
-                            <div class="container-nb-ranking-passed-match">
-                                {{ standing.points }}
-                            </div>
-                            <div class="container-nb-ranking-passed-match">
-                                {{ standing.points_difference }}
-                            </div>
-                            <div class="container-nb-ranking-passed-match">
-                                {{ standing.bonus }}
-                            </div>
-                            <div class="container-nb-ranking-passed-match">
-                                {% with standing.tendency|split as seq_list %}
-                                    {% for r in seq_list|slice:":4" %}
-                                        {% if r == 'V' %}
-                                            <div class="carre V">V</div>
-                                        {% elif r == 'D' %}
-                                            <div class="carre D">D</div>
-                                        {% else %}
-                                            <div class="carre N">N</div>
-                                        {% endif %}
-                                    {% endfor %}
-                                {% endwith %}
-                            </div>
-                        </div>
-                    {% endfor %}
+                    <div class="team-ranking">
+                        <img src="{{ standing.team.logo }}" alt="">
+                        {{ standing.team.name }}
+                    </div>
+                    <div class="container-nb-ranking-passed-match">
+                        {{ standing.played }}
+                    </div>
+                    <div class="container-nb-ranking-passed-match">
+                        {{ standing.won }}
+                    </div>
+                    <div class="container-nb-ranking-passed-match">
+                        {{ standing.draw }}
+                    </div>
+                    <div class="container-nb-ranking-passed-match">
+                        {{ standing.lost }}
+                    </div>
+                    <div class="container-nb-ranking-passed-match">
+                        {{ standing.points }}
+                    </div>
+                    <div class="container-nb-ranking-passed-match">
+                        {{ standing.points_difference }}
+                    </div>
+                    <div class="container-nb-ranking-passed-match">
+                        {{ standing.bonus }}
+                    </div>
+                    <div class="container-nb-ranking-passed-match hidden-form">
+                        {% with standing.tendency|split as seq_list %}
+                            {% for r in seq_list|slice:":4" %}
+                                {% if r == 'V' %}
+                                    <div class="carre V">
+                                        V
+                                    </div>
+                                {% elif r == 'D' %}
+                                    <div class="carre D">
+                                        D
+                                    </div>
+                                {% else %}
+                                    <div class="carre N">
+                                        N
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endwith %}
+                    </div>
                 </div>
             {% endfor %}
-        </div>
+        {% else %}
+            <div class="slider">
+                {% for pool, standings_ in pools_teams.items %}
+                    <div class="c{% if forloop.first %} slider-active{% endif %}">
+                        <div class="grid-league-pool">Pool {{pool}}:</div>
+                        <div class="grid-tab-ranking">
+                            <div></div>
+                            <div></div>
+                            <div class="container-nb-ranking-passed-match">
+                                MP
+                            </div>
+                            <div class="container-nb-ranking-passed-match">
+                                W
+                            </div>
+                            <div class="container-nb-ranking-passed-match">
+                                D
+                            </div>
+                            <div class="container-nb-ranking-passed-match">
+                                L
+                            </div>
+                            <div class="container-nb-ranking-passed-match">
+                                P
+                            </div>
+                            <div class="container-nb-ranking-passed-match">
+                                PD
+                            </div>
+                            <div class="container-nb-ranking-passed-match">
+                                B
+                            </div>
+                            <div class="container-nb-ranking-passed-match">
+                                Form
+                            </div>
+                        </div>
+                        {% for standing in standings_ %}
+                            <div class="grid-tab-ranking">
+                                <div class="rank"> 
+                                    {{ standing.rank }}
+                                </div>
+                                <div class="team-ranking">
+                                    <img src="{{ standing.team.logo }}" alt="">
+                                    {{ standing.team.name }}
+                                </div>
+                                <div class="container-nb-ranking-passed-match">
+                                    {{ standing.played }}
+                                </div>
+                                <div class="container-nb-ranking-passed-match">
+                                    {{ standing.won }}
+                                </div>
+                                <div class="container-nb-ranking-passed-match">
+                                    {{ standing.draw }}
+                                </div>
+                                <div class="container-nb-ranking-passed-match">
+                                    {{ standing.lost }}
+                                </div>
+                                <div class="container-nb-ranking-passed-match">
+                                    {{ standing.points }}
+                                </div>
+                                <div class="container-nb-ranking-passed-match">
+                                    {{ standing.points_difference }}
+                                </div>
+                                <div class="container-nb-ranking-passed-match">
+                                    {{ standing.bonus }}
+                                </div>
+                                <div class="container-nb-ranking-passed-match">
+                                    {% with standing.tendency|split as seq_list %}
+                                        {% for r in seq_list|slice:":4" %}
+                                            {% if r == 'V' %}
+                                                <div class="carre V">V</div>
+                                            {% elif r == 'D' %}
+                                                <div class="carre D">D</div>
+                                            {% else %}
+                                                <div class="carre N">N</div>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endwith %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
 
-        <div class="container-button">
-            <div class="button-nav left">
-                <img src="{% static 'IMG/homePageRight/flecheGauche.png' %}" alt=""> 
+            <div class="container-button">
+                <div class="button-nav left">
+                    <img src="{% static 'IMG/homePageRight/flecheGauche.png' %}" alt=""> 
+                </div>
+                <div class="button-nav right"> 
+                    <img src="{% static 'IMG/homePageRight/flecheDroite.png' %}" alt=""> 
+                </div>
             </div>
-            <div class="button-nav right"> 
-                <img src="{% static 'IMG/homePageRight/flecheDroite.png' %}" alt=""> 
-            </div>
+        {% endif %}   
+    {% else %}
+        <div class="grid-no-info">
+            No informations !
         </div>
-    {% endif %}   
+    {% endif %}
 </div>

@@ -23,6 +23,7 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('accounts/', include('allauth.urls')),
     path('fora/', include('fora.urls')),
+    path('prediction/', include('prediction.urls')),
 ]
 
 

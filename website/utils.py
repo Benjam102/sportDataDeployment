@@ -73,3 +73,34 @@ def form_match(matches_team, team) :
     return form_home_team_match
 
 
+def integer_prediction(nb) : # pour eviter d avoir des 10.0
+    if nb == int(nb):
+        return int(nb)
+    else:
+        return nb
+    
+def user_prediction(prediction) :
+    if prediction.prediction_margin1 != None and prediction.prediction_margin2 != None :
+        home_prediction1 = integer_prediction((prediction.prediction_margin1 + prediction.prediction_total1)/2)
+        away_prediction1 = integer_prediction(prediction.prediction_total1 - home_prediction1)
+
+        home_prediction2 = integer_prediction((prediction.prediction_margin2 + prediction.prediction_total2)/2)
+        away_prediction2 = integer_prediction(prediction.prediction_total2 - home_prediction2)
+    
+    elif prediction.prediction_margin1 != None and prediction.prediction_margin2 == None :
+        home_prediction1 = integer_prediction((prediction.prediction_margin1 + prediction.prediction_total1)/2)
+        away_prediction1 = integer_prediction(prediction.prediction_total1 - home_prediction1)
+        
+        home_prediction2 = None
+        away_prediction2 = None
+    
+    elif prediction.prediction_margin1 == None and prediction.prediction_margin2 != None :
+        home_prediction1 = None
+        away_prediction1 = None
+        
+        home_prediction2 = integer_prediction((prediction.prediction_margin2 + prediction.prediction_total2)/2)
+        away_prediction2 = integer_prediction(prediction.prediction_total2 - home_prediction2)
+
+    return home_prediction1, away_prediction1, home_prediction2, away_prediction2
+
+

@@ -6,16 +6,14 @@ from .models import matches, teams, odds, rankings, players, sources, compositio
 from fora.views import threads_
 
 # Importation des fonctions de scraping
-from website.scraping.upcoming_matches import get_upcoming_matches
-from website.scraping.referee import get_referee
-from website.scraping.meteo import get_weather
 from fora.models import threads_categories_match, threads_match, threads_comments_match
+from prediction.models import predictions_matches
 
 # Utile
 from django.db.models import Max
 from django.forms.models import model_to_dict
 from django.db.models import Q
-from .utils import form_match, associate_weather_code
+from .utils import form_match, associate_weather_code, user_prediction
 from django.http import JsonResponse
 import json
 from django.core import serializers
@@ -26,7 +24,7 @@ def homePage(request) :
 
     # Récupérer les 4 matchs les plus proches ordonnés par date puis par heure
     upcoming_matches = matches.objects.filter(status='Scheduled').exclude(date__isnull=True).exclude(kickoff__isnull=True)
-    upcoming_matches = upcoming_matches.order_by('date', 'kickoff')[:4] # - devant date pour les plus loin
+    upcoming_matches = upcoming_matches.order_by('date', 'kickoff') #[:4] # - devant date pour les plus loin
 
     if not upcoming_matches :
         upcoming_matches = None
@@ -65,10 +63,81 @@ def homePage(request) :
 
     return render(request, "homePage.html", context)
 
+def display_matches(request, slug_category_thread) :
+    category_selected = threads_categories_match.objects.get(slug_thread_league=slug_category_thread).thread_league
+    
+    upcoming_matches = matches.objects.filter(status='Scheduled', competition=category_selected).exclude(date__isnull=True).exclude(kickoff__isnull=True)
+    upcoming_matches = upcoming_matches.order_by('date', 'kickoff').values()
+
+    upcoming_matches_list = []
+
+    for m in upcoming_matches :
+        
+        try :
+            logo_home_team = teams.objects.get(name=m['home_team_id']).logo
+        except teams.DoesNotExist :
+            logo_home_team = '#'
+
+        try :
+            logo_away_team = teams.objects.get(name=m['away_team_id']).logo
+        except teams.DoesNotExist :
+            logo_away_team = '#'
+
+        d = {
+            'key_id': m['key_id'],
+            'date': m['date'],
+            'kickoff': m['kickoff'],
+            'home_team': m['home_team_id'], 
+            'logo_home_team': logo_home_team,
+            'away_team': m['away_team_id'],  
+            'logo_away_team': logo_away_team,
+            'competition': m['competition'],
+        }
+
+        upcoming_matches_list.append(d)
+
+    if len(upcoming_matches_list) == 0 :
+        upcoming_matches_list = None
+
+    today_date = datetime.now().date()
+    tomorrow_date = today_date + timedelta(days=1)
+
+    print(upcoming_matches_list)
+    context = {
+        'upcoming_matches_list': upcoming_matches_list,
+        'today_date' : today_date,
+        'tomorrow_date' : tomorrow_date,
+    }
+
+    return JsonResponse(context)
+
+
 #locale: 0 si c'est le classement général, -1 si c'est juste a l'exterieur et 1 a domicile
 def presentationMatch(request, slug_match) :
     match = matches.objects.get(key_id=slug_match)
+
+    # Prediction
+    try :
+        user = request.user
+        if not user.is_authenticated:
+            # Utilisateur non authentifié, utilisez une valeur par défaut pour user_id
+            user_id = -1
+            prediction = predictions_matches.objects.get(prediction_match=match, user_prediction=user_id)
+        else:
+            # Utilisateur authentifié
+            prediction = predictions_matches.objects.get(prediction_match=match, user_prediction=user)
     
+    except predictions_matches.DoesNotExist :
+        prediction = None
+
+    home_prediction1 = None
+    away_prediction1 = None 
+    home_prediction2 = None 
+    away_prediction2 = None
+
+    if prediction != None :
+        home_prediction1, away_prediction1, home_prediction2, away_prediction2 = user_prediction(prediction)
+
     # Preview
     try :
         # Trouver le thread associé au match
@@ -183,6 +252,11 @@ def presentationMatch(request, slug_match) :
 
     context = {
         'match': match,
+        'prediction': prediction,
+        'home_prediction1': home_prediction1,
+        'away_prediction1': away_prediction1,
+        'home_prediction2': home_prediction2,
+        'away_prediction2': away_prediction2,
         'slug_thread_category': match_slug_league_category.slug_thread_category,
         'slug_thread_league': match_slug_league_category.slug_thread_league,
         'comment_count': comment_count,

@@ -12,8 +12,12 @@ window.addEventListener('DOMContentLoaded', function()
         // Allows the bottom edges of the last category (id = lastId) to be rounded off  
         var gridCategoryElements = document.querySelectorAll(containerGeneral + ' .grid-category');
         var lastGridCategoryElement = gridCategoryElements[gridCategoryElements.length - 1];
-        lastGridCategoryElement.classList.add('last-border');
 
+        if (lastGridCategoryElement != null)
+        {
+            lastGridCategoryElement.classList.add('last-border');
+        }
+        
         // Alternating colours for club, international and other and also for countries and general 
         gridCategoryElements.forEach(function(categoryElement, index) 
         {

@@ -410,12 +410,15 @@
 
        <script src="{% static 'JS/categoriesClick.js' %}"></script>
        <script src="{% static 'JS/loadMore.js' %}"></script>
-       <script src="{% static 'JS/prediction.js' %}"></script> <!-- le placer avant pour avoir les listener sur li-->
+        {% if user.is_authenticated %} 
+            <script src="{% static 'JS/prediction.js' %}"></script> <!-- le placer avant pour avoir les listener sur li-->
+        {% endif %}
        <script src="{% static 'JS/selectBox.js' %}"></script>
        <script src="{% static 'JS/displayStandings.js' %}"></script>
        <!-- Script pour le défilement des tableaux -->
 	   <script src="{% static 'JS/slider.js' %}"></script>
        <script src="{% static 'JS/sidebar.js' %}"></script>
+       <!--script src="{% static 'JS/validatePrediction.js' %}"></script-->
 
     </body>
 </html>

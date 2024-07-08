@@ -23,7 +23,8 @@
 
 		<!-- Page icon -->
 		<link rel="icon" href="{% static 'rugbyBut.ico' %}" type="image/x-icon">
-	
+		
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	</head>
 
     <body>
@@ -67,32 +68,46 @@
 		</header>
 
 		<div class="page">
-			<div class="left-column">
-				<!--div class="container-grid-cate">   
+			<div class="categories-competition">
+				<div class="container-grid-cate">   
 					<div class="grid-title">
-						Favorites leagues
+						Categories
 					</div>
 					
-					{% for country, categories in categories_by_country.items %}
-						<div class="grid-country">
-							{{ country }}
+					{% for cate, categories in leagues_by_categories.items %}
+						<div class="grid-category">
+							{{ cate }}
 							<div class="second-col">
 								<div class="caret"></div>
 							</div>
 						</div>
-						<div class="grid-categories-none" id="{{ country }}">
+						<div class="leagues-tchats-none" id="{{ cate }}">
 							{% for category in categories %}
-								<div class="grid-cate text-check-box">
-									<span class="text-league">{{ category.title }}</span>
-									<input type="checkbox" class="category-checkbox" data-url="#">
-								</div>
+								<!-- Grâce au label on peut lier la grid à la checkbox par l'id -->
+								<!-- Quand on clique sur en dehors de case on peut quand même la cocher -->
+								<label class="grid-league-tchat text-check-box" for="{{ category.slug_thread_league }}">
+									<a class="league-tchat">
+										{{ category.thread_league }}
+									</a>
+									<input type="checkbox" class="category-checkbox" id="{{ category.slug_thread_league }}" data-url="{% url 'display_matches' slug_category_thread=category.slug_thread_league %}">
+								</label>
 							{% endfor %}
 						</div>
 					{% endfor %}     
-				</div-->
+				</div>
 			</div>
+			
+			<div class="upcoming-matches">
+				<div class="container-futur-matches">
+					<!-- Ajoutés grâce à une requête ajax -->
+					<div class="no-match"> 
+						Nothing is selected.
+					</div>
+				</div>
+			</div>
+			
 
-			<div class="middle-column">
+			<!--div class="upcoming-matches">
 				{% for match in upcoming_matches %}
 					<a href="{% url 'presentationMatch' slug_match=match.key_id %}" class="grid-match">
 						<div class="illustration"> 
@@ -112,7 +127,7 @@
 						</div>
 						<div class="team-home"> 
 							<img src="{% static 'IMG/trophee.png' %}" alt="">
-							<!-- match.home_team est un objet team (clé étrangère)-->
+							<match.home_team est un objet team (clé étrangère)>
 							{{ match.home_team.name }}
 						</div>
 						<div class="team-away">
@@ -120,13 +135,8 @@
 							{{ match.away_team.name }}
 						</div>
 					</a>
-				
 				{% endfor %}
-			</div>
-
-			<div class="right-column">
-				
-			</div>
+			</div-->
 		</div>
 		
 		<footer>
@@ -140,10 +150,9 @@
 	<script src="{% static 'JS/script_menu.js' %}"></script>
 
 	<!-- Script pour le défilement des tableaux -->
-	<script src="{% static 'JS/slider.js' %}"></script>
-
-	<!-- Script pour le défilement des tableaux -->
 	<script src="{% static 'JS/dropDownMenu.js' %}"></script>
+
+	<script src="{% static 'JS/matchesCategory.js' %}"></script>
 
 </html>
 

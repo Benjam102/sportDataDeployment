@@ -3,7 +3,6 @@ from website.models import matches
 from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator
 
-
 User = get_user_model()
 
 class predictions_matches(models.Model):

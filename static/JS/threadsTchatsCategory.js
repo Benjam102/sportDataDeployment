@@ -5,10 +5,10 @@ $(document).ready(function ()
         if (this.checked) 
         {
             var checkboxId = $(this).attr('id');
-            console.log(checkboxId)
+            
             // Get the URL from the data-url attribute of the form
             var url1 = $(this).data('url');
-            console.log(url1)
+        
             $.ajax({
                 type: 'GET',
                 url: url1,
@@ -66,7 +66,7 @@ $(document).ready(function ()
 
                     }
                     // Case where we want to diplay threads
-                    else
+                    else if (checkboxId.substring(0, 5) == 'threa')
                     {
                         // Choose the container
                         var gridContainer = $('.container-futur-threads');

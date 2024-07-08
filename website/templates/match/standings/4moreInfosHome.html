@@ -1,76 +1,80 @@
 {% load static %}
 
 <div class="container-recurrent">
-    {% if nb_teams_pool == 0 %} <!-- Quand y'a des pools y'a pas de ranking home/away -->
-        <div></div> <!-- a cause des pools -->
-        <div class="grid-rank-more-informations">
-            <div> </div>
-            <div> </div>
-            <div class="container-nb-ranking-passed-match">
-                F
-            </div>
-            <div class="container-nb-ranking-passed-match">
-                AF
-            </div>
-            <div class="container-nb-ranking-passed-match">
-                A
-            </div>
-            <div class="container-nb-ranking-passed-match">
-                AA
-            </div>
-            <div class="container-nb-ranking-passed-match">
-                TF
-            </div>
-            <div class="container-nb-ranking-passed-match">
-                TA
-            </div>
-            <div class="container-nb-ranking-passed-match">
-                AB
-            </div>
-            <div class="container-nb-ranking-passed-match">
-                DB
-            </div>
-        </div>
-        {% for standing in standings_home %}
+    {% if match.competition|lower != 'tests matchs' %}
+        {% if nb_teams_pool == 0 %} <!-- Quand y'a des pools y'a pas de ranking home/away -->
+            <div></div> <!-- a cause des pools -->
             <div class="grid-rank-more-informations">
-                <div class="rank"> 
-                    {{ standing.rank }}
-                </div>
-                <div class="team-ranking">
-                    <img src="{{ standing.team.logo }}" alt="">
-                    {{ standing.team.name }}
-                </div>
-                <div class="container-nb-ranking-passed-match"> 
-                    {{ standing.points_for }}
+                <div> </div>
+                <div> </div>
+                <div class="container-nb-ranking-passed-match">
+                    F
                 </div>
                 <div class="container-nb-ranking-passed-match">
-                    {{ standing.avg_points_for }}
+                    AF
                 </div>
                 <div class="container-nb-ranking-passed-match">
-                    {{ standing.points_against }}
+                    A
                 </div>
                 <div class="container-nb-ranking-passed-match">
-                    {{ standing.avg_points_against }}
+                    AA
                 </div>
                 <div class="container-nb-ranking-passed-match">
-                    {{ standing.try_for }}
+                    TF
                 </div>
                 <div class="container-nb-ranking-passed-match">
-                    {{ standing.try_against }}
+                    TA
                 </div>
                 <div class="container-nb-ranking-passed-match">
-                    {{ standing.att_bonus }}
+                    AB
                 </div>
                 <div class="container-nb-ranking-passed-match">
-                    {{ standing.def_bonus }}
+                    DB
                 </div>
             </div>
-        {% endfor %}
-    {% else %}
-        <div class="container-recurrent">
+            {% for standing in standings_home %}
+                <div class="grid-rank-more-informations">
+                    <div class="rank"> 
+                        {{ standing.rank }}
+                    </div>
+                    <div class="team-ranking">
+                        <img src="{{ standing.team.logo }}" alt="">
+                        {{ standing.team.name }}
+                    </div>
+                    <div class="container-nb-ranking-passed-match"> 
+                        {{ standing.points_for }}
+                    </div>
+                    <div class="container-nb-ranking-passed-match">
+                        {{ standing.avg_points_for }}
+                    </div>
+                    <div class="container-nb-ranking-passed-match">
+                        {{ standing.points_against }}
+                    </div>
+                    <div class="container-nb-ranking-passed-match">
+                        {{ standing.avg_points_against }}
+                    </div>
+                    <div class="container-nb-ranking-passed-match">
+                        {{ standing.try_for }}
+                    </div>
+                    <div class="container-nb-ranking-passed-match">
+                        {{ standing.try_against }}
+                    </div>
+                    <div class="container-nb-ranking-passed-match">
+                        {{ standing.att_bonus }}
+                    </div>
+                    <div class="container-nb-ranking-passed-match">
+                        {{ standing.def_bonus }}
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
             <div class="grid-no-info">
                 No informations !
-            </div>
+            </div>  
+        {% endif %}
+    {% else %}
+        <div class="grid-no-info">
+            No informations !
         </div>  
     {% endif %}
 </div>

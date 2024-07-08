@@ -11,4 +11,7 @@ urlpatterns = [
     path('match/<slug:slug_match>/', views.presentationMatch, name='presentationMatch'),
     path('match/<slug:slug_match>/player/<str:player_id>/', views.player, name='player'),
     path('match/<slug:slug_match>/<str:year_competiton>/', views.get_standings, name='get_standings'),
+
+    # Ne sert juste qu'à afficher les bons threads pour une catégorie
+    path('display/matches/<slug:slug_category_thread>/', views.display_matches, name='display_matches'),
 ]

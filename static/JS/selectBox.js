@@ -1,7 +1,12 @@
 function selectDropDowns(container)
 {
     const containerD = document.getElementById(container);
-    const dropdowns = containerD.querySelector('.container-select');
+    var dropdowns = null;
+
+    if (containerD)
+    {
+        var dropdowns = containerD.querySelector('.container-select');
+    }
     
     if (dropdowns)
     {

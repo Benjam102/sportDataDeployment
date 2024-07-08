@@ -24,7 +24,7 @@ def login_user(request) :
             
             if user != None : 
                 login(request, user)
-                return redirect(os.environ.get('REDIRECTION'))
+                return redirect(os.environ.get('TEST'))
             else :
                 messages.info(request, "Incorrect login or password !")
 
@@ -35,7 +35,7 @@ def login_user(request) :
 
 def logout_user(request) :
     logout(request)
-    return redirect(os.environ.get('REDIRECTION'))
+    return redirect("http://127.0.0.1:8000/")
 
 def signup_user(request) :
     if request.method == 'POST':
