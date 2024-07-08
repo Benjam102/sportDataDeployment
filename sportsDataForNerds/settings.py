@@ -17,7 +17,7 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Access to environment variables
-from dotenv import load_dotenv                    
+from dotenv import load_dotenv
 load_dotenv(os.path.join(BASE_DIR, '../', '.env')) 
 
 # It corresponds to the line of the website in the database. 

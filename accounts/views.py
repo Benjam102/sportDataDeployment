@@ -12,8 +12,9 @@ from allauth.socialaccount.providers.oauth2.views import OAuth2LoginView
 
 import os
 # Access to environment variables
+from sportsDataForNerds.settings import BASE_DIR
 from dotenv import load_dotenv
-load_dotenv()  # loads the configs from .env
+load_dotenv(os.path.join(BASE_DIR, '../', '.env')) 
 
 def login_user(request) :
     if request.method == 'POST' :
@@ -24,7 +25,7 @@ def login_user(request) :
             
             if user != None : 
                 login(request, user)
-                return redirect(os.environ.get('TEST'))
+                return redirect(os.environ.get('REDIRECTION'))
             else :
                 messages.info(request, "Incorrect login or password !")
 
@@ -35,7 +36,7 @@ def login_user(request) :
 
 def logout_user(request) :
     logout(request)
-    return redirect("http://127.0.0.1:8000/")
+    return redirect(os.environ.get('REDIRECTION'))
 
 def signup_user(request) :
     if request.method == 'POST':
