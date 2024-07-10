@@ -25,6 +25,7 @@
 		<link rel="icon" href="{% static 'rugbyBut.ico' %}" type="image/x-icon">
 		
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+		<script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
 	</head>
 
     <body>
@@ -69,7 +70,7 @@
 
 		<div class="page">
 			<div class="categories-competition">
-				<div class="container-grid-cate">   
+				<div class="container-grid-cate-matches">   
 					<div class="grid-title">
 						Categories
 					</div>
@@ -85,12 +86,24 @@
 							{% for category in categories %}
 								<!-- Grâce au label on peut lier la grid à la checkbox par l'id -->
 								<!-- Quand on clique sur en dehors de case on peut quand même la cocher -->
-								<label class="grid-league-tchat text-check-box" for="{{ category.slug_thread_league }}">
-									<a class="league-tchat">
-										{{ category.thread_league }}
-									</a>
-									<input type="checkbox" class="category-checkbox" id="{{ category.slug_thread_league }}" data-url="{% url 'display_matches' slug_category_thread=category.slug_thread_league %}">
-								</label>
+								<div class="grid-league-tchat">
+									{% if cate != 'Recent' %}
+										<form method="post">
+											{% csrf_token %}
+											<div class="box-svg">
+												<box-icon name="star" color="#344D59" class="star-fav" id="star-{{ category.slug_thread_league }}"></box-icon>
+											</div>
+										</form>
+									{% else %}
+										<div class="box-svg"></div>
+									{% endif %}
+									<label class="text-check-box" for="{{ category.slug_thread_league }}">
+										<div class="league-tchat">
+											<div class="name-compe">{{ category.thread_league }}</div>
+										</div>
+										<input type="checkbox" class="category-checkbox" id="{{ category.slug_thread_league }}" data-url="{% url 'display_matches' slug_category_thread=category.slug_thread_league %}">
+									</label>
+								</div>
 							{% endfor %}
 						</div>
 					{% endfor %}     
@@ -153,6 +166,8 @@
 	<script src="{% static 'JS/dropDownMenu.js' %}"></script>
 
 	<script src="{% static 'JS/matchesCategory.js' %}"></script>
+
+	<script src="{% static 'JS/favouriteButtons.js' %}"></script>
 
 </html>
 

@@ -8,7 +8,7 @@ class favourites(models.Model) :
     """
     This class allows us to define posts for each tchat and each user 
     """
-    name_competition = models.CharField(max_length=100, primary_key=True)
+    name_competition = models.CharField(max_length=100, null=True)
     slug_competition = models.SlugField(max_length=200, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     

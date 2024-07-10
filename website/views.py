@@ -24,7 +24,7 @@ def homePage(request) :
 
     # Récupérer les 4 matchs les plus proches ordonnés par date puis par heure
     upcoming_matches = matches.objects.filter(status='Scheduled').exclude(date__isnull=True).exclude(kickoff__isnull=True)
-    upcoming_matches = upcoming_matches.order_by('date', 'kickoff') #[:4] # - devant date pour les plus loin
+    upcoming_matches = upcoming_matches.order_by('date', 'kickoff')[:10] # - devant date pour les plus loin
 
     if not upcoming_matches :
         upcoming_matches = None
@@ -37,19 +37,23 @@ def homePage(request) :
     tomorrow_date = today_date + timedelta(days=1)
 
     # Récupérer les compétitions distinctes associées aux matchs et les trier par ordre alphabétique
-    # Renvoie un tuple -> {'league': 'nom'} (dictionnaire)
+    # Renvoie un tuple -> {'competition': 'nom'} (dictionnaire)
     competitions_sorted = matches.objects.values('competition').distinct().order_by('competition')
-
+    
     # Récupérer tous les noms des catégories sans doublon, triés par ordre alphabétique
-    categories = threads_categories_match.objects.values_list('thread_category', flat=True).order_by('thread_category').distinct()
-
+    categories = threads_categories_match.objects.values_list('thread_category', flat=True).distinct() 
+   
     # Créer un dictionnaire pour stocker les leagues par catégories
     leagues_by_categories = {}
 
     # Lier chaque league à une catégorie
     for category in categories:
         categories = threads_categories_match.objects.filter(thread_category=category).order_by('thread_league')
-        leagues_by_categories[category] = categories
+
+        if (category != 'Favourites') :
+            leagues_by_categories[category] = categories
+        else :
+            leagues_by_categories[category] = []
 
     # Passer les matchs récupérés au contexte du template
     context = {
@@ -66,8 +70,12 @@ def homePage(request) :
 def display_matches(request, slug_category_thread) :
     category_selected = threads_categories_match.objects.get(slug_thread_league=slug_category_thread).thread_league
     
-    upcoming_matches = matches.objects.filter(status='Scheduled', competition=category_selected).exclude(date__isnull=True).exclude(kickoff__isnull=True)
-    upcoming_matches = upcoming_matches.order_by('date', 'kickoff').values()
+    if(category_selected != 'Recent') :
+        upcoming_matches = matches.objects.filter(status='Scheduled', competition=category_selected).exclude(date__isnull=True).exclude(kickoff__isnull=True)
+        upcoming_matches = upcoming_matches.order_by('date', 'kickoff').values()
+    else :
+        upcoming_matches = matches.objects.filter(status='Scheduled').exclude(date__isnull=True).exclude(kickoff__isnull=True)
+        upcoming_matches = upcoming_matches.order_by('date', 'kickoff')[:10].values()
 
     upcoming_matches_list = []
 
@@ -76,12 +84,12 @@ def display_matches(request, slug_category_thread) :
         try :
             logo_home_team = teams.objects.get(name=m['home_team_id']).logo
         except teams.DoesNotExist :
-            logo_home_team = '#'
+            logo_home_team = None
 
         try :
             logo_away_team = teams.objects.get(name=m['away_team_id']).logo
         except teams.DoesNotExist :
-            logo_away_team = '#'
+            logo_away_team = None
 
         d = {
             'key_id': m['key_id'],
@@ -102,7 +110,6 @@ def display_matches(request, slug_category_thread) :
     today_date = datetime.now().date()
     tomorrow_date = today_date + timedelta(days=1)
 
-    print(upcoming_matches_list)
     context = {
         'upcoming_matches_list': upcoming_matches_list,
         'today_date' : today_date,
@@ -110,6 +117,7 @@ def display_matches(request, slug_category_thread) :
     }
 
     return JsonResponse(context)
+
 
 
 #locale: 0 si c'est le classement général, -1 si c'est juste a l'exterieur et 1 a domicile

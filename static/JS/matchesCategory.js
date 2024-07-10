@@ -12,9 +12,7 @@ $(document).ready(function ()
             $.ajax({
                 type: 'GET',
                 url: url1,
-                //data: {
-                //    checkboxId: checkboxId
-                //},
+                
                 // Make an AJAX GET request to the URL
                 success: function (response) 
                 {
@@ -58,7 +56,7 @@ $(document).ready(function ()
                                             match.kickoff +
                                         '</div>';
                             
-                            if (match.logo_home_team != '#')
+                            if (match.logo_home_team != null)
                             {
                                 html += '<div class="team-home">' +
                                             '<img src="' + match.logo_home_team + '" alt="">' +                                        
@@ -67,13 +65,13 @@ $(document).ready(function ()
                             }
                             else 
                             {
-                                html += '<div class="team-home">' +
-                                            '<img src="" alt="">' +                                        
+                                html += '<div class="team-home">' + 
+                                            '<img></img>' +                                      
                                             match.home_team +
                                         '</div>';
                             }
 
-                            if(match.logo_away_team != '#')
+                            if(match.logo_away_team != null)
                             {
                                 html += '<div class="team-away">' +
                                             '<img src="' + match.logo_away_team + '" alt="">' +
@@ -83,7 +81,7 @@ $(document).ready(function ()
                             else
                             {
                                 html += '<div class="team-away">' +
-                                            '<img src="" alt="">' +
+                                            '<img></img>' + 
                                             match.away_team +
                                         '</div>';
                             }

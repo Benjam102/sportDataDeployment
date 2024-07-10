@@ -101,7 +101,7 @@ a
 
 /* Box */
 
-.container-grid-cate
+.container-grid-cate-matches
 {
     padding: 10px;
 }
@@ -171,7 +171,8 @@ a
 .grid-league-tchat                              /* Grid for challenge cup, top 14, proD2... */
 {
     display: grid;
-    grid-template-columns: 1fr;
+    align-items: center;
+    grid-template-columns: auto 1fr;
     padding: 10px;
 }
 
@@ -189,7 +190,7 @@ a
 
 .league-tchat
 {
-    margin-left: 25px;
+    margin-left: 35px;
 }
 
 .text-check-box a
@@ -254,4 +255,23 @@ input[type="checkbox"]:hover
     background-color: #F7F7F7;
     padding: 10px;
     font-size: 14px;
+}
+
+
+/* type="solid" color=#e9c46a */
+
+.box-svg /* pour eviter son redimensionnemtn */
+{
+    width: 24px;
+    height: 24px;
+}
+
+.star-fav
+{   
+    cursor: pointer;
+}
+
+.name-compe
+{
+    margin-top: 2px;
 }

@@ -10,11 +10,14 @@ from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from allauth.socialaccount.providers.oauth2.views import OAuth2LoginView
 
+#from accounts.models import favourites
+
 import os
 # Access to environment variables
 from sportsDataForNerds.settings import BASE_DIR
 from dotenv import load_dotenv
-load_dotenv(os.path.join(BASE_DIR, '../', '.env')) 
+load_dotenv()  # loads the configs from .env
+# load_dotenv(os.path.join(BASE_DIR, '../', '.env')) 
 
 def login_user(request) :
     if request.method == 'POST' :
@@ -39,6 +42,7 @@ def logout_user(request) :
     return redirect(os.environ.get('REDIRECTION'))
 
 def signup_user(request) :
+
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
 
@@ -68,3 +72,21 @@ def signup_user(request) :
     form = CustomUserCreationForm()
 
     return render(request, 'signup.html', {'form': form})
+
+'''
+def add_favourite_competition(request, slug_thread_league) :
+    if request.method == 'POST':
+        user = request.user
+        
+        verification = favourites.objects.get(slug_competition=slug_thread_league, user=user)
+
+        if(not verification.exists()) :
+            favourites.objects.create()
+
+
+
+def remove_favourite_competition(request, slug_thread_league) :
+    if request.method == 'POST':
+        user = request.user
+        
+'''
