@@ -9,10 +9,12 @@ This file explains how to configure the project for deployment on a server. I wi
 2. [Configuration on the server](#configuration-on-the-server)
      - [Connection to the server](#connection-to-the-server)
      - [Go to our project](#go-to-our-project)
-     - [Deleting the old version of the project](#deleting-the-old-version-of-the-project)
-     - [Importation of the new version](#importation-of-the-new-version)
-     - [Restart our application on the port 8002](#restart-our-application-on-the-port-8002)
-     - [Configuration of our domain in NGINX](#configuration-of-our-domain-in-nginx)
+     - [Updated the project](#updated-the-project)
+     - [Explanation of the script](#explanation-of-the-script)
+         - [Deleting the old version of the project](#deleting-the-old-version-of-the-project)
+         - [Importation of the new version](#importation-of-the-new-version)
+         - [Restart our application on the port 8002](#restart-our-application-on-the-port-8002)
+    - [Configuration of our domain in NGINX](#configuration-of-our-domain-in-nginx)
        
 ## Configuration of our application 
 
@@ -91,7 +93,26 @@ where :
 - `database/` : Dossier de la base de données et des routines de scraping.
 - `sportDataDeployment/` : Dossier contenant le projet.
 
-### Deleting the old version of the project
+### Updated the project
+
+If you have not made any changes to the database, you can run the following script :
+```sh
+./update_code.sh
+```
+
+If you have made any changes to the database, you will need to uncomment these two lines :
+```sh
+rm -r ../database/db.sqlite3
+mv db.sqlite3 ../database
+```
+
+** However, it is important to make a backup of the server database before running the bash script with these uncommented instructions. **
+
+### Explanation of the script 
+
+Here, we are going to explain the different commands of the script.
+
+#### Deleting the old version of the project
 
 Our application listens on TCP port 8002. So, we need to stop the application listening on TCP port 8002 by the following command :
 ```sh
@@ -102,7 +123,13 @@ Then delete the project folders containing the project files and the static file
 rm -r sportDataDeployment
 rm -r /www/data/sportDataDeployment/staticfiles/
 ```
-### Importation of the new version
+If you have modified the database, you need to delete it after making a backup.
+```sh
+rm -r ../database/db.sqlite3
+mv db.sqlite3 ../database
+```
+
+#### Importation of the new version
 
 Git clone from the gitlab of the lab :
 ```sh
@@ -114,7 +141,7 @@ python manage.py collectstatic
 ```
  They will be located in the path indicated in STATIC_ROOT in the project's setting.py file. that is on the folder located in /www/data/sportDataDeployment/staticfiles/. 
 
-### Restart our application on the port 8002
+#### Restart our application on the port 8002
 
 Get into the project file and start the uvicorn web server so that our application listens on port 8002 :
 ```sh

@@ -10,14 +10,15 @@ from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from allauth.socialaccount.providers.oauth2.views import OAuth2LoginView
 
-#from accounts.models import favourites
+from accounts.models import favourites
+from fora.models import threads_categories_match
+from django.http import JsonResponse
 
 import os
 # Access to environment variables
 from sportsDataForNerds.settings import BASE_DIR
 from dotenv import load_dotenv
-load_dotenv()  # loads the configs from .env
-# load_dotenv(os.path.join(BASE_DIR, '../', '.env')) 
+load_dotenv(os.path.join(BASE_DIR, '../', '.env')) 
 
 def login_user(request) :
     if request.method == 'POST' :
@@ -73,20 +74,53 @@ def signup_user(request) :
 
     return render(request, 'signup.html', {'form': form})
 
-'''
+
 def add_favourite_competition(request, slug_thread_league) :
     if request.method == 'POST':
         user = request.user
         
-        verification = favourites.objects.get(slug_competition=slug_thread_league, user=user)
+        verification = favourites.objects.filter(slug_competition=slug_thread_league, user=user)
+        category = threads_categories_match.objects.get(slug_thread_league=slug_thread_league)
 
         if(not verification.exists()) :
-            favourites.objects.create()
+            favourites.objects.create(name_competition=category.thread_league, user=user, slug_competition=slug_thread_league)
+            
+        response = {
+            'status': 'success',
+            'slug_thread_category': category.slug_thread_category,
+            'slug_thread_league': slug_thread_league,
+            'thread_league': category.thread_league,
+        }
+        
+        return JsonResponse(response)
 
-
+    response = {
+                'status': 'failed',
+            }
+    return JsonResponse(response)
 
 def remove_favourite_competition(request, slug_thread_league) :
     if request.method == 'POST':
         user = request.user
+
+        verification = favourites.objects.filter(slug_competition=slug_thread_league, user=user)
+        category = threads_categories_match.objects.get(slug_thread_league=slug_thread_league)
+
+        if(verification.exists()) :
+            verification.delete()
+
+        response = {
+            'status': 'success',
+            'slug_thread_league': slug_thread_league,
+            'thread_league': category.thread_league,
+            'slug_thread_category': category.slug_thread_category,
+        }
+
+        return JsonResponse(response)
+
+    response = {
+                'status': 'failed',
+            }
+    return JsonResponse(response)
+
         
-'''

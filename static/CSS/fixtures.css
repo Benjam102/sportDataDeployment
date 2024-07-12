@@ -1,0 +1,277 @@
+/*--------------------------------------------------General layout of the page --------------------------------------------------*/
+.page
+{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.categories-competition
+{
+    width: 25%;
+    padding: 3% 1% 3% 1%;
+}
+
+.upcoming-matches
+{
+    width: 75%;
+    padding: 3% 1% 3% 1%;
+}
+
+a
+{
+    text-decoration: none;
+    color: black;
+}
+
+/*--------------------------------------------------------------------------------------------------------------------*/
+.grid-match
+{
+    display: grid;
+    align-items: center;
+    background-color: #F7F7F7;
+    border-radius: 10px;
+    font-size: 14px;
+    padding: 5px;
+    margin: 0px 10px 10px 10px;
+    grid-template-columns: 0.15fr 1fr 1fr;
+    column-gap: 10px;
+    row-gap: 5px;
+    cursor: pointer;
+}
+
+.date
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.hour
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    grid-column: 2;
+    grid-row: 2;
+}
+
+.team-home
+{
+    display: flex;
+    align-items: center;
+    grid-column: 3;
+    grid-row: 1;
+}
+
+.team-away
+{
+    display: flex;
+    align-items: center;
+    grid-column: 3;
+    grid-row: 2;
+}
+
+.team-home img
+{
+    width: 12px;
+    margin-right: 5px;
+}
+
+.team-away img
+{
+    width: 12px;
+    margin-right: 5px;
+}
+
+.illustration
+{
+    display: flex;
+    align-items: center;
+    grid-column: 1;
+    grid-row: 1 / span 2;
+}
+
+.illustration img
+{
+    width: 28px;
+}
+
+
+/* Box */
+
+.container-grid-cate-matches
+{
+    padding: 10px;
+}
+
+.grid-title                                     /* Grid for 'Categories and 'Tchats' */
+{
+    display: grid;
+    grid-template-columns: 1fr;
+    background-color: #344D59;   
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 10px;
+}
+
+.grid-category                                  /* Grid fo club, international, other, countries and general */
+{
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr 1fr;
+    padding: 10px;
+}
+
+.grid-category:not(:first-child):hover          /* The first child is the name of the column*/
+{
+    background-color: #cbd5e7;
+    cursor: pointer;
+}
+
+.second-col                                     /* Align the arrow at the right */
+{
+    display: flex;
+    justify-content: end;
+}
+
+.caret                                          /* Arrow */
+{
+    width: 0;
+    height: 0;
+    justify-content: end;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid #344D59;
+    transition: 0.3s;
+}
+
+.caret-rotate                                   /* dropDownMenu.js: to turn the arrow */
+{
+    transform: rotate(180deg);
+}
+
+.odd                                            /* dropDownMenu.js: odd lines */
+{
+    background-color: #e6e8e9;
+}
+
+.even                                           /* dropDownMenu.js: even lines */
+{
+    background-color: #F7F7F7;
+}
+
+.last-border                                    /* dropDownMenu.js: put boder on the last child */
+{
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.grid-league-tchat                              /* Grid for challenge cup, top 14, proD2... */
+{
+    display: grid;
+    align-items: center;
+    grid-template-columns: auto 1fr;
+    padding: 10px;
+}
+
+.grid-league:hover
+{
+    background-color: #cbd5e7;
+}
+
+.text-check-box                                 /* Put the text and the checkbox on the left and the right */
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.league-tchat
+{
+    margin-left: 35px;
+}
+
+.text-check-box a
+{
+    text-decoration: none;
+    color: black;
+}
+
+input[type="checkbox"]                          /* Changes the color when we check the checkbox */
+{
+    accent-color: #344D59;
+}
+
+input[type="checkbox"]:hover
+{
+    cursor: pointer;
+}
+
+/*------------------------------------------------Leagues checked or not---------------------------------------------------------*/
+.leagues-tchats-none                           /* dropDownMenu.js: do not display leagues, tchats */
+{
+    display: none;
+}
+
+.leagues-tchats-display                        /* dropDownMenu.js: display a league, tchat  checked */
+{
+    display: block;
+}
+
+.container-futur-matches                       /* Container to know where to put selected threads*/
+{
+    margin-top: 10px;
+    overflow-y: auto;
+    max-height: 580px;
+    border-radius: 10px;
+}
+
+.container-futur-matches::-webkit-scrollbar              /* Hide scroll bar */
+{
+    display: none;
+}
+
+.container-futur-matches .grid-thread:nth-child(odd)     /* Color for the odd grids */
+{
+    background-color: #F7F7F7;
+}
+
+.container-futur-matches .grid-thread:nth-child(even)    /* Color for the even grids */
+{
+    background-color: #e6e8e9;
+}
+
+.container-futur-matches .grid-thread:hover 
+{
+    background-color:   #cbd5e7;
+}
+				
+.no-match
+{
+    display: grid;
+    justify-content: center;
+    background-color: #F7F7F7;
+    padding: 10px;
+    font-size: 14px;
+}
+
+
+/* type="solid" color=#e9c46a */
+
+.box-svg /* pour eviter son redimensionnemtn */
+{
+    width: 24px;
+    height: 24px;
+}
+
+.star-fav
+{   
+    cursor: pointer;
+}
+
+.name-compe
+{
+    margin-top: 2px;
+}

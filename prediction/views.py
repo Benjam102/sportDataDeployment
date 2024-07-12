@@ -26,6 +26,7 @@ def predictionMatch(request, slug_match) :
                 predictions_matches.objects.create(
                     prediction_match=match, user_prediction=user, prediction_margin1=None, prediction_margin2=margin,
                     prediction_total1=None, prediction_total2=total)
+                
             elif verification.prediction_margin2 :
                 prediction = predictions_matches.objects.get(prediction_match=slug_match, user_prediction=user)
                 prediction.prediction_margin2 = margin

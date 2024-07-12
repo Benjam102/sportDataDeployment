@@ -348,7 +348,7 @@ function getInformationLeague(containerId, containerOfAddId1, containerOfAddId2)
                     var containerRanks2 = $(document.getElementById(containerOfAddId2));
                     containerRanks1.empty();
                     containerRanks2.empty();
-                    console.log('ouioui');
+                   
                     if (response.nb_teams_pool == 0)
                     {
                         generalStandingNoPools(response, containerRanks1);

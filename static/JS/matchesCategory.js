@@ -8,7 +8,7 @@ $(document).ready(function ()
             
             // Get the URL from the data-url attribute of the form
             var url1 = $(this).data('url');
-        
+            console.log(url1);
             $.ajax({
                 type: 'GET',
                 url: url1,
@@ -16,7 +16,6 @@ $(document).ready(function ()
                 // Make an AJAX GET request to the URL
                 success: function (response) 
                 {
-                    console.log(response);
                     // Case where we want to diplay a tchat
                     if(response.upcoming_matches_list != null)
                     {

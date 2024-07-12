@@ -12,11 +12,7 @@
 
 		<!-- Style sheets -->
 		<link rel="stylesheet" type="text/css" href="{% static 'CSS/headerFooter.css' %}">
-		<link rel="stylesheet" type="text/css" href="{% static 'CSS/homePage/homePage.css' %}">
-		<link rel="stylesheet" type="text/css" href="{% static 'CSS/homePage/rank_table.css' %}">
-		<link rel="stylesheet" type="text/css" href="{% static 'CSS/homePage/league_table.css' %}">
-		<link rel="stylesheet" type="text/css" href="{% static 'CSS/slider.css' %}">
-		<link rel="stylesheet" type="text/css" href="{% static 'CSS/homePage/responsiveHomePage.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'CSS/fixtures.css' %}">
 
 		<!-- Inhibits wide screens on mobile phones: prevents the mobile phone from having a wide screen that requires zooming in -->
 		<meta name="viewport" content="initial-scale=1.0, maximum-scale=2.0" />
@@ -37,8 +33,9 @@
 			</a>
 
 			<ul class="menu">
+				<li> <a href="{% url 'standings' %}"> Standings </a> </li>
 				<li> <a href="{% url 'fixtures' %}"> Fixtures </a></li>
-				<li> <a href="{% url 'fora' %}"> Forum </a></li>
+				<li> <a href="{% url 'fora' %}"> Fora </a></li>
 			</ul>
 			
 			{% if user.is_authenticated %}

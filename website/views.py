@@ -8,6 +8,7 @@ from fora.views import threads_
 # Importation des fonctions de scraping
 from fora.models import threads_categories_match, threads_match, threads_comments_match
 from prediction.models import predictions_matches
+from accounts.models import favourites
 
 # Utile
 from django.db.models import Max
@@ -21,20 +22,6 @@ from django.db.models import Count
 
 # Page d'acceuil #
 def homePage(request) :
-
-    # Récupérer les 4 matchs les plus proches ordonnés par date puis par heure
-    upcoming_matches = matches.objects.filter(status='Scheduled').exclude(date__isnull=True).exclude(kickoff__isnull=True)
-    upcoming_matches = upcoming_matches.order_by('date', 'kickoff')[:10] # - devant date pour les plus loin
-
-    if not upcoming_matches :
-        upcoming_matches = None
-        l_upcoming_matches = 0
-    else : 
-        l_upcoming_matches = len(upcoming_matches)
-    
-
-    today_date = datetime.now().date()
-    tomorrow_date = today_date + timedelta(days=1)
 
     # Récupérer les compétitions distinctes associées aux matchs et les trier par ordre alphabétique
     # Renvoie un tuple -> {'competition': 'nom'} (dictionnaire)
@@ -55,12 +42,70 @@ def homePage(request) :
         else :
             leagues_by_categories[category] = []
 
+    # Favoris
+    compe_fav = []
+    if request.user.is_authenticated:
+        user = request.user
+        competitions_favourites = favourites.objects.filter(user=user)
+
+        for c in competitions_favourites :   
+            dico = {                                            # mettre les memes nom que pour les objets threads_category
+                'slug_thread_league': c.slug_competition,
+                'slug_thread_category': threads_categories_match.objects.get(slug_thread_league=c.slug_competition).slug_thread_category,
+                'thread_league': c.name_competition
+            }
+            leagues_by_categories['Favourites'].append(dico)
+            compe_fav.append(c.name_competition)
+        
+
     # Passer les matchs récupérés au contexte du template
     context = {
-        'upcoming_matches': upcoming_matches,
-        #'num_matches': l_upcoming_matches,  # Nombre de matchs récupérés
-        'today_date' : today_date,
-        'tomorrow_date' : tomorrow_date,
+        'compe_fav': compe_fav,
+        'competitions_sorted' : competitions_sorted,
+        'leagues_by_categories': leagues_by_categories
+    }
+
+    return render(request, "homePage.html", context)
+
+
+def fixtures(request) :
+    # Récupérer les compétitions distinctes associées aux matchs et les trier par ordre alphabétique
+    # Renvoie un tuple -> {'competition': 'nom'} (dictionnaire)
+    competitions_sorted = matches.objects.values('competition').distinct().order_by('competition')
+    
+    # Récupérer tous les noms des catégories sans doublon, triés par ordre alphabétique
+    categories = threads_categories_match.objects.values_list('thread_category', flat=True).distinct() 
+   
+    # Créer un dictionnaire pour stocker les leagues par catégories
+    leagues_by_categories = {}
+
+    # Lier chaque league à une catégorie
+    for category in categories:
+        categories = threads_categories_match.objects.filter(thread_category=category).order_by('thread_league')
+
+        if (category != 'Favourites') :
+            leagues_by_categories[category] = categories
+        else :
+            leagues_by_categories[category] = []
+
+    # Favoris
+    compe_fav = []
+    if request.user.is_authenticated:
+        user = request.user
+        competitions_favourites = favourites.objects.filter(user=user)
+
+        for c in competitions_favourites :   
+            dico = {                                            # mettre les memes nom que pour les objets threads_category
+                'slug_thread_league': c.slug_competition,
+                'thread_league': c.name_competition
+            }
+            leagues_by_categories['Favourites'].append(dico)
+            compe_fav.append(c.name_competition)
+        
+
+    # Passer les matchs récupérés au contexte du template
+    context = {
+        'compe_fav': compe_fav,
         'competitions_sorted' : competitions_sorted,
         'leagues_by_categories': leagues_by_categories
     }

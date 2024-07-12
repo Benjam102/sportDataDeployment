@@ -14,6 +14,6 @@ urlpatterns = [
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('reset-password-complete/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 
-    #path('add/favourite/<slug:slug_thread_league>', views.add_favourite_competition, name='add_favourite_competition'),
-    #path('remove/favourite/<slug:slug_thread_league>', views.remove_favourite_competition, name='remove_favourite_competition'),
+    path('add/favourite/<slug:slug_thread_league>', views.add_favourite_competition, name='add_favourite_competition'),
+    path('remove/favourite/<slug:slug_thread_league>', views.remove_favourite_competition, name='remove_favourite_competition'),
 ]
