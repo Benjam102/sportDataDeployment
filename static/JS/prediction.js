@@ -68,6 +68,7 @@ function validate(idMargin, idTotal, idButton)
     });
 }
 
+
 function confirmationPhrase(containerInput1Id, containerInput2Id, inputMId, inputTId, button)
 {
     /**
@@ -153,10 +154,6 @@ function confirmationPhrase(containerInput1Id, containerInput2Id, inputMId, inpu
     }
 }
 
-confirmationPhrase('content-predic1-1', 'content-predic1-2', 'rangeValueM1', 'rangeValueT1', 'button1');
-confirmationPhrase('content-predic2-1', 'content-predic2-2', 'rangeValueM2', 'rangeValueT2', 'button2');
-
-
 
 function to_kickoff(kickoff)
 {
@@ -191,6 +188,7 @@ function to_kickoff(kickoff)
     return {hours, minutes, seconds};
 }
 
+
 function to_date(date)
 {
     /**
@@ -208,6 +206,7 @@ function to_date(date)
     return {year, month, day};
 }
 
+
 function add_zero_date(nb)
 {
     /**
@@ -219,6 +218,10 @@ function add_zero_date(nb)
     if (nb < 10 && nb >= 0)
     {
         return '0' + nb;
+    }
+    else
+    {
+        return nb;
     }
 }
 
@@ -238,6 +241,7 @@ function subtractionDays(date, days)
 
     return nouvelleDate;
 }
+
 
 function accessPrediction(idButton)
 {
@@ -260,7 +264,7 @@ function accessPrediction(idButton)
 
     const matchD = new Date(matchDateElement.year, matchDateElement.month, matchDateElement.day, 
                             matchKickoffElement.hours, matchKickoffElement.minutes);
-     
+                            
     const today = new Date();
     var untilData = null;
 
@@ -336,5 +340,14 @@ function accessPrediction(idButton)
     }
 }
 
-accessPrediction('button1');
-accessPrediction('button2');
+
+document.addEventListener('DOMContentLoaded', function() 
+{
+    // Deals with the prediction of the user
+    confirmationPhrase('content-predic1-1', 'content-predic1-2', 'rangeValueM1', 'rangeValueT1', 'button1');
+    confirmationPhrase('content-predic2-1', 'content-predic2-2', 'rangeValueM2', 'rangeValueT2', 'button2');
+
+    // Manage the access of the prediction
+    accessPrediction('button1');
+    accessPrediction('button2');
+});

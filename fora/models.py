@@ -1,9 +1,11 @@
 from django.db import models
-from django.utils.text import slugify
-from django.contrib.auth import get_user_model
-from django.shortcuts import reverse
 
+# Model import
+from django.contrib.auth import get_user_model
 from website.models import matches
+
+# Useful library
+from django.utils.text import slugify  # to create slug
 
 User = get_user_model()
 
@@ -80,10 +82,10 @@ class threads_match(models.Model) :
     """
     This class allows us to define a thread for each match.
     """
-    match = models.ForeignKey(matches, on_delete=models.CASCADE)
+    key_id = models.SlugField(max_length=600, primary_key=True) 
     category = models.ForeignKey(threads_categories_match, on_delete=models.CASCADE)
     closed = models.BooleanField(default=False)
-
+    
 class threads_comments_match(models.Model) :
     """
     This class allows us to define comments for each thread and and related to a user.
@@ -92,4 +94,7 @@ class threads_comments_match(models.Model) :
     thread = models.ForeignKey(threads_match, on_delete=models.CASCADE, default=None)
     content = models.TextField()
     date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = "threads_comments_match"
 

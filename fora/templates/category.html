@@ -4,27 +4,24 @@
 <html lang="en">
 
 	<head>
-		<!-- titre de la fenêtre -->
+		<!-- Title of the window -->
 		<title>Rugby Data</title>
 
-		<!-- précise l'encodage au navigateur (gestion des accents, ...) -->
+		<!-- Specifies encoding to the browser (management of accents, etc.) -->
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-		<!-- Feuilles de style -->
-		<!-- Feuilles de style -->
+		<!-- Style sheets -->
 		<link rel="stylesheet" type="text/css" href="{% static 'CSS/headerFooter.css' %}">
 		<link rel="stylesheet" type="text/css" href="{% static 'CSS/fora/category.css' %}">
 
-		<!-- Inhibe la grande largeur sur mobile : évite que le mobile présente un écran large et qu'il faille zoomer -->
+		<!-- Inhibits wide screens on mobile phones: prevents the mobile phone from having a wide screen that requires zooming in -->
 		<meta name="viewport" content="initial-scale=1.0, maximum-scale=2.0" />
 
-		<!-- icône de la page -->
+		<!-- Page icon -->
 		<link rel="icon" href="{% static 'rugbyBut.ico' %}" type="image/x-icon">
-	
 	</head>
 
     <body>
-        <!-- Entête -->
         <header>
 			<a href="{% url 'homePage' %}" class="logoRugby">
 				<img src="{% static 'IMG/logoHeader.png' %}" alt="">
@@ -32,7 +29,7 @@
 			</a>
 
 			<ul class="menu">
-				<li> <a href="{% url 'standings' %}"> Standings </a> </li>
+				<li> <a href="{% url 'fixtures' %}"> Fixtures </a> </li>
 				<li> <a href="{% url 'fora' %}"> Fora </a> </li>
 			</ul>
 			
@@ -50,7 +47,7 @@
 				</button>
 			{% endif %}
 			
-			<!-- Menu déroulant quand la fenêtre devient petite -->
+			<!-- Drop-down menu when window becomes small -->
 			<div class="petit-menu">
 				<span>
 					<div></div>
@@ -95,14 +92,14 @@
                                 {{ thread.slug_thread }}
                             </div>                          
                             <div>
-                                {% if today_date == thread.latest_comment|date:"Y-m-d" %}
+                                {% if today_date == thread.latest_comment|slice:":10" %}
                                     Today at
-                                {% elif thread.latest_comment == None %}
+                                {% elif thread.latest_comment == 'None' %}
                                     /
                                 {% else %}
-                                    {{ thread.latest_comment|date:"Y-m-d" }} at
+                                    {{ thread.latest_comment|slice:":10" }} at
                                 {% endif %}
-                                {{ thread.latest_comment|time:"H:i" }}    
+                                {{ thread.latest_comment|slice:"11:16" }}    
                             </div>
                             <div>
                                 {{ thread.comments_count }}

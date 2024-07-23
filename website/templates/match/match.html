@@ -12,10 +12,9 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
 		<!-- Style sheets -->
-		<link rel="stylesheet" type="text/css" href="{% static 'CSS/match.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'CSS/website/match.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'CSS/selectBox.css' %}">
         
-
 		<!-- Inhibits wide screens on mobile phones: prevents the mobile phone from having a wide screen that requires zooming in -->
 		<meta name="viewport" content="initial-scale=1.0, maximum-scale=2.0" />
 
@@ -35,9 +34,9 @@
                     </a>
                 </header>
 
-                {% include 'match/summary/1confrontation.html' %}
+                {% include 'match/confrontation.html' %}
                 
-                {% include 'match/summary/2prediction.html' %}                
+                {% include 'match/prediction.html' %}                
 
                 <div class="details">
                     <li id="1">Summary</li>
@@ -45,7 +44,7 @@
                     <li id="3">Standings</li>
                 </div>
 
-                <!-- Contenu pour chaque catégorie (initialement caché) -->
+                <!-- Content for each category (initially hidden) -->
                 <div class="category-content" id="content-1" name="Summary">
                     <div class="container-banner">
                         <div class="banner" id="Preview">
@@ -53,7 +52,7 @@
                         </div>
                     </div>
                     
-                    {% include 'match/summary/3comment.html' %}
+                    {% include 'match/summary/1comment.html' %}
                     
                     <div class="container-banner">
                         <div class="banner" id="Form">
@@ -61,15 +60,15 @@
                         </div>
                     </div>
 
-                    {% include 'match/summary/4form.html' %}
+                    {% include 'match/summary/2form.html' %}
 
                     <div class="container-banner">
-                        <div class="banner" id="Infos">
-                           Match informations
+                        <div class="banner" id="Match info">
+                           Match information
                         </div>
                     </div>
 
-                    {% include 'match/summary/5matchInfo.html' %}
+                    {% include 'match/summary/3matchInfo.html' %}
                     
                     <div class="container-banner">
                         <div class="banner" id="Odds">
@@ -77,23 +76,23 @@
                         </div>
                     </div>
                     
-                    {% include 'match/summary/6bookmakers.html' %}
+                    {% include 'match/summary/4bookmakers.html' %}
 
                     <div class="container-banner">
-                        <div class="banner" id="Meteo">
-                            Meteorological parameters 
+                        <div class="banner" id="Weather">
+                            Weather
                         </div>
                     </div>
 
-                    {% include 'match/summary/7meteo.html' %}
+                    {% include 'match/summary/5meteo.html' %}
 
                     <div class="container-banner">
-                        <div class="banner" id="Lineup">
-                           Principal lineup
+                        <div class="banner" id="Team news">
+                           Team news
                         </div>
                     </div>
 
-                    {% include 'match/summary/8lineup.html' %}
+                    {% include 'match/summary/6lineup.html' %}
                 </div>
 
                 <div class="category-content" id="content-2" name="H2H">
@@ -205,7 +204,7 @@
 
                         <div class="container-banner">
                             <div class="banner" id="More infos">
-                                More informations
+                                More information
                             </div>
                         </div>
                         
@@ -231,7 +230,7 @@
 
                         <div class="container-banner">
                             <div class="banner" id="More infos">
-                                More informations
+                                More information
                             </div>
                         </div>
                         
@@ -257,7 +256,7 @@
                         
                         <div class="container-banner">
                             <div class="banner" id="More infos">
-                                More informations
+                                More information
                             </div>
                         </div>
     
@@ -406,19 +405,28 @@
           
        </div> 
        
-       
-
+       <!-- To display categories and subcategories -->
        <script src="{% static 'JS/categoriesClick.js' %}"></script>
+
+       <!-- To display more matches on the H2H category -->
        <script src="{% static 'JS/loadMore.js' %}"></script>
+
         {% if user.is_authenticated %} 
-            <script src="{% static 'JS/prediction.js' %}"></script> <!-- le placer avant pour avoir les listener sur li-->
+            <!-- Place it in front of selectBox.js to have the listener on li-->
+            <script src="{% static 'JS/prediction.js' %}"></script> 
         {% endif %}
+
+        <!-- To manage the select box in the subcategory Overall of the standings category -->  
        <script src="{% static 'JS/selectBox.js' %}"></script>
+
+        <!-- To manage the display of standings -->
        <script src="{% static 'JS/displayStandings.js' %}"></script>
-       <!-- Script pour le défilement des tableaux -->
+
+       <!-- To manage a slider if there are pools for the standings -->
 	   <script src="{% static 'JS/slider.js' %}"></script>
+
+       <!-- To manage the side bar -->
        <script src="{% static 'JS/sidebar.js' %}"></script>
-       <!--script src="{% static 'JS/validatePrediction.js' %}"></script-->
 
     </body>
 </html>

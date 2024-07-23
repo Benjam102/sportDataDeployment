@@ -4,7 +4,7 @@ from django.core.validators import MaxValueValidator
 from django.db.models import UniqueConstraint
 
 class teams(models.Model) :
-    name = models.CharField(max_length=100, primary_key=True) # Primary key: name
+    name = models.CharField(max_length=100, primary_key=True)
     logo = models.CharField(max_length=200, null=True)
     club = models.CharField(max_length=100, null=True)
     national = models.IntegerField(validators=[MaxValueValidator(4)], null=True) 
@@ -16,7 +16,7 @@ class teams(models.Model) :
     stadium3 = models.CharField(max_length=100, null=True)
 
 class matches(models.Model):
-    key_id = models.SlugField(max_length=600, primary_key=True) # Primary key: slug
+    key_id = models.SlugField(max_length=600, primary_key=True)
     status = models.CharField(max_length=50, null=True)
     home_team = models.ForeignKey(teams, related_name='home_team_matches', on_delete=models.PROTECT)
     away_team = models.ForeignKey(teams, related_name='away_team_matches', on_delete=models.PROTECT)
@@ -45,7 +45,7 @@ class matches(models.Model):
 
 
 class odds(models.Model) :
-    key_id = models.SlugField(max_length=600, primary_key=True) # Primary key: slug
+    key_id = models.SlugField(max_length=600, primary_key=True) 
     date = models.DateField(null=True)
     hour = models.TimeField(null=True)
     home_team = models.ForeignKey(teams, related_name='home_team_odds', on_delete=models.PROTECT)
@@ -82,14 +82,14 @@ class rankings(models.Model) :
     def_bonus = models.IntegerField(validators=[MaxValueValidator(4)], null=True)
     tendency = models.CharField(max_length=100, null=True)
 
-    # Manière d'avoir une clé primaire composite (pas vraiment une clé primaire)
+    # Way to have a composite primary key (not really a primary key)
     class Meta:
         constraints = [
             UniqueConstraint(fields=['competition', 'pool', 'year', 'locale', 'rank'], name='cle_primaire')
         ]
 
 class players(models.Model) :
-    player_id = models.SlugField(max_length=600, primary_key=True) # Primary key: slug
+    player_id = models.SlugField(max_length=600, primary_key=True)
     name = models.CharField(max_length=100, null=True)
     nationality = models.CharField(max_length=100, null=True)
     nationality2 = models.CharField(max_length=100, null=True)
@@ -109,7 +109,7 @@ class players(models.Model) :
 
 
 class compositions(models.Model) :
-    comp_id = models.CharField(max_length=600, primary_key=True) # Primary key: slug
+    comp_id = models.CharField(max_length=600, primary_key=True)
     key_id = models.SlugField(max_length=600, null=True) 
     local_team = models.IntegerField(validators=[MaxValueValidator(4)], null=True)
     player1 = models.ForeignKey(players, related_name='compo_player1', null=True, blank=True, on_delete=models.PROTECT)
@@ -138,7 +138,7 @@ class compositions(models.Model) :
     player24 = models.ForeignKey(players, related_name='compo_player24', null=True, blank=True, on_delete=models.PROTECT)
     player25 = models.ForeignKey(players, related_name='compo_player25', null=True, blank=True, on_delete=models.PROTECT)
 
-    # Manière d'avoir une clé primaire composite (pas vraiment une clé primaire)
+    # Way to have a composite primary key (not really a primary key)
     class Meta:
         unique_together = ('key_id', 'local_team')
 
@@ -147,7 +147,7 @@ class sources(models.Model) :
     image_source = models.CharField(max_length=200, null=True)
 
 class substitution(models.Model) :
-    sub_id = models.CharField(max_length=600, primary_key=True)  # Clé primaire
+    sub_id = models.CharField(max_length=600, primary_key=True) 
     key_id = models.SlugField(max_length=600, null=True)
     local_team = models.IntegerField(validators=[MaxValueValidator(4)], null=True)
 

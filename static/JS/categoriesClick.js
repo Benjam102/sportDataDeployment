@@ -1,17 +1,18 @@
 
-// Pour les categories 
-document.addEventListener('DOMContentLoaded', function() {
+// For categories
+document.addEventListener('DOMContentLoaded', function() 
+{
     const liElements = document.querySelectorAll('.details li');
     const sideMenu = document.querySelector('.side-menu');
     const sideCaret = document.querySelector('.side-caret');
     const sideBar = document.querySelector('.side-bar');
     
-
     function showContentById(id) {
         const contentId = `content-${id}`;
 
         const allContent = document.querySelectorAll('.category-content');
-        allContent.forEach(function(content) {
+        allContent.forEach(function(content) 
+        {
             content.style.display = 'none';
         });
 
@@ -20,7 +21,8 @@ document.addEventListener('DOMContentLoaded', function() {
             selectedContent.style.display = 'block';
         }
 
-        liElements.forEach(function(li) {
+        liElements.forEach(function(li) 
+        {
             if (li.getAttribute('id') === id) 
             {
                 li.classList.add('active');
@@ -35,58 +37,62 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Enregistrer l'ID de la catégorie sélectionnée dans localStorage
+        // Save the selected category ID in localStorage
         localStorage.setItem('selectedCategoryId', id);
     }
 
-    // Récupérer l'ID de la catégorie sélectionnée depuis localStorage
+    // Retrieve the selected category ID from localStorage
     const selectedCategoryId = localStorage.getItem('selectedCategoryId');
-    //console.log(selectedCategoryId)
 
-    // Afficher le contenu correspondant à l'ID stocké dans localStorage
-    if (selectedCategoryId !== null && selectedCategoryId !== '') {
+    // Display the content corresponding to the ID stored in localStorage
+    if (selectedCategoryId !== null && selectedCategoryId !== '') 
+    {
         showContentById(selectedCategoryId);
-    } else {
-        // Par défaut, afficher le contenu correspondant à l'ID "1"
+    } 
+    else 
+    {
+        // By default, display the content corresponding to ID "1"
         showContentById('1');
     }
 
-    liElements.forEach(function(li) {
-        li.addEventListener('click', function() {
+    liElements.forEach(function(li) 
+    {
+        li.addEventListener('click', function() 
+        {
             const id = li.getAttribute('id');
             showContentById(id);
         });
     });
 });
 
-// Pour les sous categories
+// For subcategories
 document.addEventListener('DOMContentLoaded', function() 
 {
     const sideMenu = document.querySelector('.side-menu');
     const sideCaret = document.querySelector('.side-caret');
     const sideBar = document.querySelector('.side-bar');
     
-    // Sélectionner toutes les catégories et initialiser les contenus par défaut
+    // Select all categories and initialize default contents
     const categories = document.querySelectorAll('.category-content');
 
     function showContentById(categoryId, id) 
     {
         const contentId = 'content-' + id;
 
-        // Masquer tous les contenus de la catégorie spécifique
+        // Hide all contents of the specific category
         const allContent = document.querySelectorAll('#' + categoryId + ' .under-category-content');
 
         allContent.forEach(function(content) {
             content.style.display = 'none';
         });
 
-        // Afficher le contenu spécifique correspondant à l'id
+        // Display the specific content corresponding to the id
         const selectedContent = document.getElementById(contentId);
         if (selectedContent) {
             selectedContent.style.display = 'block';
         }
 
-        // Gérer les classes actives pour les éléments <li>
+        // Manage active classes for <li> elements
         const liElements = document.querySelectorAll('#' + categoryId + ' .informations-matches li');
         //console.log(liElements)
         liElements.forEach(function(li) {
@@ -103,18 +109,18 @@ document.addEventListener('DOMContentLoaded', function()
         });
     }
 
-    // Parcourir toutes les catégories et définir les comportements des éléments <li>
+    // Iterate through all categories and set up behaviors for <li> elements
     categories.forEach(function(category) 
     {
         const liElements = category.querySelectorAll('.informations-matches li');
 
         if (liElements.length > 0) 
         {
-            // Afficher le contenu par défaut pour chaque catégorie
+            // Display default content for each category
             const defaultContentId = liElements[0].getAttribute('id');
             showContentById(category.id, defaultContentId);
 
-            // Ajouter un écouteur d'événement à chaque élément <li>
+            // Add event listener to each <li> element
             liElements.forEach(function(li) {
                 li.addEventListener('click', function() {
                     const id = li.getAttribute('id');
@@ -125,6 +131,7 @@ document.addEventListener('DOMContentLoaded', function()
         
     });
 });
+
 
 
 

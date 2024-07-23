@@ -4,60 +4,55 @@
 <html lang="en">
 
 	<head>
-		<!-- titre de la fenêtre -->
+		<!-- Title of the window -->
 		<title>Rugby Data</title>
 
-		<!-- précise l'encodage au navigateur (gestion des accents, ...) -->
+		<!-- Specifies encoding to the browser (management of accents, etc.) -->
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-		<!-- Feuilles de style -->
-		<link rel="stylesheet" type="text/css" href="{% static 'CSS/signup.css' %}"-->
+		<!-- Style sheets -->
+		<link rel="stylesheet" type="text/css" href="{% static 'CSS/accounts/loginSignup.css' %}">
 
-		<!-- Inhibe la grande largeur sur mobile : évite que le mobile présente un écran large et qu'il faille zoomer -->
+		<!-- Inhibits wide screens on mobile phones: prevents the mobile phone from having a wide screen that requires zooming in -->
 		<meta name="viewport" content="initial-scale=1.0, maximum-scale=2.0" />
 
-		<!-- icône de la page -->
+		<!-- Page icon -->
 		<link rel="icon" href="{% static 'rugbyBut.ico' %}" type="image/x-icon">
-	
 	</head>
 
     <body>
-		<div class="bloc-signup">
-			<a href="{% url 'homePage' %}">
-				<img src="{% static 'IMG/joueurRugby.png' %}" alt="">
-			</a>
-			
-			<div class="espace-signup">
+		<div class="block-connection-signup">			
+			<div class="space-connection-signup">
+				<a class="title" href="{% url 'homePage' %}">
+					<img src="{% static 'IMG/logoHeader.png' %}" alt="">
+					<h1> Rugby Data </h1>
+				</a>
 				<form method="post">
 					{% csrf_token %}
-					<div class="title">
-						<img src="{% static 'IMG/logoHeader.png' %}" alt="">
-						<h1> Rugby Data </h1>
-					</div>
 					
-					<div class="champs">
+					<div class="field">
             			<input type="text" name="username" required placeholder="Username"> 
 						<img src="{% static 'IMG/authentification/user.png' %}" alt="">
 					</div>
 					
-					<div class="champs">
+					<div class="field">
 						<input type="password" name="password1" required placeholder="Password">
 						<img src="{% static 'IMG/authentification/lock.png' %}" alt="">
 					</div>
 					
-					<div class="champs">
+					<div class="field">
 						<input type="password" name="password2" required placeholder="Confirm your password">
 						<img src="{% static 'IMG/authentification/key.png' %}" alt="">
 					</div>
 
-                    <div class="champs">
+                    <div class="field">
 						<input type="text" name="email" required placeholder="Email">
 						<img src="{% static 'IMG/authentification/mail.png' %}" alt="">
 					</div>
 					
-					<button type="submit" class="signup">Sign up</button>
+					<button type="submit" class="connection-signup ">Sign up</button>
 	
-					<!-- Permet d'afficher un message d'erreur en cas d'une mauvaise saisie -->
+					<!-- Displays an error message in the event of incorrect input -->
 					{% if messages %}
 						<div class="message-error">
 							{% for message_erreur in messages %}

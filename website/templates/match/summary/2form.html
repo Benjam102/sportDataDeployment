@@ -1,0 +1,117 @@
+<div class="container-block-form">
+    <div class="block-team h">
+        <a href="{% url 'team' slug_match=match.key_id team_id=match.home_team.name %}" class="h-a-teams ho">
+            <img src="{{ match.home_team.logo }}" alt="">
+        </a>
+        <!--div class="rank-home-away-team hom">
+            {% if rank_home_team %}
+                {{ rank_home_team }}.
+            {% else %}
+                -1.
+            {% endif %}
+        </div-->
+        <div class="block-team-name homee">
+            {{ match.home_team.name }}
+        </div>
+        <div class="block-home-team-vd">
+            {% for result, m in form_home_team %}
+                {% if result == 'V' %}
+                    <div class="result-wrapper">
+                        <a class="result V" href="{% url 'presentationMatch' slug_match=m.key_id %}">
+                            V
+                        </a>
+                        <div class="info-form-hover">
+                            {{ m.date|date:"d/m/Y" }} </br>
+                            {{ m.home_score }} - {{ m.away_score }}
+                            ({{ m.home_team.name }} - {{ m.away_team.name }})
+                        </div>
+                    </div>
+                    
+                {% elif  result == 'D' %}
+                    <div class="result-wrapper">
+                        <a class="result D" href="{% url 'presentationMatch' slug_match=m.key_id %}">
+                            D
+                        </a>
+                        <div class="info-form-hover">
+                            {{ m.date|date:"d/m/Y" }} </br>
+                            {{ m.home_score }} - {{ m.away_score }}
+                            ({{ m.home_team.name }} - {{ m.away_team.name }})
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="result-wrapper">
+                        <a class="result N" href="{% url 'presentationMatch' slug_match=m.key_id %}">
+                            N
+                        </a>
+                        <div class="info-form-hover">
+                            {{ m.date|date:"d/m/Y" }} </br>
+                            {{ m.home_score }} - {{ m.away_score }}
+                            ({{ m.home_team.name }} - {{ m.away_team.name }})
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="container-vs">
+        <div class="vs">
+            <div class="vs-content"> vs </div>
+        </div>
+    </div>
+
+    <div class="block-team a">
+        <a href="{% url 'team' slug_match=match.key_id team_id=match.away_team.name %}" class="h-a-teams aw">
+            <img src="{{ match.away_team.logo }}" alt="">
+        </a>
+        <!--div class="rank-home-away-team awa">
+            {% if rank_away_team %}
+                {{ rank_away_team }}.
+            {% else %}
+                -1.
+            {% endif %}
+        </div-->
+        <div class="block-team-name awayy">
+            {{ match.away_team.name }}
+        </div>
+        <div class="block-away-team-vd">
+            {% for result, m in form_away_team %}
+                {% if result == 'V' %}
+                    <div class="result-wrapper">
+                        <a class="result V" href="{% url 'presentationMatch' slug_match=m.key_id %}">
+                            V
+                        </a>
+                        <div class="info-form-hover">
+                            {{ m.date|date:"d/m/Y" }} </br>
+                            {{ m.home_score }} - {{ m.away_score }}
+                            ({{ m.home_team.name }} - {{ m.away_team.name }})
+                        </div>
+                    </div>
+                    
+                {% elif  result == 'D' %}
+                    <div class="result-wrapper">
+                        <a class="result D" href="{% url 'presentationMatch' slug_match=m.key_id %}">
+                            D
+                        </a>
+                        <div class="info-form-hover">
+                            {{ m.date|date:"d/m/Y" }} </br>
+                            {{ m.home_score }} - {{ m.away_score }}
+                            ({{ m.home_team.name }} - {{ m.away_team.name }})
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="result-wrapper">
+                        <a class="result N" href="{% url 'presentationMatch' slug_match=m.key_id %}">
+                            N
+                        </a>
+                        <div class="info-form-hover">
+                            {{ m.date|date:"d/m/Y" }} </br>
+                            {{ m.home_score }} - {{ m.away_score }}
+                            ({{ m.home_team.name }} - {{ m.away_team.name }})
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>

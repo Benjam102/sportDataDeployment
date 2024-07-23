@@ -1,0 +1,139 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<!-- Title of the window -->
+		<title>Rugby Data</title>
+
+		<!-- Specifies encoding to the browser (management of accents, etc.) -->
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+		<!-- Style sheets -->
+		<link rel="stylesheet" type="text/css" href="{% static 'CSS/website/playerTeam.css' %}">
+
+		<!-- Inhibits wide screens on mobile phones: prevents the mobile phone from having a wide screen that requires zooming in -->
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=2.0" />
+
+		<!-- Page icon -->
+		<link rel="icon" href="{% static 'rugbyBut.ico' %}" type="image/x-icon">
+		
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+		<script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+	</head>
+
+    <body>
+        <div class="container-page">
+			<div class="page">
+				<header>
+                    <a href="{% url 'homePage' %}" class="logoRugby">
+                        <img src="{% static 'IMG/logoHeader.png' %}" alt="">
+                        <h1> Rugby Data </h1>
+                    </a>
+                </header>
+
+				<div class="grid-player-team te">
+					<div class="container-player-team">
+						<div class="player-team">
+							<img src="{{ team_info.logo }}" alt="">
+						</div>
+
+						<div class="name-player-team">
+							{{ team_info.name }}
+						</div>
+					</div>
+				</div>
+
+				<div class="container-banner">
+					<div class="banner">
+						Leagues
+					</div>
+				</div>
+				
+				<div class="container-grid">
+					<div class="grid-general-info">
+						<div>
+							League 1:
+						</div>
+						<div class="info-player-team">
+							{% if team_info.competition1 %}
+								{{ team_info.competition1 }}
+							{% else %}
+								/
+							{% endif %}
+						</div>
+					</div>	
+					<div class="grid-general-info">
+						<div>
+							League 2:
+						</div>
+						<div class="info-player-team">
+							{% if team_info.competition2 %}
+								{{ team_info.competition2 }}
+							{% else %}
+								/
+							{% endif %}
+						</div>
+					</div>	
+					<div class="grid-general-info">
+						<div>
+							League 3:
+						</div>
+						<div class="info-player-team">
+							{% if team_info.competition3 %}
+								{{ team_info.competition3 }}
+							{% else %}
+								/
+							{% endif %}
+						</div>
+					</div>	
+				</div>
+
+				<div class="container-banner">
+					<div class="banner">
+						Stadium
+					</div>
+				</div>
+
+				<div class="container-grid">
+					<div class="grid-general-info">
+						<div>
+							Stadium 1:
+						</div>
+						<div class="info-player-team">
+							{% if team_info.stadium1 %}
+								{{ team_info.stadium1 }}
+							{% else %}
+								/
+							{% endif %}
+						</div>
+					</div>	
+					<div class="grid-general-info">
+						<div>
+							Stadium 2:
+						</div>
+						<div class="info-player-team">
+							{% if team_info.stadium2 %}
+								{{ team_info.stadium2 }}
+							{% else %}
+								/
+							{% endif %}
+						</div>
+					</div>	
+					<div class="grid-general-info">
+						<div>
+							Stadium 3:
+						</div>
+						<div class="info-player-team">
+							{% if team_info.stadium3 %}
+								{{ team_info.stadium3 }}
+							{% else %}
+								/
+							{% endif %}
+						</div>
+					</div>	
+				</div>
+			</div>
+		</div>
+    </body>

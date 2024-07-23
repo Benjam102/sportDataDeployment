@@ -1,0 +1,80 @@
+{% load static %}
+
+<div class="container-recurrent">
+    <div class="general-weather">
+        General weather:
+        <img src="{% static general_weather %}" alt="">
+    </div>
+
+    <div class="container-meteo">
+        <div class="grid-meteo-will-not-play">
+            <div class="parameter-meteo">
+                <img src="{% static 'IMG/meteo/temperature.png' %}" alt="">
+                Temperature:
+            </div>
+            <div class="second-col">
+                {% if match.temperature %}
+                    {{ match.temperature|floatformat:1 }} °C
+                {% else %}
+                    /
+                {% endif %}
+            </div>
+        </div> 
+        <div class="grid-meteo-will-not-play">
+            <div class="parameter-meteo">
+                <img src="{% static 'IMG/meteo/humidity.png' %}" alt="">
+                Humidity:
+            </div>
+            <div class="second-col">
+                {% if match.humidity %}
+                    {{ match.humidity|floatformat:1 }} %
+                {% else %}
+                    /
+                {% endif %}
+            </div>
+        </div> 
+        
+        <div class="grid-meteo-will-not-play">
+            <div class="parameter-meteo">
+                <img src="{% static 'IMG/meteo/pressure.png' %}" alt="">
+                Pressure:
+            </div>
+            <div class="second-col">
+                {% if match.pressure %}
+                    {{ match.pressure|floatformat:1 }} hPa
+                {% else %}
+                    /
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="grid-meteo-will-not-play">
+            <div class="parameter-meteo">
+                <img src="{% static 'IMG/meteo/precipitation.png' %}" alt="">
+                Precipitation:
+            </div>
+            <div class="second-col">
+                {% if match.precipitation %}
+                    {{ match.precipitation|floatformat:1 }} mm
+                {% else %}
+                    /
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="grid-meteo-will-not-play">
+            <div class="parameter-meteo">
+                <img src="{% static 'IMG/meteo/wind.png' %}" alt="">
+                Wind speed:
+            </div>
+            <div class="second-col">
+                {% if match.wind_speed %}
+                    {{ match.wind_speed|floatformat:1 }} hPa
+                {% else %}
+                    /
+                {% endif %}
+            </div>
+        </div>
+        
+    </div>                    
+</div>      

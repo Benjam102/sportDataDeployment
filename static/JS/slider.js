@@ -1,40 +1,53 @@
 function sliderCompetition(sliderDoc, nextButton, precedentButton)
 {
+    /**
+     * Function to manage a slider.
+     *
+     * @param {string} sliderDoc Class of the slider.
+     * @param {string} nextButton Class Right scroll button.
+     * @param {string} precedentButton class Left scroll button.
+     */
+
     let slider = document.querySelector(sliderDoc); 
 
     if(slider)
     {
+        // Get all items within the slider
         let items = slider.querySelectorAll('.c');
-        let nbSlide = items.length;                           /* Nb d'image qu'on a dans le tableau items */
-        let suivant = document.querySelector(nextButton);
-        let precedent = document.querySelector(precedentButton);
+        let nbSlide = items.length;                                 // Number of images in the items array
+        let suivant = document.querySelector(nextButton);           // Right scroll button
+        let precedent = document.querySelector(precedentButton);    // Left scroll button
         let count = 0;
 
         function slideSuivante()
         {
-            items[count].classList.remove('slider-active');            /* On retire la propriété active */
+            // Remove the active class from the current item
+            items[count].classList.remove('slider-active');
 
-            if(count < nbSlide - 1)                             /* On défile */
+            // Increment the count or reset to 0 if at the end
+            if(count < nbSlide - 1)                                 // Scroll forward
             {
                 count++;
             } 
-            else                                                /* On revient à l'image du début */
+            // Return to the first image
+            else 
             {
                 count = 0;
             }
 
-            items[count].classList.add('slider-active');                /* On ajoute la classe active à l'image */
-            // console.log(count);
+            // Add the active class to the new current item
+            items[count].classList.add('slider-active');
         }
 
-        /* Quand on clique, on envoie la slide suivante */
+        // Add event listener for the right scroll button
         suivant.addEventListener('click', slideSuivante);
-
 
         function slidePrecedente()
         {
+            // Remove the active class from the current item
             items[count].classList.remove('slider-active');
 
+            // Decrement the count or set to last item if at the beginning
             if(count > 0)
             {
                 count--;
@@ -44,18 +57,22 @@ function sliderCompetition(sliderDoc, nextButton, precedentButton)
                 count = nbSlide - 1;
             }
 
+            // Add the active class to the new current item
             items[count].classList.add('slider-active');
-            // console.log(count); 
         }
 
-        /* Quand on clique, on renvoie sur la slide précédente */
+        // Add event listener for the left scroll button
         precedent.addEventListener('click', slidePrecedente);
     }
 }
 
+// Calls the function once the document has been loaded
+document.addEventListener('DOMContentLoaded', function() 
+{
+    sliderCompetition('.slider', '.right', '.left');
+    sliderCompetition('.slider2', '.right2', '.left2');
+});
 
-sliderCompetition('.slider', '.right', '.left');
-sliderCompetition('.slider2', '.right2', '.left2');
                                 
                                        
                                     

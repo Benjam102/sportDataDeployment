@@ -88,7 +88,7 @@
 .grid-league-tchat                              /* Grid for challenge cup, top 14, proD2... */
 {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: auto 1fr;
     padding: 10px;
 }
 
@@ -123,6 +123,23 @@ input[type="checkbox"]                          /* Changes the color when we che
 input[type="checkbox"]:hover
 {
     cursor: pointer;
+}
+
+/*-----------------------------------------------------------Favourite-----------------------------------------------------------*/
+.box-svg                                /* Avoids resizing the svg (star) */
+{
+    width: 24px;
+    height: 24px;
+}
+
+.star-fav
+{   
+    cursor: pointer;
+}
+
+.name-compe
+{
+    margin-top: 2px;
 }
 
 /*-------------------------------------------------------Left part: Tchat--------------------------------------------------------*/
@@ -298,7 +315,7 @@ input[type="checkbox"]:hover
     }
 
     /* Right side: Threads */
-    .container-grid-threads
+    .container-grid-threads-tchats
     {
         padding: 5px 10px 10px 10px;
     }

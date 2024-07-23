@@ -12,11 +12,7 @@
 
 		<!-- Style sheets -->
 		<link rel="stylesheet" type="text/css" href="{% static 'CSS/headerFooter.css' %}">
-		<link rel="stylesheet" type="text/css" href="{% static 'CSS/homePage/homePage.css' %}">
-		<link rel="stylesheet" type="text/css" href="{% static 'CSS/homePage/rank_table.css' %}">
-		<link rel="stylesheet" type="text/css" href="{% static 'CSS/homePage/league_table.css' %}">
-		<link rel="stylesheet" type="text/css" href="{% static 'CSS/slider.css' %}">
-		<link rel="stylesheet" type="text/css" href="{% static 'CSS/homePage/responsiveHomePage.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'CSS/website/homePage.css' %}">
 
 		<!-- Inhibits wide screens on mobile phones: prevents the mobile phone from having a wide screen that requires zooming in -->
 		<meta name="viewport" content="initial-scale=1.0, maximum-scale=2.0" />
@@ -29,7 +25,6 @@
 	</head>
 
     <body>
-       <!-- Entête -->
 	   <header>
 			<a href="{% url 'homePage' %}" class="logoRugby">
 				<img src="{% static 'IMG/logoHeader.png' %}" alt="">
@@ -55,7 +50,7 @@
 				</button>
 			{% endif %}
 			
-			<!-- Menu déroulant quand la fenêtre devient petite -->
+			<!-- Drop-down menu when window becomes small -->
 			<div class="petit-menu">
 				<span>
 					<div></div>
@@ -69,70 +64,60 @@
 		</header>
 
 		<div class="page">
-			<div class="categories-competition">
-				<div class="container-grid-cate-matches">   
-					<div class="grid-title">
-						Categories
-					</div>
-					
-					{% for cate, categories in leagues_by_categories.items %}
-						<div class="grid-category">
-							{{ cate }}
-							<div class="second-col">
-								<div class="caret"></div>
-							</div>
-						</div>
-						<div class="leagues-tchats-none" id="{{ cate }}">
-							{% for category in categories %}
-								<!-- Grâce au label on peut lier la grid à la checkbox par l'id -->
-								<!-- Quand on clique sur en dehors de case on peut quand même la cocher -->
-								<div class="grid-league-tchat">
-									{% if cate != 'Recent' %}
-										<form method="post" class="box-svg" data-url-add="{% url 'add_favourite_competition' slug_thread_league=category.slug_thread_league %}" data-url-remove="{% url 'remove_favourite_competition' slug_thread_league=category.slug_thread_league %}">
-											{% csrf_token %}
-											{% if cate == 'Favourites' %}	
-												<box-icon name="star" color="#e9c46a" type="solid" class="star-fav" id="fav-{{ category.slug_thread_category }}-{{category.slug_thread_league}}"></box-icon>
-											{% else %}				
-												{% if category.thread_league in compe_fav %}		
-													<box-icon name="star" color="#e9c46a" type="solid" class="star-fav" id="{{ category.slug_thread_category }}-{{category.slug_thread_league}}"></box-icon>	
-												{% else %}
-													<box-icon name="star" color="#344D59" type="regular" class="star-fav" id="{{ category.slug_thread_category }}-{{category.slug_thread_league}}"></box-icon>	
-												{% endif %}		
-											{% endif %}										
-										</form>
+			<div class="prediction-part">
+				<div class="grid-title">
+					<div> Match predicted </div>
+					<div> Margin </div>
+					<div> Total </div>
+					<div> Margin </div>
+					<div> Total </div>
+					<div> </div>
+				</div>
+				<div class="container-prediction">
+					{% if user.is_authenticated %}
+						{% for predic in user_prediction %}
+							<div class="grid-prediction">
+								<div> {{ predic.prediction_match.key_id }} </div>
+								<div> 
+									{% if predic.prediction_margin1 %}
+										{{ predic.prediction_margin1 }} 
 									{% else %}
-										<div class="box-svg"></div>
-									{% endif %}
-									{% if cate == 'Favourites' %}	
-										<label class="text-check-box" for="fav-{{ category.slug_thread_league }}">
-											<div class="league-tchat">
-												<div class="name-compe">{{ category.thread_league }}</div>
-											</div>
-											<input type="checkbox" class="category-checkbox" id="fav-{{ category.slug_thread_league }}" data-url="{% url 'display_matches' slug_category_thread=category.slug_thread_league %}">
-										</label>
-									{% else %}
-										<label class="text-check-box" for="{{ category.slug_thread_league }}">
-											<div class="league-tchat">
-												<div class="name-compe">{{ category.thread_league }}</div>
-											</div>
-											<input type="checkbox" class="category-checkbox" id="{{ category.slug_thread_league }}" data-url="{% url 'display_matches' slug_category_thread=category.slug_thread_league %}">
-										</label>
+										/
 									{% endif %}
 								</div>
-							{% endfor %}
+								<div> 
+									{% if predic.prediction_total1 %}
+										{{ predic.prediction_total1 }} 
+									{% else %}
+										/
+									{% endif %}
+								</div>
+								<div> 
+									{% if predic.prediction_margin2 %}
+										{{ predic.prediction_margin2 }} 
+									{% else %}
+										/
+									{% endif %}
+								</div>
+								<div> 
+									{% if predic.prediction_total2 %}
+										{{ predic.prediction_total2 }} 
+									{% else %}
+										/
+									{% endif %}
+								</div>
+								<div> </div>
+							</div>
+						{% endfor %}
+					{% else %}
+						<div class="grid-prediction">
+							<div class="column-1-6"> Log in to see your predictions </div> 
 						</div>
-					{% endfor %}     
+					{% endif %}
 				</div>
-			</div>
-			
-			<div class="upcoming-matches">
-				<div class="container-futur-matches">
-					<!-- Ajoutés grâce à une requête ajax -->
-					<div class="no-match"> 
-						Nothing is selected.
-					</div>
-				</div>
-			</div>
+				
+			</div>		
+
 		</div>
 		
 		<footer>
@@ -141,15 +126,8 @@
 			</div>
 		</footer>
 
-		<!-- Sript pour le petit menu déroulant -->
+		<!-- Script for the small menu -->
 		<script src="{% static 'JS/script_menu.js' %}"></script>
-
-		<!-- Script pour le défilement des tableaux -->
-		<script src="{% static 'JS/dropDownMenu.js' %}"></script>
-
-		<script src="{% static 'JS/matchesCategory.js' %}"></script>
-
-		<script src="{% static 'JS/favouriteButtons.js' %}"></script>
 	</body>
 
 	

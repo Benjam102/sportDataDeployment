@@ -1,3 +1,7 @@
+/**
+ * Allows us to display matches for the competition selected.
+ */
+
 $(document).ready(function () 
 {
     $('.category-checkbox').change(function () 
@@ -8,19 +12,19 @@ $(document).ready(function ()
             
             // Get the URL from the data-url attribute of the form
             var url1 = $(this).data('url');
-            console.log(url1);
+            
+            // Make an AJAX GET request to the URL
             $.ajax({
+        
                 type: 'GET',
                 url: url1,
                 
-                // Make an AJAX GET request to the URL
                 success: function (response) 
                 {
-                    // Case where we want to diplay a tchat
+                    // Case where we have matches
                     if(response.upcoming_matches_list != null)
                     {
                         // Choose the container
-                        console.log('oui');
                         var gridContainer = $('.container-futur-matches');
     
                         // First, empty the container in case it contains previous elements
@@ -44,9 +48,14 @@ $(document).ready(function ()
                                 date = match.date;
                             }
                             
-                            html = '<a href="/match/' + match.key_id + '/" class="grid-match">' + // on peut pas passer par des url
+                            // We hardcode the url because js doesn't interpret django tags
+                            html = '<a href="/match/' + match.key_id + '/" class="grid-match">' + 
                                         '<div class="illustration">' +
                                             '<img src="/static/IMG/rugbyBut.png" alt="">' +
+                                        '</div>' +
+                                        '<div class="competition">' +
+                                            '<img src="/static/IMG/trophee.png" alt="">' +
+                                            match.competition +
                                         '</div>' +
                                         '<div class="date">' +
                                             date +
@@ -86,6 +95,7 @@ $(document).ready(function ()
                             }
 
                             html += '</a>';
+                            
                             gridContainer.append(html);
                         });
                     }
@@ -97,10 +107,10 @@ $(document).ready(function ()
                         // First, empty the container in case it contains previous elements
                         gridContainer.empty();
 
-                        // If no competition are selected, show a message
+                        // Case we don't have matches
                         gridContainer.append(
                             '<div class="no-match">' +
-                                'Nothing is selected.' +
+                                'No matches.' +
                             '</div>'
                         )
                     }

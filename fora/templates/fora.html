@@ -4,28 +4,30 @@
 <html lang="en">
 
 	<head>
-		<!-- titre de la fenêtre -->
+		<!-- Title of the window -->
 		<title>Rugby Data</title>
 
-		<!-- précise l'encodage au navigateur (gestion des accents, ...) -->
+		<!-- Specifies encoding to the browser (management of accents, etc.) -->
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-		<!-- Feuilles de style -->
-		<!-- Feuilles de style -->
+		<!-- Style sheets -->
 		<link rel="stylesheet" type="text/css" href="{% static 'CSS/headerFooter.css' %}">
 		<link rel="stylesheet" type="text/css" href="{% static 'CSS/fora/fora.css' %}">
 
-		<!-- Inhibe la grande largeur sur mobile : évite que le mobile présente un écran large et qu'il faille zoomer -->
+		<!-- Inhibits wide screens on mobile phones: prevents the mobile phone from having a wide screen that requires zooming in -->
 		<meta name="viewport" content="initial-scale=1.0, maximum-scale=2.0" />
 
-		<!-- icône de la page -->
+		<!-- Page icon -->
 		<link rel="icon" href="{% static 'rugbyBut.ico' %}" type="image/x-icon">
         
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <!-- For Ajax requests -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+		<!-- For the star (favourite) -->
+		<script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
 	</head>
 
     <body>
-        <!-- Entête -->
         <header>
 			<a href="{% url 'homePage' %}" class="logoRugby">
 				<img src="{% static 'IMG/logoHeader.png' %}" alt="">
@@ -33,8 +35,8 @@
 			</a>
 
 			<ul class="menu">
-				<li> <a href="{% url 'standings' %}"> Standings </a> </li>
-                <li> <a href="{% url 'fora' %}"> Fora </a> </li>
+				<li> <a href="{% url 'fixtures' %}"> Fixtures </a></li>
+				<li> <a href="{% url 'fora' %}"> Forum </a></li>
 			</ul>
 			
 			{% if user.is_authenticated %}
@@ -51,7 +53,7 @@
 				</button>
 			{% endif %}
 			
-			<!-- Menu déroulant quand la fenêtre devient petite -->
+			<!-- Drop-down menu when window becomes small -->
 			<div class="petit-menu">
 				<span>
 					<div></div>
@@ -64,127 +66,165 @@
 			</div>
 		</header>
 
-    <div class="page">
-        <div class="categories-tchats">
-            <div class="container-grid-cate">   
-                <div class="grid-title">
-                    Categories
+        <div class="page">
+            <div class="categories-tchats">
+                <div class="container-grid-cate">   
+                    <div class="grid-title">
+                        Categories
+                    </div>
+                    
+                    {% for cate, categories in leagues_by_categories.items %}
+                        <div class="grid-category">
+                            {{ cate }}
+                            <div class="second-col">
+                                <div class="caret"></div>
+                            </div>
+                        </div>
+                        <div class="leagues-tchats-none" id="{{ cate }}">
+                            {% for category in categories %}
+                                <div class="grid-league-tchat">
+                                    {% if cate != 'Closest' %}
+                                        <form method="post" class="box-svg" data-url-add="{% url 'add_favourite_competition' slug_thread_league=category.slug_thread_league %}" data-url-remove="{% url 'remove_favourite_competition' slug_thread_league=category.slug_thread_league %}">
+                                            {% csrf_token %}
+                                            {% if cate == 'Favourites' %}	
+                                                <box-icon name="star" color="#e9c46a" type="solid" class="star-fav" id="fav-{{ category.slug_thread_category }}-{{category.slug_thread_league}}"></box-icon>
+                                            {% else %}				
+                                                {% if category.thread_league in compe_fav %}		
+                                                    <box-icon name="star" color="#e9c46a" type="solid" class="star-fav" id="{{ category.slug_thread_category }}-{{category.slug_thread_league}}"></box-icon>	
+                                                {% else %}
+                                                    <box-icon name="star" color="#344D59" type="regular" class="star-fav" id="{{ category.slug_thread_category }}-{{category.slug_thread_league}}"></box-icon>	
+                                                {% endif %}		
+                                            {% endif %}										
+                                        </form>
+                                    {% else %}
+                                        <div class="box-svg"></div>
+                                    {% endif %}
+                                    {% if cate == 'Favourites' %}	
+                                        <!-- Thanks to the label we can link the grid to the checkbox by the id -->
+                                        <!-- When you click outside a box you can still check it -->
+                                        <label class="text-check-box" for="fav-thread-{{ category.slug_thread_league }}">
+                                            <a class="league-tchat" href="{% url 'categories' slug_thread_category=category.slug_thread_category slug_thread_league=category.slug_thread_league %}">
+                                                <div class="name-compe">{{ category.thread_league }}</div>
+                                            </a>
+                                            <input type="checkbox" class="category-checkbox" id="fav-thread-{{ category.slug_thread_league }}" data-url="{% url 'display_threads' slug_category_thread=category.slug_thread_league %}">
+                                        </label>
+                                    {% else %}
+                                        <label class="text-check-box" for="thread-{{ category.slug_thread_league }}">
+                                            <a class="league-tchat" href="{% url 'categories' slug_thread_category=category.slug_thread_category slug_thread_league=category.slug_thread_league %}">
+                                                <div class="name-compe">{{ category.thread_league }}</div>
+                                            </a>
+                                            <input type="checkbox" class="category-checkbox" id="thread-{{ category.slug_thread_league }}" data-url="{% url 'display_threads' slug_category_thread=category.slug_thread_league %}">
+                                        </label>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}     
                 </div>
-                
-                {% for cate, categories in leagues_by_categories.items %}
-                    <div class="grid-category">
-                        {{ cate }}
-                        <div class="second-col">
-                            <div class="caret"></div>
+            </div>
+            
+            <div class="threads-tchats">
+                <div class="container-grid-threads-tchats">
+                    <div class="grid-first">
+                        <div class="element-grid">
+                            <b>Thread</b>
+                        </div>
+                        <div class="element-grid">
+                            <b>Latest comment</b>
+                        </div>
+                        <div class="element-grid">
+                            <b>Comments</b>
+                        </div>
+                        <div class="element-grid">
+                            <b>Status</b>
                         </div>
                     </div>
-                    <div class="leagues-tchats-none" id="{{ cate }}">
-                        {% for category in categories %}
-                            <!-- Grâce au label on peut lier la grid à la checkbox par l'id -->
-                            <!-- Quand on clique sur en dehors de case on peut quand même la cocher -->
-                            <label class="grid-league-tchat text-check-box" for="thread-{{ category.slug_thread_league }}">
-                                <a class="league-tchat" href="{% url 'categories' slug_thread_category=category.slug_thread_category slug_thread_league=category.slug_thread_league %}">
-                                    {{ category.thread_league }}
-                                </a>
-                                <input type="checkbox" class="category-checkbox" id="thread-{{ category.slug_thread_league }}" data-url="{% url 'display_threads' slug_category_thread=category.slug_thread_league %}">
-                            </label>
-                        {% endfor %}
-                    </div>
-                {% endfor %}     
-            </div>
-        </div>
-           
-        <div class="threads-tchats">
-            <div class="container-grid-threads-tchats">
-                <div class="grid-first">
-                    <div class="element-grid">
-                        <b>Thread</b>
-                    </div>
-                    <div class="element-grid">
-                        <b>Latest comment</b>
-                    </div>
-                    <div class="element-grid">
-                        <b>Comments</b>
-                    </div>
-                    <div class="element-grid">
-                        <b>Status</b>
-                    </div>
-                </div>
-                
-                <div class="container-futur-threads">
-                    <!-- Ajoutés grâce à une requête ajax -->
-                    <div class="no-thread"> 
-                        Nothing is selected.
-                    </div>
-                </div>
-            </div>
-        </div>
-                
-        <div class="categories-tchats">
-            <div class="container-grid-cate-tchat">   
-                <div class="grid-title">
-                    Tchats
-                </div>
-
-                {% for tchat_category, tchats_info in tchats_by_categories.items %}
-                    <div class="grid-category">
-                        {{ tchat_category }}
-                        <div class="second-col">
-                            <div class="caret"></div>
+                    
+                    <div class="container-futur-threads">
+                        <!-- Add thank to the Ajax request -->
+                        <div class="no-thread"> 
+                            Nothing is selected.
                         </div>
                     </div>
-
-                    <div class="leagues-tchats-none" id="{{ tchat_category }}">
-                        {% for tchat in tchats_info %}
-                            <label class="grid-league-tchat text-check-box" for="tchat-{{ tchat.tchat_slug }}">
-                                <a class="league-tchat">
-                                    {{ tchat.tchat_name }}
-                                </a>
-                                <input type="checkbox" class="category-checkbox" id="tchat-{{ tchat.tchat_slug }}" data-url="{% url 'display_tchats' slug_tchat_name=tchat.tchat_slug %}">
-                            </label>
-                        {% endfor %}
-                    </div>
-                {% endfor %}     
-            </div>  
-        </div>
-
-        <div class="threads-tchats">
-            <div class="container-grid-threads-tchats">
-                <div class="grid-first-tchat">
-                    <div class="element-grid">
-                        <b>Tchat</b>
-                    </div>
-                    <div class="element-grid">
-                        <b>Latest comment</b>
-                    </div>
-                    <div class="element-grid">
-                        <b>Comments</b>
-                    </div>
                 </div>
-                
-                <div class="container-futur-tchats">
-                    <!-- Add thank to the Ajax request -->
-                    <div class="no-thread"> 
-                        Nothing is selected.
+            </div>
+                    
+            <div class="categories-tchats">
+                <div class="container-grid-cate-tchat">   
+                    <div class="grid-title">
+                        Tchats
+                    </div>
+
+                    {% for tchat_category, tchats_info in tchats_by_categories.items %}
+                        <div class="grid-category">
+                            {{ tchat_category }}
+                            <div class="second-col">
+                                <div class="caret"></div>
+                            </div>
+                        </div>
+
+                        <div class="leagues-tchats-none" id="{{ tchat_category }}">
+                            {% for tchat in tchats_info %}
+                                <div></div>
+                                <!-- Thanks to the label we can link the grid to the checkbox by the id -->
+                                <!-- When you click outside a box you can still check it -->
+                                <label class="grid-league-tchat text-check-box" for="tchat-{{ tchat.tchat_slug }}">
+                                    <a class="league-tchat">
+                                        {{ tchat.tchat_name }}
+                                    </a>
+                                    <input type="checkbox" class="category-checkbox" id="tchat-{{ tchat.tchat_slug }}" data-url="{% url 'display_tchats' slug_tchat_name=tchat.tchat_slug %}">
+                                </label>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}     
+                </div>  
+            </div>
+
+            <div class="threads-tchats">
+                <div class="container-grid-threads-tchats">
+                    <div class="grid-first-tchat">
+                        <div class="element-grid">
+                            <b>Tchat</b>
+                        </div>
+                        <div class="element-grid">
+                            <b>Latest comment</b>
+                        </div>
+                        <div class="element-grid">
+                            <b>Comments</b>
+                        </div>
+                    </div>
+                    
+                    <div class="container-futur-tchats">
+                        <!-- Add thank to the Ajax request -->
+                        <div class="no-thread"> 
+                            Nothing is selected.
+                        </div>
                     </div>
                 </div>
             </div>
+
         </div>
 
-    </div>
+        
+        <footer>
+            <div class="plan">
+                <li> <a href="{% url 'imgSources' %}"> Image sources </a> </li>
+            </div>
+        </footer>
 
-    
-    <footer>
-        <div class="plan">
-            <li> <a href="{% url 'imgSources' %}"> Image sources </a> </li>
-        </div>
-    </footer>
+        <!-- Script for the small menu -->
+		<script src="{% static 'JS/script_menu.js' %}"></script>
 
-    <!-- Sript for the drop down menu -->
-	<script src="{% static 'JS/dropDownMenu.js' %}"></script>
+		<!-- Sript for deroulant box -->
+		<script src="{% static 'JS/dropDownMenu.js' %}"></script>
 
-    <!-- Sript for display threads/tchats -->
-	<script src="{% static 'JS/threadsTchatsCategory.js' %}"></script>
+        <!-- Script to display threads/tchats -->
+        <script src="{% static 'JS/threadsTchatsCategory.js' %}"></script>
+
+        <!-- Script for favourite buttons -->
+        {% if user.is_authenticated %}
+            <script src="{% static 'JS/favouriteFora.js' %}"></script>
+        {% endif %}
     </body>
 </html>
 

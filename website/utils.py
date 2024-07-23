@@ -73,13 +73,37 @@ def form_match(matches_team, team) :
     return form_home_team_match
 
 
-def integer_prediction(nb) : # pour eviter d avoir des 10.0
+def integer_prediction(nb) :
+    """
+    Function that allows us to avoid having 10.0. We want to remove the 0. 
+
+    Parameters:
+        nb: Number to modify id it's necessary.
+
+    Returns:
+        nb: The number modify or not.
+    """
+
     if nb == int(nb):
         return int(nb)
     else:
         return nb
     
+
 def user_prediction(prediction) :
+    """
+    Function that allow us to calculate the user predictions. 
+
+    Parameters:
+        prediction: model that contains the user prediction.
+
+    Returns:
+        home_prediction1: early prediction for home team if any otherwise none.
+        away_prediction1: early prediction for away team if any otherwise none.
+        home_prediction2: final prediction for home team if any otherwise none.
+        away_prediction2: final prediction for away team if any otherwise none.
+    """
+    
     if prediction.prediction_margin1 != None and prediction.prediction_margin2 != None :
         home_prediction1 = integer_prediction((prediction.prediction_margin1 + prediction.prediction_total1)/2)
         away_prediction1 = integer_prediction(prediction.prediction_total1 - home_prediction1)

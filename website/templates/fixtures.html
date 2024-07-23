@@ -12,7 +12,7 @@
 
 		<!-- Style sheets -->
 		<link rel="stylesheet" type="text/css" href="{% static 'CSS/headerFooter.css' %}">
-		<link rel="stylesheet" type="text/css" href="{% static 'CSS/fixtures.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'CSS/website/fixtures.css' %}">
 
 		<!-- Inhibits wide screens on mobile phones: prevents the mobile phone from having a wide screen that requires zooming in -->
 		<meta name="viewport" content="initial-scale=1.0, maximum-scale=2.0" />
@@ -20,12 +20,14 @@
 		<!-- Page icon -->
 		<link rel="icon" href="{% static 'rugbyBut.ico' %}" type="image/x-icon">
 		
+		<!-- For Ajax requests -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+		<!-- For the star (favourite) -->
 		<script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
 	</head>
 
     <body>
-       <!-- Entête -->
 	   <header>
 			<a href="{% url 'homePage' %}" class="logoRugby">
 				<img src="{% static 'IMG/logoHeader.png' %}" alt="">
@@ -33,9 +35,8 @@
 			</a>
 
 			<ul class="menu">
-				<li> <a href="{% url 'standings' %}"> Standings </a> </li>
 				<li> <a href="{% url 'fixtures' %}"> Fixtures </a></li>
-				<li> <a href="{% url 'fora' %}"> Fora </a></li>
+				<li> <a href="{% url 'fora' %}"> Forum </a></li>
 			</ul>
 			
 			{% if user.is_authenticated %}
@@ -52,7 +53,7 @@
 				</button>
 			{% endif %}
 			
-			<!-- Menu déroulant quand la fenêtre devient petite -->
+			<!-- Drop-down menu when window becomes small -->
 			<div class="petit-menu">
 				<span>
 					<div></div>
@@ -81,17 +82,15 @@
 						</div>
 						<div class="leagues-tchats-none" id="{{ cate }}">
 							{% for category in categories %}
-								<!-- Grâce au label on peut lier la grid à la checkbox par l'id -->
-								<!-- Quand on clique sur en dehors de case on peut quand même la cocher -->
 								<div class="grid-league-tchat">
-									{% if cate != 'Recent' %}
+									{% if cate != 'Closest' %}
 										<form method="post" class="box-svg" data-url-add="{% url 'add_favourite_competition' slug_thread_league=category.slug_thread_league %}" data-url-remove="{% url 'remove_favourite_competition' slug_thread_league=category.slug_thread_league %}">
 											{% csrf_token %}
 											{% if cate == 'Favourites' %}	
 												<box-icon name="star" color="#e9c46a" type="solid" class="star-fav" id="fav-{{ category.slug_thread_category }}-{{category.slug_thread_league}}"></box-icon>
 											{% else %}				
 												{% if category.thread_league in compe_fav %}		
-													<box-icon name="star" color="#e9c46a" type="solid" class="star-fav" id="{{ category.slug_thread_category }}-{{category.slug_thread_league}}"></box-icon>	
+													<box-icon name="star" type="solid" color="#e9c46a" class="star-fav" id="{{ category.slug_thread_category }}-{{category.slug_thread_league}}"></box-icon>	
 												{% else %}
 													<box-icon name="star" color="#344D59" type="regular" class="star-fav" id="{{ category.slug_thread_category }}-{{category.slug_thread_league}}"></box-icon>	
 												{% endif %}		
@@ -101,6 +100,8 @@
 										<div class="box-svg"></div>
 									{% endif %}
 									{% if cate == 'Favourites' %}	
+										<!-- Thanks to the label we can link the grid to the checkbox by the id -->
+										<!-- When you click outside a box you can still check it -->
 										<label class="text-check-box" for="fav-{{ category.slug_thread_league }}">
 											<div class="league-tchat">
 												<div class="name-compe">{{ category.thread_league }}</div>
@@ -124,7 +125,7 @@
 			
 			<div class="upcoming-matches">
 				<div class="container-futur-matches">
-					<!-- Ajoutés grâce à une requête ajax -->
+					<!-- Add thank to the Ajax request -->
 					<div class="no-match"> 
 						Nothing is selected.
 					</div>
@@ -138,18 +139,19 @@
 			</div>
 		</footer>
 
-		<!-- Sript pour le petit menu déroulant -->
+		<!-- Script for the small menu -->
 		<script src="{% static 'JS/script_menu.js' %}"></script>
 
-		<!-- Script pour le défilement des tableaux -->
+		<!-- Sript for deroulant box -->
 		<script src="{% static 'JS/dropDownMenu.js' %}"></script>
 
+		<!-- Script to display matches -->
 		<script src="{% static 'JS/matchesCategory.js' %}"></script>
 
-		<script src="{% static 'JS/favouriteButtons.js' %}"></script>
+		<!-- Script for favourite buttons -->
+		{% if user.is_authenticated %}
+			<script src="{% static 'JS/favouriteButtons.js' %}"></script>
+		{% endif %}
 	</body>
-
-	
-
 </html>
 

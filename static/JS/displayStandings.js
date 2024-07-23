@@ -1,5 +1,12 @@
 function generalStandingNoPools(response, containerRanks)
 {
+    /**
+     * Display standings without pools.
+     *
+     * @param {string} response Response of the AJAX containing information to be displayed.
+     * @param {string} containerRanks Container for the standings.
+     */
+
     var html =  '<div></div>' +
                 '<div class="grid-tab-ranking">' +
                     '<div></div>' +
@@ -77,6 +84,13 @@ function generalStandingNoPools(response, containerRanks)
 
 function moreInformationsStandingNoPools(response, containerRanks)
 {
+    /**
+     * Display another standings without pools to have more information.
+     *
+     * @param {string} response Response of the AJAX containing information to be displayed.
+     * @param {string} containerRanks Container for the standings.
+     */
+
     var html =  '<div></div>' +
                 '<div class="grid-rank-more-informations">' +
                     '<div></div>' +
@@ -132,6 +146,13 @@ function moreInformationsStandingNoPools(response, containerRanks)
 
 function generalStandingPools(response, containerRanks)
 {
+    /**
+     * Display standings with pools.
+     *
+     * @param {string} response Response of the AJAX containing information to be displayed.
+     * @param {string} containerRanks Container for the standings.
+     */
+
     var isFirst = true;
     var html =  '<div class="slider">';
     
@@ -241,6 +262,13 @@ function generalStandingPools(response, containerRanks)
 
 function moreInformationsStandingPools(response, containerRanks)
 {
+    /**
+     * Display another standings with pools to have more information.
+     *
+     * @param {string} response Response of the AJAX containing information to be displayed.
+     * @param {string} containerRanks Container for the standings.
+     */
+
     var isFirst = true;
     var html =  '<div class="slider2">';
     
@@ -327,46 +355,67 @@ function moreInformationsStandingPools(response, containerRanks)
 
 function getInformationLeague(containerId, containerOfAddId1, containerOfAddId2) 
 {
+    /**
+     * Allow us to have information on standings of a competition.
+     *
+     * @param {string} containerId Subcategory of standings.
+     * @param {string} containerOfAddId1 Container for the general standings.
+     * @param {string} containerOfAddId2 Container to have more information on the standings.
+     */
+
+    // Get the container element by its ID
     var containerSelect = document.getElementById(containerId);
 
+    // Select the competition in the drop down menu of the select box
     var selectLi = containerSelect.querySelectorAll('.val li');
 
+    // Add an event listener to each list item
     selectLi.forEach(function(li) 
     {
         li.addEventListener('click', function() 
         {
             var idLi = li.id;
             console.log(idLi);
-            // Make an AJAX request to get the info based on the selected competition
+
+            // Make an AJAX request to get the information based on the selected competition
             $.ajax({
-                url: idLi, // URL to your server endpoint
+                url: idLi,
                 type: 'GET',
 
                 success: function(response) 
                 {
+                    // Get the containers where the information will be added
                     var containerRanks1 = $(document.getElementById(containerOfAddId1));
                     var containerRanks2 = $(document.getElementById(containerOfAddId2));
+                    
+                    // Clear the containers
                     containerRanks1.empty();
                     containerRanks2.empty();
-                   
+
+                    // Check if there are no pools
                     if (response.nb_teams_pool == 0)
                     {
                         generalStandingNoPools(response, containerRanks1);
                         moreInformationsStandingNoPools(response, containerRanks2);
 
-                        $.getScript('/static/JS/slider.js', function() {
-                            // Pour reattacher les bons trucs 
+                        /* 
+                        $.getScript('/static/JS/slider.js', function() 
+                        {
+                            // Reattach the appropriate slider functions
                             sliderCompetition('.slider', '.right', '.left');
                             sliderCompetition('.slider2', '.right2', '.left2');
-                        });
+                        });*/
                     }
                     else
                     {
+                        // There are pools
                         generalStandingPools(response, containerRanks1);
                         moreInformationsStandingPools(response, containerRanks2);
 
-                        $.getScript('/static/JS/slider.js', function() {
-                            // Pour reattacher les bons trucs 
+                        // Load and execute the slider script
+                        $.getScript('/static/JS/slider.js', function() 
+                        {
+                            // Reattach the appropriate slider functions
                             sliderCompetition('.slider', '.right', '.left');
                             sliderCompetition('.slider2', '.right2', '.left2');
                         });
@@ -381,6 +430,7 @@ function getInformationLeague(containerId, containerOfAddId1, containerOfAddId2)
         });
     }); 
 }
+
 
 // Initialize the click handler for all containers with the class 'under-category-content'
 $(document).ready(function() 

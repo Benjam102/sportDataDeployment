@@ -2,8 +2,9 @@
 
 <div class="container-recurrent">
     {% if match.competition|lower != 'tests matchs' %}
-        {% if nb_teams_pool == 0 %} <!-- Quand y'a des pools y'a pas de ranking home/away -->
-            <div></div> <!-- a cause des pools -->
+        <!-- When there are pools there is no home/away ranking -->
+        {% if nb_teams_pool == 0 %} 
+            <div></div> <!-- because of pools -->
             <div class="grid-rank-more-informations">
                 <div> </div>
                 <div> </div>

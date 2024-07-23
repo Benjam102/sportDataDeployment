@@ -1,87 +1,88 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Sélectionnez tous les boutons "Voir plus" par leur classe
-    const loadMoreButtons = document.querySelectorAll('.under-category-content .button-more');
-    const matchesPerPage = 3; // Nombre de matches à afficher par page
+function displayMatches(targetContainer, matchesPerPage, button) 
+{
+    /**
+     * Allows us to display more matches by a click on the button.
+     *
+     * @param {string} targetContainer Container containing the show more button.
+     * @param {string} matchesPerPage Number of match to show initially.
+     * @param {string} button button "Show more".
+     */
 
-    // Parcourez chaque bouton "Voir plus" et ajoutez un gestionnaire d'événements
-    loadMoreButtons.forEach(function(button) {
+    // Select all match elements within the target container
+    const matches = targetContainer.querySelectorAll('.grid-h2h');
+
+    // Initial number of visible matches
+    let visibleMatches = 0; 
+
+    // Count how many matches are currently visible
+    matches.forEach(function(match) 
+    {
+        if (match.style.display == 'grid') 
+        {
+            visibleMatches++;
+        }
+    });
+
+    // Increase the number of visible matches by the specified number per page
+    visibleMatches += matchesPerPage;
+
+    // Loop through each match element and update its display status
+    matches.forEach((match, index) => 
+    {
+        if (index < visibleMatches) 
+        {
+            // Display the match if its index is within the number of visible matches
+            match.style.display = 'grid'; 
+        } 
+        else 
+        {
+            // Hide any additional matches beyond the visible matches count
+            match.style.display = 'none'; 
+        }
+    });
+
+    // Show the "Show more" button only if there are hidden matches remaining to be displayed
+    button.style.display = (visibleMatches < matches.length) ? '' : 'none';
+}
+
+
+function showMore(classButton, matchesPerPage)
+{
+    /**
+     * Allows us to add an event on the buttons "Show more" in the section H2H of the match page.
+     *
+     * @param {string} classButton Container containing all the "Show more" button.
+     * @param {string} matchesPerPage Number of match to show initially.
+     */
+
+    // Select all "See More" buttons by their class
+    const loadMoreButtons = document.querySelectorAll(classButton);
+
+    // Iterate through each "See More" button and add an event listener
+    loadMoreButtons.forEach(function(button) 
+    {
+        // Get the target container ID from the button's data attribute
         const targetContainerId = button.getAttribute('data-target');
+        // Get the target container element by its ID
         const targetContainer = document.getElementById(targetContainerId);
 
-        if (targetContainer) {
-            // Fonction pour afficher les matches en fonction du nombre visible actuel
-            function displayMatches() {
-                const matches = targetContainer.querySelectorAll('.grid-h2h');
+        if (targetContainer) 
+        {
+            // Display the initial set of matches when the page loads
+            displayMatches(targetContainer, matchesPerPage, button);
 
-                visibleMatches = 0; // Nombre initial de matches visibles
-
-                matches.forEach(function(match) {
-                    if (match.style.display == 'grid') {
-                        visibleMatches++;
-                    }
-                });
-
-                visibleMatches += matchesPerPage;
-
-                matches.forEach((match, index) => {
-                    if (index < visibleMatches) {
-                        match.style.display = 'grid'; // Afficher le match
-                    } else {
-                        match.style.display = 'none'; // Masquer les matches supplémentaires
-                    }
-                });
-
-                // Afficher le bouton "Voir plus" uniquement s'il y a des matches cachés à afficher
-                button.style.display = (visibleMatches < matches.length) ? '' : 'none';
-            }
-
-            // Afficher les premiers matches lors du chargement initial
-            displayMatches();
-
-            // Gérer le clic sur le bouton "Voir plus"
-            button.addEventListener('click', function() {
-                visibleMatches += matchesPerPage; // Augmenter le nombre de matches visibles
-                displayMatches(); // Actualiser l'affichage des matches
+            // Handle the click event on the "See More" button
+            button.addEventListener('click', function() 
+            {
+                // Update the display of matches
+                displayMatches(targetContainer, matchesPerPage, button);
             });
         }
     });
+}
+
+
+document.addEventListener('DOMContentLoaded', function() 
+{
+    showMore('.under-category-content .button-more', 3);
 });
-
-
-
-
-
-
-
-/*document.addEventListener('DOMContentLoaded', function() {
-    const matchesContainer = document.getElementById('matchesContainer');
-    const loadMoreButton = document.getElementById('loadMoreButton');
-    const matchesPerPage = 1; // Nombre de matches à afficher par page
-    let visibleMatches = matchesPerPage; // Nombre initial de matches visibles
-
-    // Fonction pour afficher les matches en fonction du nombre visible actuel
-    function displayMatches() {
-        const matches = matchesContainer.querySelectorAll('.grid-tab');
-        matches.forEach((match, index) => {
-            if (index < visibleMatches) {
-                match.style.display = 'grid'; // Afficher le match
-            } else {
-                match.style.display = 'none'; // Masquer les matches supplémentaires
-            }
-        });
-
-        // Afficher le bouton "Voir plus" uniquement s'il y a des matches cachés à afficher
-        loadMoreButton.style.display = (visibleMatches < matches.length) ? '' : 'none';
-    }
-
-    // Afficher les premiers matches lors du chargement initial
-    displayMatches();
-
-    // Gérer le clic sur le bouton "Voir plus"
-    loadMoreButton.addEventListener('click', function() {
-        visibleMatches += matchesPerPage; // Augmenter le nombre de matches visibles
-        displayMatches(); // Actualiser l'affichage des matches
-    });
-});
-
-Pour 1 */

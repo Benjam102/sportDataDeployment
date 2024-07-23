@@ -3,7 +3,6 @@ from datetime import datetime, timedelta
 
 # Importation des modèles
 from .models import matches, teams, odds, rankings, players, sources, compositions
-from fora.views import threads_
 
 # Importation des fonctions de scraping
 from fora.models import threads_categories_match, threads_match, threads_comments_match
@@ -19,14 +18,33 @@ from django.http import JsonResponse
 import json
 from django.core import serializers
 from django.db.models import Count
+from django.utils.functional import SimpleLazyObject
 
-# Page d'acceuil #
+# Page d'acceuil
 def homePage(request) :
-
-    # Récupérer les compétitions distinctes associées aux matchs et les trier par ordre alphabétique
-    # Renvoie un tuple -> {'competition': 'nom'} (dictionnaire)
-    competitions_sorted = matches.objects.values('competition').distinct().order_by('competition')
     
+    if request.user.is_authenticated:
+        try:
+            user = request.user
+            user_prediction = predictions_matches.objects.filter(user_prediction=user)
+            
+        except predictions_matches.DoesNotExist:
+            user_prediction = None
+       
+        context = {
+            'user_prediction': user_prediction,
+        }
+ 
+    else :
+
+        context = {
+            'user_prediction': None,
+        }
+
+    return render(request, "homePage.html", context)
+
+
+def fixtures(request) :    
     # Récupérer tous les noms des catégories sans doublon, triés par ordre alphabétique
     categories = threads_categories_match.objects.values_list('thread_category', flat=True).distinct() 
    
@@ -61,108 +79,81 @@ def homePage(request) :
     # Passer les matchs récupérés au contexte du template
     context = {
         'compe_fav': compe_fav,
-        'competitions_sorted' : competitions_sorted,
         'leagues_by_categories': leagues_by_categories
     }
 
-    return render(request, "homePage.html", context)
+    return render(request, "fixtures.html", context)
 
-
-def fixtures(request) :
-    # Récupérer les compétitions distinctes associées aux matchs et les trier par ordre alphabétique
-    # Renvoie un tuple -> {'competition': 'nom'} (dictionnaire)
-    competitions_sorted = matches.objects.values('competition').distinct().order_by('competition')
-    
-    # Récupérer tous les noms des catégories sans doublon, triés par ordre alphabétique
-    categories = threads_categories_match.objects.values_list('thread_category', flat=True).distinct() 
-   
-    # Créer un dictionnaire pour stocker les leagues par catégories
-    leagues_by_categories = {}
-
-    # Lier chaque league à une catégorie
-    for category in categories:
-        categories = threads_categories_match.objects.filter(thread_category=category).order_by('thread_league')
-
-        if (category != 'Favourites') :
-            leagues_by_categories[category] = categories
-        else :
-            leagues_by_categories[category] = []
-
-    # Favoris
-    compe_fav = []
-    if request.user.is_authenticated:
-        user = request.user
-        competitions_favourites = favourites.objects.filter(user=user)
-
-        for c in competitions_favourites :   
-            dico = {                                            # mettre les memes nom que pour les objets threads_category
-                'slug_thread_league': c.slug_competition,
-                'thread_league': c.name_competition
-            }
-            leagues_by_categories['Favourites'].append(dico)
-            compe_fav.append(c.name_competition)
-        
-
-    # Passer les matchs récupérés au contexte du template
-    context = {
-        'compe_fav': compe_fav,
-        'competitions_sorted' : competitions_sorted,
-        'leagues_by_categories': leagues_by_categories
-    }
-
-    return render(request, "homePage.html", context)
 
 def display_matches(request, slug_category_thread) :
-    category_selected = threads_categories_match.objects.get(slug_thread_league=slug_category_thread).thread_league
-    
-    if(category_selected != 'Recent') :
-        upcoming_matches = matches.objects.filter(status='Scheduled', competition=category_selected).exclude(date__isnull=True).exclude(kickoff__isnull=True)
-        upcoming_matches = upcoming_matches.order_by('date', 'kickoff').values()
-    else :
-        upcoming_matches = matches.objects.filter(status='Scheduled').exclude(date__isnull=True).exclude(kickoff__isnull=True)
-        upcoming_matches = upcoming_matches.order_by('date', 'kickoff')[:10].values()
+    """
+    View function to display matches when a competition is checked.
 
-    upcoming_matches_list = []
+    Parameters:
+        request (HttpRequest): The HTTP request object.
+        slug_category_thread: Part of the url that indicates the competition checked.
 
-    for m in upcoming_matches :
+    Returns:
+        JsonResponse: 1. If the request method is 'GET', we find matches based on the competition checked and
+                         it returns a JSON response with details on the standings.
+                      2. If the request method is not 'GET', it returns a JSON response which is equal to none.
+    """
+    if request.method == 'GET':
+        # Recovery of the competiton name
+        category_selected = threads_categories_match.objects.get(slug_thread_league=slug_category_thread).thread_league
         
-        try :
-            logo_home_team = teams.objects.get(name=m['home_team_id']).logo
-        except teams.DoesNotExist :
-            logo_home_team = None
+        if(category_selected != 'Closest') :
+            upcoming_matches = matches.objects.filter(status='Scheduled', competition=category_selected).exclude(date__isnull=True).exclude(kickoff__isnull=True)
+            upcoming_matches = upcoming_matches.order_by('date', 'kickoff').values()
+        else :
+            upcoming_matches = matches.objects.filter(status='Scheduled').exclude(date__isnull=True).exclude(kickoff__isnull=True)
+            upcoming_matches = upcoming_matches.order_by('date', 'kickoff')[:10].values() # Just the first 10
 
-        try :
-            logo_away_team = teams.objects.get(name=m['away_team_id']).logo
-        except teams.DoesNotExist :
-            logo_away_team = None
+        upcoming_matches_list = []
 
-        d = {
-            'key_id': m['key_id'],
-            'date': m['date'],
-            'kickoff': m['kickoff'],
-            'home_team': m['home_team_id'], 
-            'logo_home_team': logo_home_team,
-            'away_team': m['away_team_id'],  
-            'logo_away_team': logo_away_team,
-            'competition': m['competition'],
+        # Creating a dictionary to transmit data via json
+        for m in upcoming_matches :
+            
+            try :
+                logo_home_team = teams.objects.get(name=m['home_team_id']).logo
+            except teams.DoesNotExist :
+                logo_home_team = None
+
+            try :
+                logo_away_team = teams.objects.get(name=m['away_team_id']).logo
+            except teams.DoesNotExist :
+                logo_away_team = None
+
+            d = {
+                'key_id': m['key_id'],
+                'date': m['date'],
+                'kickoff': m['kickoff'],
+                'home_team': m['home_team_id'], 
+                'logo_home_team': logo_home_team,
+                'away_team': m['away_team_id'],  
+                'logo_away_team': logo_away_team,
+                'competition': m['competition'],
+            }
+
+            upcoming_matches_list.append(d)
+
+        # Case where there is no match
+        if len(upcoming_matches_list) == 0 :
+            upcoming_matches_list = None
+
+        today_date = datetime.now().date()
+        tomorrow_date = today_date + timedelta(days=1)
+
+        context = {
+            'upcoming_matches_list': upcoming_matches_list,
+            'today_date' : today_date,
+            'tomorrow_date' : tomorrow_date,
         }
 
-        upcoming_matches_list.append(d)
-
-    if len(upcoming_matches_list) == 0 :
-        upcoming_matches_list = None
-
-    today_date = datetime.now().date()
-    tomorrow_date = today_date + timedelta(days=1)
-
-    context = {
-        'upcoming_matches_list': upcoming_matches_list,
-        'today_date' : today_date,
-        'tomorrow_date' : tomorrow_date,
-    }
+    else :
+        context = None
 
     return JsonResponse(context)
-
 
 
 #locale: 0 si c'est le classement général, -1 si c'est juste a l'exterieur et 1 a domicile
@@ -194,7 +185,7 @@ def presentationMatch(request, slug_match) :
     # Preview
     try :
         # Trouver le thread associé au match
-        threads_ = threads_match.objects.get(match=match)
+        threads_ = threads_match.objects.get(key_id=match)
 
         # Compter le nombre total de commentaires pour ce thread
         comment_count = threads_comments_match.objects.filter(thread=threads_).count()
@@ -213,8 +204,15 @@ def presentationMatch(request, slug_match) :
             comment_count = 0
             latest_comment = None
     
-    match_slug_league_category = threads_categories_match.objects.get(thread_league=match.competition)
-
+    try:
+        match_slug_league_category = threads_categories_match.objects.get(thread_league=match.competition)
+        slug_thread_category = match_slug_league_category.slug_thread_category
+        slug_thread_league = match_slug_league_category.slug_thread_league
+    except threads_categories_match.DoesNotExist :
+        match_slug_league_category = None
+        slug_thread_category = None
+        slug_thread_league = None
+        
     # Form for the current home team over 5 last matches (in relation to the current match)
     last_matches_home_team = matches.objects.filter((Q(home_team=match.home_team) | Q(away_team=match.home_team)) & Q(date__lt=match.date)).order_by('-date') # __lt (less than) == <
     form_home_team = last_matches_home_team[:5] 
@@ -310,8 +308,8 @@ def presentationMatch(request, slug_match) :
         'away_prediction1': away_prediction1,
         'home_prediction2': home_prediction2,
         'away_prediction2': away_prediction2,
-        'slug_thread_category': match_slug_league_category.slug_thread_category,
-        'slug_thread_league': match_slug_league_category.slug_thread_league,
+        'slug_thread_category': slug_thread_category,
+        'slug_thread_league': slug_thread_league,
         'comment_count': comment_count,
         'latest_comment': latest_comment,
         'form_home_team': form_match(form_home_team, match.home_team.name),
@@ -343,55 +341,98 @@ def presentationMatch(request, slug_match) :
 
 
 def get_standings(request, slug_match, year_competiton) :
-    year = year_competiton[0:4]
-    competiton = year_competiton[4:]
-    match = matches.objects.get(key_id = slug_match)
-    standings = rankings.objects.filter(year=year, competition=competiton, locale=0).order_by('rank')
-    nb_teams_pool = 0
-    nb_pools = 0
-    pools_teams = None
-    ranks_list = []
-    
-    if standings.exists() :
-        if standings[0].pool != None :
-            standings = standings.order_by('pool')
-            nb_teams_pool = standings.filter(pool='1').count() 
-            nb_pools = standings.filter(competition=match.competition).values('pool').distinct().count()
+    """
+    View function to have information on standings.
 
-            pools_teams = {}
-            ranks_list = list(standings.values()) #repetition de code car pas ranger de la même maniere
-             
-            for k in range(0, len(standings)) :
-                pool = standings[k].pool
+    Parameters:
+        request (HttpRequest): The HTTP request object.
+        slug_match: Part of the url that indicates the match where we want to have access to the ranking.
+        year_competiton: Part of the url that indicates the year and the competition of the match.
 
-                if pool not in pools_teams :
-                    pools_teams[pool] = []
+    Returns:
+        JsonResponse: 1. If the request method is 'GET' and standings are successfully found,
+                         it returns a JSON response with details on the standings.
+                      2. If the request method is not 'GET', it returns a JSON response which is equal to none.
+    """
 
-                ranks_list[k]['logo'] = standings[k].team.logo
+    if request.method == 'GET':
+        # Data separation
+        year = year_competiton[0:4]            
+        competiton = year_competiton[4:]
 
-                pools_teams[pool].append(ranks_list[k])
+        # Match and ranking recovery
+        match = matches.objects.get(key_id = slug_match)
+        standings = rankings.objects.filter(year=year, competition=competiton, locale=0).order_by('rank')
 
-        else :
-            
-            ranks_list = list(standings.values())
-            for k in range(0, len(standings)) :
-                ranks_list[k]['logo'] = standings[k].team.logo
+        nb_teams_pool = 0
+        nb_pools = 0
+        pools_teams = None
+
+        ranks_list = []
         
+        if standings.exists() :
+            if standings[0].pool != None :
+                standings = standings.order_by('pool')
+                nb_teams_pool = standings.filter(pool='1').count() 
+                nb_pools = standings.filter(competition=match.competition).values('pool').distinct().count()
 
-    context = {
-        'ranks_list': ranks_list,
-        'nb_teams_pool': int(nb_teams_pool),
-        'nb_pools': list(range(1, nb_pools + 1)),
-        'pools_teams': pools_teams,
-    }
-    print(context)
-    # Retourner les données JSON en réponse HTTP
+                pools_teams = {}
+                ranks_list = list(standings.values())
+                
+                for k in range(0, len(standings)) :
+                    pool = standings[k].pool
+
+                    if pool not in pools_teams :
+                        pools_teams[pool] = []
+
+                    try:
+                        ranks_list[k]['logo'] = standings[k].team.logo
+                    except teams.DoesNotExist:
+                        ranks_list[k]['logo'] = None
+
+                    # Team ranking by pool
+                    pools_teams[pool].append(ranks_list[k])
+
+            else :
+                ranks_list = list(standings.values())
+                for k in range(0, len(standings)) :
+                    try:
+                        ranks_list[k]['logo'] = standings[k].team.logo
+                    except teams.DoesNotExist:
+                        ranks_list[k]['logo'] = None
+
+        context = {
+            'ranks_list': ranks_list,
+            'nb_teams_pool': int(nb_teams_pool),
+            'nb_pools': list(range(1, nb_pools + 1)),
+            'pools_teams': pools_teams,
+        }
+
+    else :
+        context = None
+
+    # JSON data in HTTP response
     return JsonResponse(context, safe=False)
 
 
 def player(request, slug_match, player_id) :
-    player_info = players.objects.get(player_id=player_id)
-    
+    """
+    View function to have information on a player.
+
+    Parameters:
+        request (HttpRequest): The HTTP request object.
+        slug_match: Part of the url that indicates the match where we find the player.
+        player_id: Part of the url that indicates the player we want information on.
+
+    Returns:
+        HttpResponse: The HTTP response containing the rendered player page with information on it.
+    """
+
+    try :
+        player_info = players.objects.get(player_id=player_id)
+    except players.DoesNotExist :
+        player_info = None
+        
     try :
         player_club_logo = teams.objects.get(name=player_info.club).logo
     except teams.DoesNotExist :
@@ -405,27 +446,64 @@ def player(request, slug_match, player_id) :
     return render(request, "player.html", context)
 
 
-def standings(request) :
+def team(request, slug_match, team_id) :
+    """
+    View function to have information on a team.
 
-    return render(request, "standings.html")
+    Parameters:
+        request (HttpRequest): The HTTP request object.
+        slug_match: Part of the url that indicates the match where we find the team.
+        player_id: Part of the url that indicates the team we want information on.
 
-def teams_(request) :
+    Returns:
+        HttpResponse: The HTTP response containing the rendered team page with information on it.
+    """
 
-    return render(request, "teams.html")
+    try :
+        team_info = teams.objects.get(name=team_id)
+    except players.DoesNotExist :
+        team_info = None
 
-def matches_(request) :
+    context = {
+        'team_info': team_info,
+    }
 
-    return render(request, "matches.html")
+    return render(request, "team.html", context)
 
-
-         
 
 def imgSources(request) :
+    """
+    View function to have information on image sources.
+
+    Parameters:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        HttpResponse: The HTTP response containing the rendered source page.
+    """
+    
     img_sources = sources.objects.all()
 
     context = {
         'img_sources': img_sources,
     }
     
-    return render(request, "imgSources.html", context=context)   
+    return render(request, "imgSources.html", context=context) 
+
+
+# Not implemented
+def old_standings(request) :
+    """
+    View function to have information on old standings (Backend not implemented).
+
+    Parameters:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        HttpResponse: The HTTP response containing the rendered standing page with information on all old standings.
+    """
+    return render(request, "standings.html")
+
+
+  
   
