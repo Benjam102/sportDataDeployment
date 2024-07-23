@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from datetime import datetime, timedelta
 
 # Importation des modèles
@@ -11,16 +11,11 @@ from accounts.models import favourites
 
 # Utile
 from django.db.models import Max
-from django.forms.models import model_to_dict
 from django.db.models import Q
 from .utils import form_match, associate_weather_code, user_prediction
 from django.http import JsonResponse
-import json
-from django.core import serializers
-from django.db.models import Count
-from django.utils.functional import SimpleLazyObject
 
-# Page d'acceuil
+
 def homePage(request) :
     
     if request.user.is_authenticated:
@@ -45,13 +40,22 @@ def homePage(request) :
 
 
 def fixtures(request) :    
-    # Récupérer tous les noms des catégories sans doublon, triés par ordre alphabétique
+    """
+    View function to render the main fixture page.
+
+    Parameters:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        HttpResponse: The HTTP response containing the rendered fixture page.
+    """
+    # Retrieve all unduplicated category names, sorted alphabetically
     categories = threads_categories_match.objects.values_list('thread_category', flat=True).distinct() 
    
-    # Créer un dictionnaire pour stocker les leagues par catégories
+    # Create a dictionary to store leagues by category
     leagues_by_categories = {}
 
-    # Lier chaque league à une catégorie
+    # Link each league to a category
     for category in categories:
         categories = threads_categories_match.objects.filter(thread_category=category).order_by('thread_league')
 
@@ -60,23 +64,21 @@ def fixtures(request) :
         else :
             leagues_by_categories[category] = []
 
-    # Favoris
+    # Favourites
     compe_fav = []
     if request.user.is_authenticated:
         user = request.user
         competitions_favourites = favourites.objects.filter(user=user)
 
         for c in competitions_favourites :   
-            dico = {                                            # mettre les memes nom que pour les objets threads_category
-                'slug_thread_league': c.slug_competition,
+            dico = {                                         
+                'slug_thread_league': c.slug_competition, # Use the same names as for threads_category objects
                 'slug_thread_category': threads_categories_match.objects.get(slug_thread_league=c.slug_competition).slug_thread_category,
                 'thread_league': c.name_competition
             }
             leagues_by_categories['Favourites'].append(dico)
             compe_fav.append(c.name_competition)
         
-
-    # Passer les matchs récupérés au contexte du template
     context = {
         'compe_fav': compe_fav,
         'leagues_by_categories': leagues_by_categories
@@ -156,19 +158,26 @@ def display_matches(request, slug_category_thread) :
     return JsonResponse(context)
 
 
-#locale: 0 si c'est le classement général, -1 si c'est juste a l'exterieur et 1 a domicile
 def presentationMatch(request, slug_match) :
+    """
+    View function to have several information on a particularly match.
+
+    Parameters:
+        request (HttpRequest): The HTTP request object.
+        slug_match: Part of the url that indicates the match where we want to have more information.
+    
+    Returns:
+        HttpResponse: The HTTP response containing the rendered match page with information on it.
+    """
     match = matches.objects.get(key_id=slug_match)
 
-    # Prediction
+    ### Prediction part ###
     try :
         user = request.user
         if not user.is_authenticated:
-            # Utilisateur non authentifié, utilisez une valeur par défaut pour user_id
-            user_id = -1
+            user_id = -1                # need a number
             prediction = predictions_matches.objects.get(prediction_match=match, user_prediction=user_id)
         else:
-            # Utilisateur authentifié
             prediction = predictions_matches.objects.get(prediction_match=match, user_prediction=user)
     
     except predictions_matches.DoesNotExist :
@@ -180,17 +189,18 @@ def presentationMatch(request, slug_match) :
     away_prediction2 = None
 
     if prediction != None :
+        # Recuperation of user prediction in a good format
         home_prediction1, away_prediction1, home_prediction2, away_prediction2 = user_prediction(prediction)
 
-    # Preview
+    ### SUMMARY: PREVIEW PART ###
     try :
-        # Trouver le thread associé au match
+        # Find the thread associated with the match
         threads_ = threads_match.objects.get(key_id=match)
 
-        # Compter le nombre total de commentaires pour ce thread
+        # Count the total number of comments for this thread
         comment_count = threads_comments_match.objects.filter(thread=threads_).count()
 
-        # Récupérer la date du commentaire le plus récent pour ce thread
+        # Retrieve the date of the most recent comment for this thread
         comments = threads_comments_match.objects.filter(thread=threads_)
         latest_comment_date = comments.aggregate(latest_comment=Max('date'))["latest_comment"]
         
@@ -198,9 +208,9 @@ def presentationMatch(request, slug_match) :
             latest_comment = threads_comments_match.objects.get(thread=threads_, date=latest_comment_date)
         else :
             latest_comment = None  
-    
-    except threads_match.DoesNotExist as e: # Pour les anciens matches
-            # print(f"Thread for match with key_id {slug_match} do not exist: {e}")
+
+    except threads_match.DoesNotExist as e: 
+            # For past matches
             comment_count = 0
             latest_comment = None
     
@@ -208,11 +218,13 @@ def presentationMatch(request, slug_match) :
         match_slug_league_category = threads_categories_match.objects.get(thread_league=match.competition)
         slug_thread_category = match_slug_league_category.slug_thread_category
         slug_thread_league = match_slug_league_category.slug_thread_league
+    
     except threads_categories_match.DoesNotExist :
         match_slug_league_category = None
         slug_thread_category = None
         slug_thread_league = None
-        
+    
+    ### SUMMARY: FORM PART ###
     # Form for the current home team over 5 last matches (in relation to the current match)
     last_matches_home_team = matches.objects.filter((Q(home_team=match.home_team) | Q(away_team=match.home_team)) & Q(date__lt=match.date)).order_by('-date') # __lt (less than) == <
     form_home_team = last_matches_home_team[:5] 
@@ -221,41 +233,48 @@ def presentationMatch(request, slug_match) :
     last_matches_away_team = matches.objects.filter((Q(home_team=match.away_team) | Q(away_team=match.away_team)) & Q(date__lt=match.date)).order_by('-date')
     form_away_team = last_matches_away_team[:5]
 
+    # locale: 0 -> general standings | -1 -> away team standings | 1 -> home team standings
     try :
         rank_home_team = rankings.objects.get(competition=match.competition, team=match.home_team, year=match.date.year, locale=0).rank
-        rank_away_team = rankings.objects.get(competition=match.competition, team=match.away_team, year=match.date.year, locale=0).rank
-    except :
+    except rankings.DoesNotExist:
         rank_home_team = None
+
+    try :
+        rank_away_team = rankings.objects.get(competition=match.competition, team=match.away_team, year=match.date.year, locale=0).rank
+    except rankings.DoesNotExist:
         rank_away_team = None
 
-    # Odds
+    ### SUMMARY: ODDS PART ###
     try:
         match_odds = odds.objects.get(key_id=slug_match)
     except odds.DoesNotExist as e:
-        # Gestion du cas où aucun objet n'est trouvé
-        #print(f"Odds for match with key_id {slug_match} do not exist: {e}")
         match_odds = None
     
-    # Meteo
+    ### SUMMARY: WEATHER PART ###
     general_weather = associate_weather_code(match.weather_code)
     
-    # Line up
+    ### SUMMARY: TEAM NEWS PART ###
     try:
         match_composition_home = compositions.objects.get(key_id=slug_match, local_team=1)
+    except compositions.DoesNotExist as e:
+        match_composition_home = None
+
+    try:
         match_composition_away = compositions.objects.get(key_id=slug_match, local_team=0)
     except compositions.DoesNotExist as e:
-        # Gestion du cas où aucun objet n'est trouvé
-        #print(f"Compositions for match with key_id {slug_match} do not exist: {e}")
-        match_composition_home = None
         match_composition_away = None
 
-    # H2H
+    ### H2H ###
     h2h = matches.objects.filter(((Q(home_team=match.home_team) & Q(away_team=match.away_team)) | (Q(home_team=match.away_team) & Q(away_team=match.home_team))) & Q(date__lt=match.date)).order_by('-date')
     h2h_home_away_team = matches.objects.filter(Q(home_team=match.home_team) & Q(away_team=match.away_team) & Q(date__lt=match.date)).order_by('-date')
 
-    # Standings
+    ### STANDINGS ###
+    # Competition in which the home team plays
     competitions = rankings.objects.filter(year=match.date.year, team=match.home_team).values_list('competition', flat=True).distinct()
-    standings = rankings.objects.filter(year=match.date.year, competition=match.competition, locale=0).order_by('rank') # celle du match
+    
+    # Match competition ranking
+    standings = rankings.objects.filter(year=match.date.year, competition=match.competition, locale=0).order_by('rank') 
+
     nb_teams_pool = 0
     nb_pools = 0
     pools_teams = None
@@ -263,7 +282,7 @@ def presentationMatch(request, slug_match) :
     if standings.exists() :
         if standings[0].pool != None :
             standings = standings.order_by('pool')
-            nb_teams_pool = standings.filter(pool='1').count() #standings.values('pool').annotate(equipes_count=Count('pool'))
+            nb_teams_pool = standings.filter(pool='1').count() 
             nb_pools = standings.filter(competition=match.competition).values('pool').distinct().count()
 
             pools_teams = {}
@@ -271,7 +290,7 @@ def presentationMatch(request, slug_match) :
                 pool = standing.pool
                 if pool not in pools_teams :
                     pools_teams[pool] = []
-
+                # We classify the teams by pool if there are pools
                 pools_teams[pool].append(standing)
 
     # Home team
@@ -324,6 +343,7 @@ def presentationMatch(request, slug_match) :
         'last_matches_away_team': form_match(last_matches_away_team, match.away_team.name),
         'h2h_home_team': form_match(h2h_home_away_team, match.home_team.name),
         'h2h_away_team': form_match(h2h_home_away_team, match.away_team.name),
+        'h2h': h2h,
         'competitions': competitions,
         'standings': standings,
         'nb_teams_pool': nb_teams_pool,

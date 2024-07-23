@@ -1,7 +1,7 @@
 {% load static %}
 
 <div class="container-recurrent" id="1matchesContainer3">                     
-    {% for result, m in last_matches_away_team %}
+    {% for m in h2h %}
         <div class="grid-h2h">
             <div class="date-h2h">
                 {{ m.date|date:"d/m/Y" }}

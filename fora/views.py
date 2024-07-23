@@ -150,7 +150,7 @@ def threads_(request, slug_thread_category, slug_thread_league, slug_thread_comm
     thread_exist = True
 
     try :
-        thread_ = threads_match.objects.get(match=match_)
+        thread_ = threads_match.objects.get(key_id=match_)
         comments = threads_comments_match.objects.filter(thread=thread_).order_by('date')
     # for past matches
     except threads_match.DoesNotExist : 
@@ -223,7 +223,7 @@ def add_comment_thread(request, slug_comment_category, slug_thread_tchat):
         user = request.user
 
         if content :
-            thread_id = threads_match.objects.get(match=slug_thread_tchat)
+            thread_id = threads_match.objects.get(key_id=slug_thread_tchat)
             new_comment = threads_comments_match.objects.create(user=user, thread=thread_id, content=content)
 
             # Prepare data to send back as JSON response
@@ -292,7 +292,7 @@ def display_threads(request, slug_category_thread) :
     """
     if request.method == 'GET':
         category_selected = threads_categories_match.objects.get(slug_thread_league=slug_category_thread)  
-        
+     
         if(category_selected.thread_league != 'Closest') :
             corresponding_threads = threads_match.objects.filter(category=category_selected, closed=False)
         else :
@@ -310,7 +310,7 @@ def display_threads(request, slug_category_thread) :
             comments_count = threads_comments_match.objects.filter(thread=thread).count()
 
             thread_info = {
-                    'slug_thread': thread.match.key_id,
+                    'slug_thread': thread.key_id,
                     'latest_comment': str(latest_comment),
                     'comments_count': comments_count,
                     'closed_thread': thread.closed,
