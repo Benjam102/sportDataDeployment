@@ -50,25 +50,26 @@ def form_match(matches_team, team) :
     """
     form_home_team_match = []
 
-    for m in matches_team :
-        # Home team
-        if m.home_team.name == team :    
-            if m.home_score > m.away_score :
-                result = 'V'
-            elif m.home_score == m.away_score :
-                result = 'N'
-            else :
-                result = 'D'
-        # Away team
-        else :                                         
-            if m.home_score > m.away_score :
-                result = 'D'
-            elif m.home_score == m.away_score :
-                result = 'N'
-            else :
-                result = 'V'
+    if (team != None) :
+        for m in matches_team :
+            # Home team
+            if m.home_team.name == team :    
+                if m.home_score > m.away_score :
+                    result = 'V'
+                elif m.home_score == m.away_score :
+                    result = 'N'
+                else :
+                    result = 'D'
+            # Away team
+            else :                                         
+                if m.home_score > m.away_score :
+                    result = 'D'
+                elif m.home_score == m.away_score :
+                    result = 'N'
+                else :
+                    result = 'V'
 
-        form_home_team_match.append((result, m))
+            form_home_team_match.append((result, m))
     
     return form_home_team_match
 

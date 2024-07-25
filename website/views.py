@@ -171,6 +171,21 @@ def presentationMatch(request, slug_match) :
     """
     match = matches.objects.get(key_id=slug_match)
 
+    # match.home_team is a teams object. So, If it does not exist, there is an error.
+    try:
+        home_team = match.home_team
+        home_team_name = home_team.name
+    except teams.DoesNotExist:
+        home_team = None
+        home_team_name = None
+
+    try :
+        away_team = match.away_team
+        away_team_name = away_team.name
+    except teams.DoesNotExist:
+        away_team = None
+        away_team_name = None
+
     ### Prediction part ###
     try :
         user = request.user
@@ -223,24 +238,24 @@ def presentationMatch(request, slug_match) :
         match_slug_league_category = None
         slug_thread_category = None
         slug_thread_league = None
-    
+
     ### SUMMARY: FORM PART ###
     # Form for the current home team over 5 last matches (in relation to the current match)
-    last_matches_home_team = matches.objects.filter((Q(home_team=match.home_team) | Q(away_team=match.home_team)) & Q(date__lt=match.date)).order_by('-date') # __lt (less than) == <
+    last_matches_home_team = matches.objects.filter((Q(home_team=home_team) | Q(away_team=home_team)) & Q(date__lt=match.date)).order_by('-date') # __lt (less than) == <
     form_home_team = last_matches_home_team[:5] 
   
     # Form for the current away team over 5 last matches (in relation to the current match)
-    last_matches_away_team = matches.objects.filter((Q(home_team=match.away_team) | Q(away_team=match.away_team)) & Q(date__lt=match.date)).order_by('-date')
+    last_matches_away_team = matches.objects.filter((Q(home_team=away_team) | Q(away_team=away_team)) & Q(date__lt=match.date)).order_by('-date')
     form_away_team = last_matches_away_team[:5]
 
     # locale: 0 -> general standings | -1 -> away team standings | 1 -> home team standings
     try :
-        rank_home_team = rankings.objects.get(competition=match.competition, team=match.home_team, year=match.date.year, locale=0).rank
+        rank_home_team = rankings.objects.get(competition=match.competition, team=home_team, year=match.date.year, locale=0).rank
     except rankings.DoesNotExist:
         rank_home_team = None
 
     try :
-        rank_away_team = rankings.objects.get(competition=match.competition, team=match.away_team, year=match.date.year, locale=0).rank
+        rank_away_team = rankings.objects.get(competition=match.competition, team=away_team, year=match.date.year, locale=0).rank
     except rankings.DoesNotExist:
         rank_away_team = None
 
@@ -265,13 +280,15 @@ def presentationMatch(request, slug_match) :
         match_composition_away = None
 
     ### H2H ###
-    h2h = matches.objects.filter(((Q(home_team=match.home_team) & Q(away_team=match.away_team)) | (Q(home_team=match.away_team) & Q(away_team=match.home_team))) & Q(date__lt=match.date)).order_by('-date')
-    h2h_home_away_team = matches.objects.filter(Q(home_team=match.home_team) & Q(away_team=match.away_team) & Q(date__lt=match.date)).order_by('-date')
+    h2h = matches.objects.filter(((Q(home_team=home_team) & Q(away_team=away_team)) | (Q(home_team=away_team) & Q(away_team=home_team))) & Q(date__lt=match.date)).order_by('-date')
+    h2h_home_away_team = matches.objects.filter(Q(home_team=home_team) & Q(away_team=away_team) & Q(date__lt=match.date)).order_by('-date')
+ 
 
     ### STANDINGS ###
     # Competition in which the home team plays
-    competitions = rankings.objects.filter(year=match.date.year, team=match.home_team).values_list('competition', flat=True).distinct()
-    
+    competitions = rankings.objects.filter(year=match.date.year, team=home_team).values_list('competition', flat=True).distinct()
+ 
+
     # Match competition ranking
     standings = rankings.objects.filter(year=match.date.year, competition=match.competition, locale=0).order_by('rank') 
 
@@ -322,6 +339,8 @@ def presentationMatch(request, slug_match) :
 
     context = {
         'match': match,
+        'away_team_name': away_team_name,
+        'home_team_name': home_team_name,
         'prediction': prediction,
         'home_prediction1': home_prediction1,
         'away_prediction1': away_prediction1,
@@ -331,18 +350,18 @@ def presentationMatch(request, slug_match) :
         'slug_thread_league': slug_thread_league,
         'comment_count': comment_count,
         'latest_comment': latest_comment,
-        'form_home_team': form_match(form_home_team, match.home_team.name),
-        'form_away_team': form_match(form_away_team, match.away_team.name),
+        'form_home_team': form_match(form_home_team, home_team_name),
+        'form_away_team': form_match(form_away_team, away_team_name),
         'rank_home_team': rank_home_team,
         'rank_away_team' : rank_away_team,
         'match_odds': match_odds,
         'general_weather': general_weather,
         'match_composition_home': match_composition_home,
         'match_composition_away': match_composition_away,
-        'last_matches_home_team': form_match(last_matches_home_team, match.home_team.name),
-        'last_matches_away_team': form_match(last_matches_away_team, match.away_team.name),
-        'h2h_home_team': form_match(h2h_home_away_team, match.home_team.name),
-        'h2h_away_team': form_match(h2h_home_away_team, match.away_team.name),
+        'last_matches_home_team': form_match(last_matches_home_team, home_team_name),
+        'last_matches_away_team': form_match(last_matches_away_team, away_team_name),
+        'h2h_home_team': form_match(h2h_home_away_team, home_team_name),
+        'h2h_away_team': form_match(h2h_home_away_team, away_team_name),
         'h2h': h2h,
         'competitions': competitions,
         'standings': standings,

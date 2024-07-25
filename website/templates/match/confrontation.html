@@ -1,9 +1,9 @@
 <div class="confrontation" id="confrontation-predic">
     <div class="container-team">
-        <a href="{% url 'team' slug_match=match.key_id team_id=match.home_team.name %}" class="team">
+        <a href="{% url 'team' slug_match=match.key_id team_id=home_team_name %}" class="team">
             <img src="{{ match.home_team.logo }}" alt="">
         </a>
-        <a href="{% url 'team' slug_match=match.key_id team_id=match.home_team.name %}" class="name-team"> 
+        <a href="{% url 'team' slug_match=match.key_id team_id=home_team_name %}" class="name-team"> 
             {{ match.home_team.name }}
         </a>
     </div>
@@ -25,10 +25,10 @@
         </div>
     </div>
     <div class="container-team">
-        <a href="{% url 'team' slug_match=match.key_id team_id=match.away_team.name %}" class="team">
+        <a href="{% url 'team' slug_match=match.key_id team_id=away_team_name %}" class="team">
             <img src="{{ match.away_team.logo }}" alt="">
         </a>
-        <a href="{% url 'team' slug_match=match.key_id team_id=match.away_team.name %}" class="name-team"> 
+        <a href="{% url 'team' slug_match=match.key_id team_id=away_team_name %}" class="name-team"> 
             {{ match.away_team.name }}
         </a>
     </div>
