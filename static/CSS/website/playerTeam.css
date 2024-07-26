@@ -70,12 +70,12 @@ header .logoRugby h1
     padding: 10px;
 }
 
-.grid-player-team.pl
+.grid-player-team.pl                            /* Grid for the player */
 {
     grid-template-columns: 1fr 1fr;
 }
  
-.grid-player-team.te
+.grid-player-team.te                            /* Grid for the team */
 {
     grid-template-columns: 1fr; 
 }

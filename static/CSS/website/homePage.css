@@ -21,7 +21,7 @@ a
 .grid-title                                     /* Grid for 'Categories */
 {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     align-items: center;
     text-align: center;
     border-top-left-radius: 10px;
@@ -35,7 +35,7 @@ a
     display: grid;
     align-items: center;
     text-align: center;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     text-align: center;
     padding: 10px;
 }
@@ -64,4 +64,19 @@ a
 .column-1-6
 {
     grid-column: 1 / 7;
+}
+
+
+/*----------------------------------------------------------Responsive web-------------------------------------------------------*/
+@media screen and (max-width:550px)
+{
+    .grid-title 
+    {
+        font-size: 13px;
+    }
+
+    .grid-prediction
+    {
+        font-size: 12px;
+    }
 }

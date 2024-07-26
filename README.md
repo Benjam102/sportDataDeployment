@@ -1,175 +1,80 @@
-# Application configuration for deployment
+# Sports Data for Nerds project
 
-This file explains how to configure the project for deployment on a server. I will deal with a small part of the configuration of the proxy reverse NGINX used. However, for an in-depth description of how the server works, please refer to the documentation made on the configuration of the server available on the github of the lab and made by another French student.
+The purpose of this project is to create an online community for rugby enthusiasts to share thoughts and comments on upcoming, ongoing and past games for mutual benefit and entertainment. It will contain content that is currently available only by visiting a number of different sites.
+
+I'm writing this ReadMe to present a few important points about the project.
 
 # Table of Contents
-1. [Configuration of our application ](#configuration-of-our-application)
-     - [File setting located in the folder sportsDataForNerds](#file-setting-located-in-the-folder-sportsdatafornerds)
-     - [Domain name in the admin of the website](#domain-name-in-the-admin-of-the-website)
-2. [Configuration on the server](#configuration-on-the-server)
-     - [Connection to the server](#connection-to-the-server)
-     - [Go to our project](#go-to-our-project)
-     - [Updated the project](#updated-the-project)
-     - [Explanation of the script](#explanation-of-the-script)
-         - [Deleting the old version of the project](#deleting-the-old-version-of-the-project)
-         - [Importation of the new version](#importation-of-the-new-version)
-         - [Restart our application on the port 8002](#restart-our-application-on-the-port-8002)
-    - [Configuration of our domain in NGINX](#configuration-of-our-domain-in-nginx)
-       
-## Configuration of our application 
+1. [Display a competition added to scraping routines](#display-a-competition-added-to-scraping-routines)
+2. [URL](#url)
+3. [Checkoxes operation for fixtures and forum parts](#checkoxes-operation-for-fixtures-and-forum-parts)
+4. [Prediction part in a match page](#prediction-part-in-a-match-page)
+5. [Standings part in a match page](#standings-part-in-a-match-page)
+6. [Conclusion](#conclusion)
 
-We're just going to modify one file to put the project into production and modify the domain name indicates in the database.
+## Display a competition added to scraping routines
 
-### File setting located in the folder sportsDataForNerds
+You need to add the scraped competition to the database to be able to display it in the fixture and forum parts.
 
-Uncomment all the following lines and delete the one just above them if they are duplicated :
-- Path access to the file .env: we have removed the database from the main folder to separate the website part and the database with the scraping routines. So, we can work independently on both parts.
-```python
-load_dotenv(os.path.join(BASE_DIR, '../', '.env')) 
-```
-- DEBUG: it allows you to no longer displays site errors directly online
-```python
-DEBUG = False
-```
-- ALLOWED_HOSTS: it allows you to specify the domain names authorised to access the application. Here, we have only authorized access for the project's subdomain and not the entire domain.
-```python
-ALLOWED_HOSTS = [os.environ.get('DOMAIN_NAME_1'), os.environ.get('DOMAIN_NAME_2')]
-```
-- DATABASES: we moved the database to another folder, so we need to modify the path to access the database.
-```python
-'NAME': os.path.join(BASE_DIR, '../database', 'db.sqlite3'),
-```
-- CSRF: it allows to accepts CSRF requests only from the entire domain tcdrail.com.
-```python
-CSRF_TRUSTED_ORIGINS = [
-     'https://*.tcdrail.com/'
-]
-```
-- CSRF: it allows us to ensure that CSRF cookies are only sent via HTTPS.
-```python
-CSRF_COOKIE_SECURE = True
-```
-- CSRF: it allows us to ensure that session cookies are only sent via HTTPS.
-```python
-SESSION_COOKIE_SECURE = True
-```
-### Domain name in the admin of the website
+To do this, simply go to Django admin and follow the steps below:
 
-It is important to indicate the domain name of the site that will serve the various requests. The default is http://example.com/ or something else. It is therefore necessary to connect to the website admin in order to change this domain name to our own. To do this, refer to the google drive. 
+![Description of steps](static/readMe/admin.png)
 
-Once connected, go the section site and click on 'site'. Then click on the domain which is not ours and change it by https://sportdatafornerds.tcdrail.com.
+There's no need to fill in the slug fields, they'll be filled in automatically when you create the new competition. However, if you want to modify the “Thread league” and/or “Thread category” fields of a one competition, you'll also need to modify the slug fields accordingly.
 
-## Configuration on the server
+## URL
 
-Here, we are going to see what we need to do on the server. At the end, we will see the configuration of the reverse proxy NGINX made by another french student.
+Sometimes you will see variables present in the views that are not used in the processing. They're there just to make the URL make more sense.
 
-### Connection to the server
+URL: 
 
-```sh
-ssh root@tcdrail.com
-```
-```sh
-ssh root@194.164.22.54
-```
-For the password, go to [ionos.co.uk](https://www.ionos.co.uk/), section 'Servers & Cloud'. Click on 'My VPS' and you will see the password.
+![Example of a URL](static/readMe/url.png)
 
-### Go to our project
+View:
 
-When you arrive on the server, launch the virtual environment of the project :
-```sh
-pyenv activate sportData
-```
-Then go to the folder of the project :
-```sh
-cd websites/sportsDataForNerds/
-```
-sportsDataForNerds/  
-├── .env  
-├── database/  
-├── sportDataDeployment/  
+![Example of a view](static/readMe/view.png)
 
-where :
-- `.env` : Fichier de configuration pour les variables d'environnement.
-- `database/` : Dossier de la base de données et des routines de scraping.
-- `sportDataDeployment/` : Dossier contenant le projet.
+Here, during the processing in the view, we don’t use the fact that the thread is in the international category.
 
-### Updated the project
+## Checkoxes operation for fixtures and forum parts
 
-If you have not made any changes to the database, you can run the following script :
-```sh
-./update_code.sh
-```
+In both sections, the checkboxes are managed by the dropDownMenu.js script, in particular the following function _initializeDropDownMenu_. It allows only one checkbox to be selected at a time, attaches the right colour to the competitions in relation to the colour of their category (International, club, etc.) and rotates the small arrow when the category is scrolled.
 
-If you have made any changes to the database, you will need to uncomment these two lines :
-```sh
-rm -r ../database/db.sqlite3
-mv db.sqlite3 ../database
-```
+Here we're going to talk about ajax requests for these two parts.
 
-** However, it is important to make a backup of the server database before running the bash script with these uncommented instructions. **
+- AJAX requests for the section 'Fixtures':
 
-### Explanation of the script 
+![AJAX requests for the section fixtures](static/readMe/ajaxFixtures.png)
 
-Here, we are going to explain the different commands of the script.
+- AJAX requests for the section 'Forum':
 
-#### Deleting the old version of the project
+![AJAX requests for the section forum](static/readMe/ajaxFora.png)
 
-Our application listens on TCP port 8002. So, we need to stop the application listening on TCP port 8002 by the following command :
-```sh
-sudo fuser -k 8002/tcp
-```
-Then delete the project folders containing the project files and the static files that will be served by nginx.
-```sh
-rm -r sportDataDeployment
-rm -r /www/data/sportDataDeployment/staticfiles/
-```
-If you have modified the database, you need to delete it after making a backup.
-```sh
-rm -r ../database/db.sqlite3
-mv db.sqlite3 ../database
-```
+Eventually, you'll have to merge the two JS for the favourite part. They're exactly the same functions, but with differences to make them work in each case. I haven't been able to do it due to lack of time.
 
-#### Importation of the new version
+Important: Here, competitions appear when a check box is selected only if the name of the competition in the table __'matches'__ corresponds the name of the competition in the __'threads_categories_match table'__.
 
-Git clone from the gitlab of the lab :
-```sh
-git clone ...
-```
-Collect the static files :
-```sh
-python manage.py collectstatic
-```
- They will be located in the path indicated in STATIC_ROOT in the project's setting.py file. that is on the folder located in /www/data/sportDataDeployment/staticfiles/. 
+## Prediction part in a match page
 
-#### Restart our application on the port 8002
+This part is present in the match page. It can only be accessed if you have an account. The first prediction opens one week before the match and closes three days before the match. The second prediction opens 3 days before the match and closes one hour before.
+I put a sort of grey veil when the elements were inaccessible. It is possible to override this. So, for security reasons I've disabled the validate buttons that allow you to create or complete the prediction table if there is this veil.
 
-Get into the project file and start the uvicorn web server so that our application listens on port 8002 :
-```sh
-cd sportDataDeployment
-nohup uvicorn sportsDataForNerds.asgi:application --host localhost --port 8002 &
-```
-A nohup.out file will be created, which will be our log file.
+- AJAX requests for the prediction part in a match page:
 
-### Configuration of our domain in NGINX
-In the file tcdrail.com located in /etc/nginx/sites-available, we have for our subdomain :
-```sh
-server {
-    server_name www.sportdatafornerds.tcdrail.com sportdatafornerds.tcdrail.com;
+![AJAX requests for the prediction part](static/readMe/ajaxPrediction.png)
 
-    # Redirection of requests for the domain name specified above to localhost:8002, where the web application runs
-    location / {
-        proxy_pass http://localhost:8002;
-        include /etc/nginx/proxy_common.conf;
-    }
+## Standings part in a match page
 
-    # Configuration so that Nginx can serve our static files from /www/data/sportDataDeployment/staticfiles and 404 error handling.
-    location /static {
-        alias /www/data/sportDataDeployment/staticfiles;
-        autoindex on;
-        try_files $uri $uri/ =404;
-    }
+Here, we consider two cases: where the ranking contains pools and where the ranking contains no pools. When there are pools, a slider appears to scroll through the different pools. For the final phases, matches are put in the draw subcategory.
 
-    listen 443 ssl;
-}
-```
-For more details, please refer to the server documentation available on the laboratory's github.
+- AJAX requests for the standings part in a match page:
+
+![AJAX requests for the standings part](static/readMe/ajaxStandings.png)
+
+
+## Conclusion 
+
+- The sportData repository folder contains the blank database. You'll need to make a backup when testing, especially if you're adding/modifying tables, so you can go back easily.
+- The sportDataDeployment folder contains the version of the project uploaded to the server. The setting file is modified accordingly.
+- All credentials for the project are in the credentials file
+- Use a frontend framework such as react or svelt in addition to the django backend framework

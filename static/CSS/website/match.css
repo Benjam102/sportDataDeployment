@@ -1419,10 +1419,10 @@ header .logoRugby h1
 .side-menu                                                  /* For the arrow */
 {
     position: fixed;                                        /* So that it follows the scrolling of the page */
-    width: 28px;
-    height: 50px;
+    width: 14px;
+    height: 25px;
     margin-top: 45px;
-    margin-left: 728px;
+    margin-left: 714px;
     padding: 1px;
     border-radius: 0 5px 5px 0;
     background-color:#A9B3B8;
@@ -1430,7 +1430,7 @@ header .logoRugby h1
     cursor: pointer;
 }
 
-/* Js */
+/* Js: sidebar.js */
 .side-menu.open
 {
     width: 100px;
@@ -1450,7 +1450,7 @@ header .logoRugby h1
     transition: 0.3s;
 }
 
-/* Js */
+/* Js: sidebar.js */
 .side-caret-rotate
 {
     transform: rotate(180deg);

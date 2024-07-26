@@ -177,7 +177,7 @@ ACCOUNT_SESSION_REMEMBER = True
 # For CSRF in production
 CSRF_TRUSTED_ORIGINS = [
      'https://*.tcdrail.com/'
-]
+ ]
 
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True

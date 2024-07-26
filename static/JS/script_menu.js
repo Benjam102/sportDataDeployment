@@ -1,25 +1,32 @@
-
-/* Fonction pour gérer le clic sur le petit menu déroulant */
 function clickMenu() 
 {
-    /* Sélectionne l'élément ayant la classe "petit-menu" dans le document HTML */
+     /**
+     * Function to handle the click on the small dropdown menu.
+     *
+     */
+
+    /* Select the element with the class "petit-menu" in the HTML document */
     var petit_menu = document.querySelector(".petit-menu");
 
-    /* Sélectionne l'élément ayant la classe "menu" dans le document HTML */
+    /* Select the element with the class "menu" in the HTML document */
     var menu = document.querySelector(".menu");
     
-    /* Attache une fonction à l'événement "onclick" de l'élément petit menu */
+    /* Attach a function to the "onclick" event of the petit_menu element */
     petit_menu.onclick = 
     function() 
     {
-        /* Au clic sur l'élément petit menu, on bascule sur la classe 'croix' de cet élément */
+        /* On click on the petit_menu element, toggle the 'croix' class of this element */
         petit_menu.classList.toggle('croix');
         
-        /* Au clic sur l'élément petit menu, on bascule sur la classe 'appui-rond' de l'élément menu */
+        /* On click on the petit_menu element, toggle the 'appui-rond' class of the menu element */
         menu.classList.toggle('appui-rond');
     }
 }
   
-/*Appel de la fonction pour activer la gestion du petit menu */
-clickMenu();
+/* Call the function to activate the small menu handling */
+document.addEventListener('DOMContentLoaded', function() 
+{
+    clickMenu();
+});
+
   

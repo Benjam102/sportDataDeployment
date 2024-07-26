@@ -150,8 +150,12 @@ def threads_(request, slug_thread_category, slug_thread_league, slug_thread_comm
     thread_exist = True
 
     try :
-        thread_ = threads_match.objects.get(key_id=match_)
+        thread_ = threads_match.objects.get(key_id=match_.key_id)
         comments = threads_comments_match.objects.filter(thread=thread_).order_by('date')
+
+        if(thread_.closed == False) :
+            thread_exist = False
+            
     # for past matches
     except threads_match.DoesNotExist : 
         thread_ = None
